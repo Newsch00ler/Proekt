@@ -1,0 +1,249 @@
+header{
+    min-width: 992px;
+}
+
+body{
+    margin: 0;
+    height: 100vh;
+    justify-content: center;
+    font-family: 'Arial';
+    background-color: #8DDEF8;
+    width: 100%;
+}
+
+form{
+    padding: 0%;
+    margin: 0%;
+}
+
+.login {
+    background-image: linear-gradient(to bottom right, #32C2F1, #FFFFFF);
+    height: 100vh;
+}
+
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0%;
+}
+
+.logo {
+    margin-right: 32px;
+}
+
+h1{
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 37px;
+    margin: 0px;
+    color: #FFFFFF;
+}
+
+.navbar{
+    border-bottom: 2px solid #ffffff;
+    padding: 25px;
+}
+
+.navbar-brand{
+    flex-direction: row;
+    justify-content: start;
+    width: max-content;
+}
+
+.nav-link{
+    margin-right: 92px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #FFFFFF;
+}
+
+.nav-link:hover {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+label{
+    margin: 0%;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    color: #000000;
+}
+
+.login-input::placeholder,
+textarea::placeholder {
+    color: #9B9B9B;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.login-input {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 15px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 32px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    color: #000000;
+}
+
+.input::placeholder,
+textarea::placeholder {
+    text-align: center;
+}
+
+.input {
+    width: 100%;
+    background: #D9D9D9;
+    border: 1px solid #000000;
+    border-radius: 15px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    align-items: center;
+    text-align:center;
+    color: #000000;
+}
+
+
+
+select{
+    -webkit-appearance: none;
+    background: #2FC6F7 url("data:image/svg+xml,<svg width='22' height='18' viewBox='0 0 22 18' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M11 18L0.607697 0L21.3923 0L11 18Z' fill='white'/></svg>") no-repeat calc(100% - 10px);
+    border: none;
+    border-radius: 15px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 32px;
+    padding-right: 32px;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+select:hover {
+    background-color: #16bdf5;
+    cursor: pointer;
+}
+
+button {
+    background: #2FC6F7;
+    border: none;
+    border-radius: 15px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 32px;
+    padding-right: 32px;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+button:hover {
+    background-color: #16bdf5;
+    cursor: pointer;
+}
+
+
+.table {
+    border-collapse: collapse;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.table thead tr th{
+    color: #ffffff;
+    font-size: 24px;
+    line-height: 37px;
+    font-weight: bold;
+    border: none;
+    background: #2FC6F7;
+    align-content: center;
+    text-align: center;
+    vertical-align: middle;
+    padding: 20px;
+}
+
+.table tbody tr td {
+    color: #000000;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: white;
+    text-align: center;
+    vertical-align: middle;
+    word-wrap: break-word;
+}
+
+.table td a{
+    color: #000000; /* голубой цвет текста */
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.table td a:hover {
+    color: #16bdf5;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+/* body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+form {
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+select {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+} */
+
