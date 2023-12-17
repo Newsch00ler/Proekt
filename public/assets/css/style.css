@@ -1,5 +1,6 @@
 header{
     min-width: 992px;
+    margin-bottom: 42px;
 }
 
 body{
@@ -23,9 +24,21 @@ form{
 
 .container{
     display: flex;
+    width: auto;
     align-items: center;
     justify-content: center;
     padding: 0%;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 42px;
+}
+
+.grid-item {
+    border: none;
+
 }
 
 .logo {
@@ -36,6 +49,14 @@ h1{
     font-weight: bold;
     font-size: 32px;
     line-height: 37px;
+    margin: 0px;
+    color: #FFFFFF;
+}
+
+h2{
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
     margin: 0px;
     color: #FFFFFF;
 }
@@ -51,8 +72,11 @@ h1{
     width: max-content;
 }
 
-.nav-link{
+.nav-item{
     margin-right: 92px;
+}
+
+.nav-link{
     font-weight: 700;
     font-size: 24px;
     line-height: 28px;
@@ -115,15 +139,34 @@ textarea::placeholder {
     font-size: 20px;
     line-height: 23px;
     align-items: center;
-    text-align:center;
+    text-align: center;
     color: #000000;
 }
 
+.input[name="search"] {
+    background: #D9D9D9;
+    border: 1px solid #000000;
+    border-radius: 15px;
+    width: 50%;
+    margin: 0px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    text-align: left;
+    text-indent: 32px;
+    color: #000000;
+}
 
+.input[name="search"]::placeholder,
+textarea::placeholder {
+    text-align: left;
+}
 
 select{
-    -webkit-appearance: none;
-    background: #2FC6F7 url("data:image/svg+xml,<svg width='22' height='18' viewBox='0 0 22 18' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M11 18L0.607697 0L21.3923 0L11 18Z' fill='white'/></svg>") no-repeat calc(100% - 10px);
+    appearance: none;
+    background: #2FC6F7 url("data:image/svg+xml,<svg width='22' height='18' viewBox='0 0 22 18' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M11 18L0.607697 0L21.3923 0L11 18Z' fill='white'/></svg>") no-repeat calc(100% - 32px);
     border: none;
     border-radius: 15px;
     padding-top: 16px;
@@ -142,6 +185,10 @@ select{
 select:hover {
     background-color: #16bdf5;
     cursor: pointer;
+}
+
+select option {
+    justify-content: start;
 }
 
 button {
@@ -170,6 +217,8 @@ button:hover {
     border-collapse: collapse;
     border-radius: 25px;
     overflow: hidden;
+    margin-top: 42px;
+    margin-bottom: 42px;
 }
 
 .table thead tr th{
@@ -205,6 +254,27 @@ button:hover {
 .table td a:hover {
     color: #16bdf5;
     cursor: pointer;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+input[type="date"]{
+    background: #2FC6F7;
+    border: none;
+    border-radius: 15px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 32px;
+    padding-right: 32px;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
 }
 
 

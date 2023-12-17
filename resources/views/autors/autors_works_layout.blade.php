@@ -1,7 +1,7 @@
 @extends('autors/autors_layout')
 
 @section('autors_main_content')
-    <div class="container" style="justify-content: space-between; margin-left: 40px; margin-top: 42px; margin-bottom: 42px;">
+    <div class="container" style="justify-content: space-between; margin-left: 40px;">
         <div class="label"><h1>Всего работ: </h1></div>
         <div class="label"><h1>Проверенные работы: </h1></div>
         <div class="label"><h1>Непроверенные работы: </h1></div>

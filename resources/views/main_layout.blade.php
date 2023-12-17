@@ -18,7 +18,7 @@
                 <h1>Личный кабинет</h1>
             </a>
             <div class="collapse navbar-collapse" style="justify-content: end;">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav" style="align-items: center;">
                     @yield('navbar_ul_content')
                 </ul>
                 <button style="" type="submit">Выход</button>
