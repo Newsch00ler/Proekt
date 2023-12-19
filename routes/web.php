@@ -2,10 +2,24 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\WorksController;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+
+
+//Route::get('/works', [WorksController::class, 'showWorks1']);
+
+Route::get('/expertsWorks', [WorksController::class, 'showWorks']);
 
 Route::get('/', function () {
-        $users = DB::select('select * from users');
-        //dd($users);
+        $json = File::json(base_path('storage/worksData.json'));
+        $db = DB::select('select * from works');
+        dd($json, $db);
+        // $users = DB::select('select * from users');
+        // $subject_areas = DB::select('select * from subject_areas');
+        //$json = File::json(base_path('storage/worksData.json'));
+        //$json = Storage::json('storage/worksData.json');
+
+        // dd($subject_areas);
 
 
         //return view('login_layout', [
@@ -24,4 +38,7 @@ Route::get('/', function () {
         "title" => "Авторизация"
     ]);
 });
+
+//Route::get('/autorWorks', [WorksController::class, 'createWorks']);
+
 
