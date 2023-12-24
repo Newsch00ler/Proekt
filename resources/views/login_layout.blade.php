@@ -34,7 +34,7 @@
             </div>
 
             <div class="container" style="align-items: center; margin-bottom: 5%">
-                <input type="checkbox" name="remember" id="remember">
+                <input type="checkbox" style="margin-right: 10px;" name="remember" id="remember">
                 <label for="remember">Запомнить меня на этом компьютере</label>
             </div>
 

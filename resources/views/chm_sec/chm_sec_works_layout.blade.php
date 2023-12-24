@@ -40,15 +40,6 @@
                     <td>28</td>
                     <td>Иванов И.И.<br>Петров П.П.</td>
                 </tr>
-                <tr>
-                    <td style="font-size: 32px">2</td>
-                    <td>что то</td>
-                    <td>что то</td>
-                    <td>что то</td>
-                    <td>что то</td>
-                    <td>что то</td>
-                    <td>что то</td>
-                </tr>
             </tbody>
         </table>
     </div>

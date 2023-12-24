@@ -11,9 +11,9 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 Route::get('/expertsWorks', [WorksController::class, 'showWorks']);
 
 Route::get('/', function () {
-        $json = File::json(base_path('storage/worksData.json'));
-        $db = DB::select('select * from works');
-        dd($json, $db);
+        // $json = File::json(base_path('storage/worksData.json'));
+        // $db = DB::select('select * from works');
+        // dd($json, $db);
         // $users = DB::select('select * from users');
         // $subject_areas = DB::select('select * from subject_areas');
         //$json = File::json(base_path('storage/worksData.json'));
@@ -31,10 +31,10 @@ Route::get('/', function () {
         //return view('chm_sec/chm_sec_experts_layout', [
 
         //return view('sec/sec_add_date_layout', [
+        //return view('sec/sec_work_verification_layout', [
 
         //return view('experts/experts_scoring_layout', [
         return view('experts/experts_works_layout', [
-
         "title" => "Авторизация"
     ]);
 });

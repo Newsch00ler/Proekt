@@ -1,3 +1,7 @@
+html {
+    height: 100%;
+}
+
 header{
     min-width: 992px;
     margin-bottom: 42px;
@@ -5,11 +9,14 @@ header{
 
 body{
     margin: 0;
-    height: 100vh;
+    padding-bottom: 42px;
+    min-height: 100%;
+    width: 100%;
     justify-content: center;
     font-family: 'Arial';
-    background-color: #8DDEF8;
-    width: 100%;
+    background-image: linear-gradient(to bottom, #32C2F1, rgba(141, 222, 248, 0.5));
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 form{
@@ -27,6 +34,7 @@ form{
     width: auto;
     align-items: center;
     justify-content: center;
+    align-items: center;
     padding: 0%;
 }
 
@@ -104,7 +112,6 @@ textarea::placeholder {
 input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
 }
 
 .login-input {
@@ -130,8 +137,8 @@ textarea::placeholder {
 
 .input {
     width: 100%;
-    background: #D9D9D9;
-    border: 1px solid #000000;
+    background: #2FC6F7;
+    border: 1px solid #ffffff;
     border-radius: 15px;
     padding-top: 16px;
     padding-bottom: 16px;
@@ -140,12 +147,23 @@ textarea::placeholder {
     line-height: 23px;
     align-items: center;
     text-align: center;
-    color: #000000;
+    color: #ffffff;
+    outline: none;
+}
+
+.input:focus::placeholder {
+    color: transparent;
+
+}
+
+.input::placeholder,
+textarea::placeholder {
+    color: #FFFFFF;
 }
 
 .input[name="search"] {
-    background: #D9D9D9;
-    border: 1px solid #000000;
+    background: #2FC6F7;
+    border: 1px solid #ffffff;
     border-radius: 15px;
     width: 50%;
     margin: 0px;
@@ -156,7 +174,11 @@ textarea::placeholder {
     line-height: 23px;
     text-align: left;
     text-indent: 32px;
-    color: #000000;
+    color: #ffffff;
+}
+
+.input[name="search"]:hover {
+    background-color: #16bdf5;
 }
 
 .input[name="search"]::placeholder,
@@ -164,7 +186,21 @@ textarea::placeholder {
     text-align: left;
 }
 
-select{
+label[name="upload"] {
+    background: #D9D9D9;
+    border: 1px solid #000000;
+    border-radius: 25px;
+    color:#9B9B9B;
+    text-align: center;
+    width: 40%;
+    min-height: 196px;
+    padding: 30px;
+    cursor: pointer;
+    font-size: 32px;
+    line-height: 32px;
+}
+
+select {
     appearance: none;
     background: #2FC6F7 url("data:image/svg+xml,<svg width='22' height='18' viewBox='0 0 22 18' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M11 18L0.607697 0L21.3923 0L11 18Z' fill='white'/></svg>") no-repeat calc(100% - 32px);
     border: none;
@@ -182,6 +218,10 @@ select{
     text-align: center;
 }
 
+.nav-item select {
+    border: 3px solid #ffffff;
+}
+
 select:hover {
     background-color: #16bdf5;
     cursor: pointer;
@@ -193,7 +233,7 @@ select option {
 
 button {
     background: #2FC6F7;
-    border: none;
+    border: 3px solid #ffffff;
     border-radius: 15px;
     padding-top: 16px;
     padding-bottom: 16px;
@@ -207,8 +247,15 @@ button {
     color: #FFFFFF;
 }
 
+button[type="button"]:hover  {
+    background-color: #16bdf5;
+    border: 3px solid #ffffff;
+    cursor: pointer;
+}
+
 button:hover {
     background-color: #16bdf5;
+    border: 3px solid #ffffff;
     cursor: pointer;
 }
 
@@ -218,7 +265,6 @@ button:hover {
     border-radius: 25px;
     overflow: hidden;
     margin-top: 42px;
-    margin-bottom: 42px;
 }
 
 .table thead tr th{
@@ -245,7 +291,7 @@ button:hover {
 }
 
 .table td a{
-    color: #000000; /* голубой цвет текста */
+    color: #000000;
     font-size: 24px;
     font-weight: bold;
     text-decoration: underline;
@@ -259,6 +305,7 @@ button:hover {
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
+    cursor: pointer;
 }
 
 input[type="date"]{
@@ -275,6 +322,11 @@ input[type="date"]{
     display: flex;
     align-items: center;
     color: #FFFFFF;
+}
+
+input[type="date"]:hover {
+    background-color: #16bdf5;
+    cursor: pointer;
 }
 
 

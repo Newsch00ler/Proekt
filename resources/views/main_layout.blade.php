@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $title }}</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 </head>
 <header>
@@ -21,7 +22,7 @@
                 <ul class="navbar-nav" style="align-items: center;">
                     @yield('navbar_ul_content')
                 </ul>
-                <button style="" type="submit">Выход</button>
+                <button type="button">Выход</button>
             </div>
         </div>
     </nav>
