@@ -18,6 +18,7 @@ $(document).ready(function(){
 });
 
 var workTypeSelect = document.getElementById('workType');
+var webPage = document.get
 
 workTypeSelect.addEventListener('change', function () {
     var selectedOption = workTypeSelect.options[workTypeSelect.selectedIndex];
