@@ -35,3 +35,22 @@ workTypeSelect.addEventListener('change', function () {
     }
 });
 
+// var jsString = document.getElementById('myDiv').getAttribute('data-phpstring');
+// alert(jsString);
+
+
+// function openPopup() {
+//     document.getElementById('popup').style.display = 'block';
+// }
+
+// function closePopup() {
+//     document.getElementById('popup').style.display = 'none';
+// }
+
+// document.getElementById('closePopup').addEventListener('click', function() {
+//     document.getElementById('zatemnenie').style.display = 'none';
+// });
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     document.getElementById('zatemnenie').style.display = 'block';
+// });
