@@ -40,7 +40,7 @@
 
             <button style="margin-bottom: 5%" type="submit">Войти</button>
 
-            <button style="" type="submit">Войти с помощью Кампуса</button>
+            <button  type="submit">Войти с помощью Кампуса</button>
         </form>
     </div>
 </body>
