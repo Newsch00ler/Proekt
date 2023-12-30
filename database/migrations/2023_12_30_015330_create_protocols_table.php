@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id('id_user');
-            $table->string('full_name');
-            $table->string('role');
-            $table->string('login')->unique();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('protocols', function (Blueprint $table) {
+            $table->id('id_protocol');
+            $table->date('date')->unique();
+            $table->string('link_protocol_file')->unique();
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('protocols');
     }
 };

@@ -12,14 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('works', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_work');
             $table->string('name_work');
-            $table->string('name_subject_area');
-            $table->integer('original_percent');
-            $table->date('download_data');
-            $table->integer('final_grade');
-            $table->string('verification_status');
+            $table->string('language');
+            $table->boolean('creative');
+            $table->string('signature')->nullable();
+            $table->boolean('verification_status');
+            $table->unsignedTinyInteger('final_grade')->nullable();
+            $table->unsignedBigInteger('id_protocol')->nullable();
+            $table->unsignedTinyInteger('original_percent')->nullable();
+            $table->string('link_help_file_library')->unique();
+            $table->string('link_file_extract_protocol')->unique();
+            $table->string('link_text_file')->unique();
             $table->timestamps();
+
+            $table->foreign('id_protocol')->references('id_protocol')->on('protocols')->onDelete('cascade');
         });
     }
 
