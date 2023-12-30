@@ -25,9 +25,8 @@ Route::get('/expertsWorks', [WorksController::class, 'showWorks']);
 
 //         //return view('login_layout', [
 
-//         return view('autors/autors_download_layout',
-//             ["title" => "Авторизация"]);
-//         //return view('autors/autors_works_layout', [
+        return view('autors/autors_download_layout', ["title" => "Авторизация"], [Uploads::class]);
+        // return view('autors/autors_works_layout', [
 
 //         //return view('chm_sec/chm_sec_works_layout', [
 //         //return view('chm_sec/chm_sec_experts_layout', [
@@ -35,20 +34,11 @@ Route::get('/expertsWorks', [WorksController::class, 'showWorks']);
 //         //return view('sec/sec_add_date_layout', [
 //         //return view('sec/sec_work_verification_layout', [
 
-//         //return view('experts/experts_scoring_layout', [
-//         //return view('experts/experts_works_layout', [
-// });
-Route::get('/loadMyWork',
-    function () {
-        return view('autors/autors_download_layout',
-        ["title" => "Авторизация"]);
-    }
-);
+        // return view('experts/experts_scoring_layout', [
+        // return view('experts/experts_works_layout', [
 
-Route::post('/myWorks',
-    [LoadFileController::class, 'upload']
-);
-
+});
+Route::post('/upload', [LoadFileController::class, 'upload']);
 //Route::get('/autorWorks', [WorksController::class, 'createWorks']);
 
 

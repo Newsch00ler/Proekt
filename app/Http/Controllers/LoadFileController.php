@@ -23,27 +23,31 @@ class LoadFileController extends Controller
             for ($i = 1; $i < 5; $i++) {
                 $fileHtmlName = "uploadedFile$i";
 
-                if ($request->hasFile($fileHtmlName)){
-                    $file = $request->file($fileHtmlName);
-                    $fileName = $file->getClientOriginalName();
-                    $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+               if ($request->hasFile($fileName)){
+                  $file = $request->file($fileName);
+                  $file->move($destinationPath, $file->getClientOriginalName());
+                  $ulpoadFiles[] = $file;
+               }
+           }
 
-                    if ($fileExtension == "pdf"){
-                        if (file_exists("{$destinationPdfPath}/{$fileName}")) {
-                            $message = "Файл с именем {$fileName} уже существует в папке.";
-                            //return view('autors/autors_download_layout', ["title" => "Загрузка работ", "message" => $message]);
-                            //return view('main_layout')->with('message', $output);
-                            return $message;
-                        }
-                    } else if ($fileExtension == "png" or $fileExtension == "jpg") {
-                        if (file_exists("{$destinationExtractPath}/{$fileName}")) {
-                            $message = "Файл с именем {$fileName} уже существует в папке.";
-                            //return view('autors/autors_download_layout', ["title" => "Загрузка работ", "message" => $message]);
-                            //return redirect()->route('showPopup', ['message' => "Файл с именем {$fileName} уже существует в папке."]);
-                            return $message;
-                        }
-                    }
-                    $ulpoadFiles[] = $file;
+           // Преобразование PDF в TXT с помощью Python скрипта
+           if ($request->hasFile('uploadedFile1')) {
+               $pdfFilePath = public_path('uploads/' . $request->file('uploadedFile1')->getClientOriginalName());
+               $txtFilePath = public_path('uploads/translated.txt');
+
+               $process = new Process(['python', storage_path('Scripts/TranslateScriptPDFtoTXT.py'), $pdfFilePath, $txtFilePath]);
+
+               try {
+                $process->mustRun();
+             
+                if ($process->isSuccessful()) {
+                    // Скрипт успешно выполнился
+                    $output = $process->getOutput();
+                    echo "Скрипт успешно выполнился, вывод:\n{$output}\n";
+                } else {
+                    // Скрипт завершился с ошибкой
+                    $errorOutput = $process->getErrorOutput();
+                    echo "Скрипт завершился с ошибкой, вывод ошибки:\n{$errorOutput}\n";
                 }
             }
 
