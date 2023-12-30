@@ -45,11 +45,7 @@ class LoadFileController extends Controller
                     }
                     $ulpoadFiles[] = $file;
                 }
-             } catch (ProcessFailedException $exception) {
-                // Процесс не удалось запустить
-                echo "Ошибка выполнения скрипта Python: {$exception->getMessage()}\n";
-             }
-           }
+            }
 
             foreach ($ulpoadFiles as $file) {
                 $fileName = $file->getClientOriginalName();
