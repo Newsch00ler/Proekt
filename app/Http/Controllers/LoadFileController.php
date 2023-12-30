@@ -31,10 +31,10 @@ class LoadFileController extends Controller
 
            // Преобразование PDF в TXT с помощью Python скрипта
            if ($request->hasFile('uploadedFile1')) {
-               $pdfFilePath = public_path('uploads/' . $request->file('uploadedFile1')->getClientOriginalName());
-               $txtFilePath = public_path('uploads/translated.txt');
+               $pdfFilePath = public_path('uploads\\' . $request->file('uploadedFile1')->getClientOriginalName());
+               $txtFilePath = public_path('uploads\translated.txt');
 
-               $process = new Process(['python', storage_path('Scripts/TranslateScriptPDFtoTXT.py'), $pdfFilePath, $txtFilePath]);
+               $process = new Process(['python', storage_path('Scripts\TranslateScriptPDFtoTXT.py'), $pdfFilePath,$txtFilePath]);
 
                try {
                 $process->mustRun();
@@ -42,6 +42,7 @@ class LoadFileController extends Controller
                 if ($process->isSuccessful()) {
                     // Скрипт успешно выполнился
                     $output = $process->getOutput();
+                    dd($output);
                     echo "Скрипт успешно выполнился, вывод:\n{$output}\n";
                 } else {
                     // Скрипт завершился с ошибкой

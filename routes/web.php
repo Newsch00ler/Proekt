@@ -25,7 +25,7 @@ Route::get('/', function () {
 
         // return view('login_layout', [
 
-        return view('autors/autors_download_layout', ["title" => "Авторизация"], [Uploads::class]);
+        return view('autors/autors_download_layout', ["title" => "Авторизация"], ['Uploads'::class]);
         // return view('autors/autors_works_layout', [
 
         // return view('chm_sec/chm_sec_works_layout', [
@@ -39,6 +39,7 @@ Route::get('/', function () {
 
 });
 Route::post('/upload', [LoadFileController::class, 'upload']);
+Route::get('Scripts/TranslateScriptPDFtoTXT.py', 'LoadFileController@upload');
 //Route::get('/autorWorks', [WorksController::class, 'createWorks']);
 
 
