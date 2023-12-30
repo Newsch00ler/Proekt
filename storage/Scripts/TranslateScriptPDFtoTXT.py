@@ -24,7 +24,7 @@ def convert_pdf_to_txt(input_file_path, output_file_path):
   with open(output_file_path, 'w') as file:
       file.write(text)
 
-if __name__ == "__main__":
-   input_file_path = sys.argv[1]
-   output_file_path = sys.argv[2]
-   convert_pdf_to_txt(input_file_path, output_file_path)
+# if name == "main":
+#    input_file_path = sys.argv[1]
+#    output_file_path = sys.argv[2]
+#    convert_pdf_to_txt(input_file_path, output_file_path)

@@ -31,11 +31,19 @@
 
 <body>
     {{-- <div id="zatemnenie">
-        <div id="okno">
-            Всплывающее окошко!<br>
-            <a href="#" class="close">Закрыть окно</a>
+        <div name="messageBox">
+            dsdsdsd<br>
+            <a href="#" id="closePopup">Закрыть окно</a>
         </div>
     </div> --}}
+    {{-- <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <p>Привет, это всплывающее окно!</p>
+        </div>
+    </div> --}}
+    {{-- <div id="myDiv" data-phpstring="{{ htmlspecialchars($message ?? '') }}"></div> --}}
+
     @yield('main_content')
 </body>
 

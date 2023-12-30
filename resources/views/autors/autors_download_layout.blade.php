@@ -1,7 +1,7 @@
 @extends('autors/autors_layout')
 
 @section('autors_main_content')
-    <form action="{{ url('/upload') }}" method="post" enctype="multipart/form-data" style="">
+    <form action="{{ url('/myWorks') }}" method="post" enctype="multipart/form-data" style="">
         @csrf
         <div class="container" style="flex-direction: column;">
             <h1>Загрузка работы</h1>
@@ -40,7 +40,7 @@
                     </span>
                 </label>
 
-                <input type="file" accept=".jpg, .jpeg, .png" id="upload2" name="uploadedFile2" hidden />
+                <input type="file" accept=".jpg, .png" id="upload2" name="uploadedFile2" hidden />
                 <label name="upload" for="upload2">
                     Выписка из протокола<br><br>
                     <span style="font-size: 16px;" id="labelForUpload2">
