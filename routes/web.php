@@ -49,4 +49,8 @@ Route::post('/myWorks',
     [LoadFileController::class, 'upload']
 );
 
+Route::get('/test',
+    [LoadFileController::class, 'test']
+);
+
 //Route::get('/autorWorks', [WorksController::class, 'createWorks']);

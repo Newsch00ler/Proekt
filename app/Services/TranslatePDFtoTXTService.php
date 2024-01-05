@@ -8,7 +8,7 @@ class TranslatePDFtoTXTService
 
   public function __construct()
   {
-      $this->scriptPath = storage_path('Scripts/TranslateScriptPDFtoTXT.py');
+      $this->scriptPath = storage_path('scripts/TranslatePDFtoTXTScript.py');
   }
 
   public function runScriptTranslatePDFtoTXT($inputFilePath, $outputFilePath)

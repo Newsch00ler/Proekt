@@ -59,7 +59,7 @@ class LoadFileController extends Controller
 
             if ($request->hasFile('uploadedFile1')) {
                 $pythonPath =  realpath('C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe');
-                $scriptPath = public_path('scripts\TranslateScriptPDFtoTXT.py');
+                $scriptPath = public_path('scripts\TranslatePDFtoTXTScript.py');
                 $pdfFilePath = public_path('loadPdfFiles/' . $request->file('uploadedFile1')->getClientOriginalName());
                 $pdfFileName = substr($request->file('uploadedFile1')->getClientOriginalName(), 0, -4);
                 $txtFilePath = public_path("loadTxtFiles/" . $pdfFileName . ".txt");
@@ -105,6 +105,45 @@ class LoadFileController extends Controller
             $message = "Пожалуйста, заполните пустые поля";
             //return view('autors/autors_download_layout', ["title" => "Загрузка работ", "message" => $message]);
             return $message;
+        }
+    }
+
+
+
+
+    public function test(Request $request) {
+        $pythonPath =  realpath('C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe');
+        $scriptPath = public_path('scripts\TextOriginalityScript.py');
+        $checkText = public_path('test1\er-19101.txt');
+        $checkDirectoryPath = public_path('test2');
+        //$process = new Process([$pythonPath, $scriptPath, $checkText, $checkDirectoryPath]);
+        $process = new Process([$pythonPath, $scriptPath]);
+        try {
+            $process->mustRun();
+
+            if ($process->isSuccessful()) {
+                dd('2');
+                // Скрипт успешно выполнился
+                $output = $process->getOutput();
+                $results = file('results.txt', FILE_IGNORE_NEW_LINES);
+
+                // Вывод результатов
+                foreach ($results as $result) {
+                    echo $result . PHP_EOL;
+                }
+                //return view('main_layout')->with('message', $output);
+                //echo "Скрипт успешно выполнился";
+            } else {
+                dd('3');
+                // Скрипт завершился с ошибкой
+                $errorOutput = $process->getErrorOutput();
+                error_log("Скрипт не выполнился: {$errorOutput}");
+            }
+            $process->getErrorOutput();
+        } catch (ProcessFailedException $exception) {
+            // Процесс не удалось запустить
+            dd("Ошибка выполнения скрипта Python: {$exception->getMessage()}\n");
+            error_log("Ошибка выполнения скрипта Python: {$exception->getMessage()}\n");
         }
     }
 }

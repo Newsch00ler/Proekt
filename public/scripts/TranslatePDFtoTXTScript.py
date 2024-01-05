@@ -5,11 +5,11 @@ import stat
 
 # Разрешение прав на файлы
 os.chmod(sys.argv[1], stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
-os.chmod(sys.argv[1], stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+os.chmod(sys.argv[2], stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
 # Получение аргументов
-arg1 = str(sys.argv[1])
-arg2 = str(sys.argv[2])
+pdf_file = str(sys.argv[1])
+txt_file = str(sys.argv[2])
 
 # Проверка существования входного файла
 # if not os.path.isfile(arg1):
@@ -22,8 +22,8 @@ arg2 = str(sys.argv[2])
 #     sys.exit(1)
 
 # Извлечение текста из PDF-файла
-text = extract_text(arg1)
+text = extract_text(pdf_file)
 
 # Запись текста в TXT-файл
-with open(arg2, 'w', encoding='utf-8') as output_file:
+with open(txt_file, 'w', encoding='utf-8') as output_file:
         output_file.write(text)
