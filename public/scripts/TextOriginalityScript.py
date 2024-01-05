@@ -35,11 +35,11 @@ nltk.download('stopwords')
 table = str.maketrans('', '', string.punctuation)
 
 # Чтение основного текста из файла
-with open('test1/er-19101.txt', 'r', encoding='utf-8') as file:
+with open('C:/Users/Home/Desktop/Diplom/Proekt/public/test1/er-19101.txt', 'r', encoding='utf-8') as file:
     text1 = file.read().translate(table)
 
 # Путь к директории с другими текстами
-directory_path = "/test2/"
+directory_path = "C:/Users/Home/Desktop/Diplom/Proekt/public/test2/"
 
 # Получение списка файлов в директории
 texts = os.listdir(directory_path)
@@ -50,6 +50,7 @@ tokens1 = word_tokenize(text1)
 tokens1 = [word for word in tokens1 if word not in stopwords.words('russian')]
 
 results = []
+differents = []
 
 for i, text in enumerate(texts):
     with open(os.path.join(directory_path, text), 'r', encoding='utf-8') as file:
@@ -64,10 +65,13 @@ for i, text in enumerate(texts):
         different = len([line for line in diff if line.startswith('- ') or line.startswith('+ ')]) / len(tokens1 + tokens2) * 100
         different = round(different, 1)
         result = f'Процент оригинальности с {text}: {different}%'
-        print(result)
         results.append(result)
+        differents.append(different)
 
-with open('results.txt', 'w', encoding='utf-8') as result_file:
-    for result in results:
-        result_file.write(result + '\n')
+percent = sum(differents) // len(differents)
+
+with open('C:/Users/Home/Desktop/Diplom/Proekt/public/scripts/results.txt', 'w', encoding='utf-8') as result_file:
+    result_file.write('Общий процент оригинальности: ' + str(percent) + '%\n')
+    # for result in results:
+    #     result_file.write(result + '\n')
 

@@ -111,7 +111,7 @@ class LoadFileController extends Controller
 
 
 
-    public function test(Request $request) {
+    /*public function test(Request $request) {
         $pythonPath =  realpath('C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe');
         $scriptPath = public_path('scripts\TextOriginalityScript.py');
         $checkText = public_path('test1\er-19101.txt');
@@ -122,7 +122,6 @@ class LoadFileController extends Controller
             $process->mustRun();
 
             if ($process->isSuccessful()) {
-                dd('2');
                 // Скрипт успешно выполнился
                 $output = $process->getOutput();
                 $results = file('results.txt', FILE_IGNORE_NEW_LINES);
@@ -140,6 +139,25 @@ class LoadFileController extends Controller
                 error_log("Скрипт не выполнился: {$errorOutput}");
             }
             $process->getErrorOutput();
+        } catch (ProcessFailedException $exception) {
+            // Процесс не удалось запустить
+            dd("Ошибка выполнения скрипта Python: {$exception->getMessage()}\n");
+            error_log("Ошибка выполнения скрипта Python: {$exception->getMessage()}\n");
+        }
+    }*/
+
+    public function test(Request $request) {
+
+        try {
+            $pythonPath =  realpath('C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe');
+            $scriptPath = public_path('scripts\TextOriginalityScript.py');
+            $command = 'C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe C:\Users\Home\Desktop\Diplom\Proekt\public\scripts\TextOriginalityScript.py 2>&1';
+            $output = shell_exec($command);
+            $results = file('C:\Users\Home\Desktop\Diplom\Proekt\public\scripts\results.txt', FILE_IGNORE_NEW_LINES);
+            // Вывод результатов
+            foreach ($results as $result) {
+                echo $result . PHP_EOL;
+            }
         } catch (ProcessFailedException $exception) {
             // Процесс не удалось запустить
             dd("Ошибка выполнения скрипта Python: {$exception->getMessage()}\n");
