@@ -5,7 +5,6 @@ import stat
 
 # Разрешение прав на файлы
 os.chmod(sys.argv[1], stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
-os.chmod(sys.argv[2], stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
 # Получение аргументов
 pdf_file = str(sys.argv[1])

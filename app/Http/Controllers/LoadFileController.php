@@ -30,17 +30,26 @@ class LoadFileController extends Controller
 
                     if ($fileExtension == "pdf"){
                         if (file_exists("{$destinationPdfPath}/{$fileName}")) {
-                            $message = "Файл с именем {$fileName} уже существует в папке.";
+                            $message = "Файл с именем {$fileName} уже существует.";
+                            return view('autors/autors_download_layout', [
+                                "title" => "Загрузка работы",
+                                "url" => "/loadMyWork",
+                                "method" => "",
+                                "message" => $message,
+                                "subjectAreas" => app(SubjectAreasController::class)->getSubjectAreas1(),
+                                "showModal" => true
+                            ]);
                             //return view('autors/autors_download_layout', ["title" => "Загрузка работ", "message" => $message]);
                             //return view('main_layout')->with('message', $output);
-                            return $message;
+                            //return $message;
                         }
                     } else if ($fileExtension == "png" or $fileExtension == "jpg") {
                         if (file_exists("{$destinationExtractPath}/{$fileName}")) {
-                            $message = "Файл с именем {$fileName} уже существует в папке.";
+                            $message = "Файл с именем {$fileName} уже существует.";
+                            return view('autors/autors_download_layout', (string)$message);
                             //return view('autors/autors_download_layout', ["title" => "Загрузка работ", "message" => $message]);
                             //return redirect()->route('showPopup', ['message' => "Файл с именем {$fileName} уже существует в папке."]);
-                            return $message;
+                            //return $message;
                         }
                     }
                     $ulpoadFiles[] = $file;
@@ -67,7 +76,6 @@ class LoadFileController extends Controller
                 $process = new Process([$pythonPath, $scriptPath, $pdfFilePath, $txtFilePath]);
                 try {
                     $process->mustRun();
-
                     if ($process->isSuccessful()) {
                         // Скрипт успешно выполнился
                         $output = $process->getOutput();
@@ -80,6 +88,7 @@ class LoadFileController extends Controller
                     }
                     $process->getErrorOutput();
                 } catch (ProcessFailedException $exception) {
+                    dd($exception->getMessage());
                     // Процесс не удалось запустить
                     error_log("Ошибка выполнения скрипта Python: {$exception->getMessage()}\n");
                 }
@@ -95,16 +104,21 @@ class LoadFileController extends Controller
                 //return view('autors/autors_works_layout', ["title" => "Мои работы"]);
                 //return view('autors/autors_download_layout', ["title" => "Загрузка работ", "message" => $message]);
                 //return $message;
-                return view('autors/autors_works_layout', ["title" => "Мои работы"]);;
+                return view('autors/autors_works_layout', ["title" => "Мои работы", "url" => "/myWorks", "method" => "post", "message" => $message, "subjectAreas" => app(SubjectAreasController::class)->getSubjectAreas(), "showModal" => false]);
+                //return view('autors/autors_works_layout', ["title" => "Мои работы"], (string)$message);;
             } else {
                 $message = "Файлы не были загружены";
+                return view('autors/autors_download_layout', (string)$message);
                 //return view('autors/autors_download_layout', ["title" => "Загрузка работ", "message" => $message]);
-                return $message;
+                //return $message;
             }
         } else {
             $message = "Пожалуйста, заполните пустые поля";
+            return redirect()->back()->withErrors(['message' => 'Заполните все обязательные поля.']);
+
+            // return view('autors/autors_download_layout', ["title" => "Загрузка работы", "url" => "/loadMyWork", "method" => "get", "message" => $message, "subjectAreas" => app(SubjectAreasController::class)->getSubjectAreas(), "showModal" => true]);
             //return view('autors/autors_download_layout', ["title" => "Загрузка работ", "message" => $message]);
-            return $message;
+            //return $message;
         }
     }
 
@@ -147,7 +161,6 @@ class LoadFileController extends Controller
     }*/
 
     public function test(Request $request) {
-
         try {
             $pythonPath =  realpath('C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe');
             $scriptPath = public_path('scripts\TextOriginalityScript.py');

@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function () {
     $('input[id="upload1"]').change(function(e){
         var fileName = e.target.files[0].name;
         document.getElementById('labelForUpload1').textContent = 'Файл ' + fileName.substr(0, 13) + '... загружен';
@@ -14,6 +14,30 @@ $(document).ready(function(){
     $('input[id="upload4"]').change(function(e){
         var fileName = e.target.files[0].name;
         document.getElementById('labelForUpload4').textContent = 'Файл ' + fileName.substr(0, 13) + '... загружен';
+    });
+    $('#myForm').submit(function(event) { // проверка заполненности формы
+        var isEmpty = false;
+
+        $(this).find('input[type="text"]').each(function() {
+            if ($(this).val().trim() === "") {
+                isEmpty = true;
+                return false;
+            }
+        });
+
+        $(this).find('select').each(function() {
+            if ($(this).find('option:selected').is(':disabled')) {
+                isEmpty = true;
+                return false;
+            }
+        });
+
+        if (isEmpty) {
+            $('#myModal').modal('show'); // отображение модального окна, если есть пустые поля или селекты
+            event.preventDefault(); //предотвращение отправки формы
+        } else {
+            // продолжить отправку формы, если все поля заполнены
+        }
     });
 });
 
@@ -34,23 +58,3 @@ workTypeSelect.addEventListener('change', function () {
         document.getElementById('linkWork').style.display = 'flex';
     }
 });
-
-// var jsString = document.getElementById('myDiv').getAttribute('data-phpstring');
-// alert(jsString);
-
-
-// function openPopup() {
-//     document.getElementById('popup').style.display = 'block';
-// }
-
-// function closePopup() {
-//     document.getElementById('popup').style.display = 'none';
-// }
-
-// document.getElementById('closePopup').addEventListener('click', function() {
-//     document.getElementById('zatemnenie').style.display = 'none';
-// });
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     document.getElementById('zatemnenie').style.display = 'block';
-// });

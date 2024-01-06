@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\SubjectAreasController;
 use App\Http\Controllers\WorksController;
 use App\Http\Controllers\LoadFileController;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -38,18 +39,24 @@ Route::get('/expertsWorks', [WorksController::class, 'showWorks']);
 //         //return view('experts/experts_scoring_layout', [
 //         //return view('experts/experts_works_layout', [
 // });
-Route::get('/loadMyWork',
-    function () {
-        return view('autors/autors_download_layout',
-        ["title" => "Авторизация"]);
-    }
-);
+// Route::get('/loadMyWork',
+//     function () {
+//         return view('autors/autors_download_layout',
+//         ["title" => "Загрузка работ", [SubjectAreasController::class, 'getSubjectAreas']]);
+//     }
+// );
+
+Route::get('/loadMyWork', [SubjectAreasController::class, 'getSubjectAreas']);
 
 Route::post('/myWorks',
     [LoadFileController::class, 'upload']
 );
 
 Route::get('/test',
+    // function () {
+    //     $db = DB::select('select * from users');
+    //     dd($db);
+    // },
     [LoadFileController::class, 'test']
 );
 

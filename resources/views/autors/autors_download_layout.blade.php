@@ -1,13 +1,14 @@
 @extends('autors/autors_layout')
 
 @section('autors_main_content')
-    <form action="{{ url('/myWorks') }}" method="post" enctype="multipart/form-data" style="">
+    <form id="myForm" action="{{ url($url) }}" method="{{ $method }}" enctype="multipart/form-data" style="">
+        {{-- <form action="{{ url('/myWorks') }}" method="post" enctype="multipart/form-data" style=""> --}}
         @csrf
         <div class="container" style="flex-direction: column;">
             <h1>Загрузка работы</h1>
             <input class="input" style="width: 100%; margin-top: 30px;" type="text" placeholder="Наименование"
                 autocomplete="off" name="workName">
-            <select style="margin-top: 3%;" id="workType" name="typeWork">
+            <select style="margin-top: 3%; padding-right: 84px" id="workType" name="typeWork">
                 <option disabled selected>Выбрать вид работы</option>
                 <option>Учебник с грифом</option>
                 <option>Учебное пособие с грифом</option>
@@ -16,20 +17,11 @@
                 <option>Практикум / лабораторный практикум</option>
                 <option>Творческая работа</option>
             </select>
-            <select style="min-width: 50%; margin-top: 3%" name="subAreaWork">
+            <select style="width: auto; margin-top: 3%; padding-right: 84px" name="subAreaWork">
                 <option disabled selected>Выбрать предметную область</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
+                @foreach ($subjectAreas as $subjectArea)
+                    <option>{{ $subjectArea->name_subject_area }}</option>
+                @endforeach
             </select>
             <div class="container" style="margin-top: 3%" id="filesContainer1">
                 <input type="file" accept=".pdf" id="upload1" name="uploadedFile1" hidden />
@@ -68,8 +60,8 @@
             <input class="input" style="width: 100%; margin-top: 30px;" type="text"
                 placeholder="Ссылка на работу из электронной библиотеки" autocomplete="off" id="linkWork"
                 name="workLink" />
-            <button action="upload.php" method="post" style="margin-top: 3%" type="submit">Загрузить</button>
+            <button style="margin-top: 3%" type="submit">Загрузить</button>
+            {{-- action="upload.php" method="post"  --}}
         </div>
     </form>
-    <script src="{{ asset('assets/js/scripts.js') }}"></script>
 @endsection

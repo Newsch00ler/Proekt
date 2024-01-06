@@ -11,6 +11,7 @@ class Works extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id_work',
         'name_work',
         'name_subject_area',
         'original_percent',

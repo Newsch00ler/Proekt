@@ -39,7 +39,7 @@ with open('C:/Users/Home/Desktop/Diplom/Proekt/public/test1/er-19101.txt', 'r', 
     text1 = file.read().translate(table)
 
 # Путь к директории с другими текстами
-directory_path = "C:/Users/Home/Desktop/Diplom/Proekt/public/test2/"
+directory_path = 'C:/Users/Home/Desktop/Diplom/Proekt/public/test2/'
 
 # Получение списка файлов в директории
 texts = os.listdir(directory_path)

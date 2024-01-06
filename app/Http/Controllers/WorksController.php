@@ -43,8 +43,7 @@ class WorksController extends Controller
     public function showWorks(){  //работает нормально
         $worksDB = DB::select('select * from works');
         return view('autors/autors_works_layout', array("worksDB" => $worksDB), ["title" => "Мои работы"]);
-    }
-    /*public function showWorks(){  //работает нормально
+    }    /*public function showWorks(){  //работает нормально
         $jsonContent = File::json(base_path('storage/worksData.json'));
         $works1 = $jsonContent['works'];
         $works2 = 0;
