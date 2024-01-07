@@ -164,9 +164,9 @@ class LoadFileController extends Controller
         try {
             $pythonPath =  realpath('C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe');
             $scriptPath = public_path('scripts\TextOriginalityScript.py');
-            $command = 'C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe C:\Users\Home\Desktop\Diplom\Proekt\public\scripts\TextOriginalityScript.py 2>&1';
+            $command = 'C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe C:\Users\Home\Desktop\dp\Proekt\public\scripts\TextOriginalityScript.py 2>&1';
             $output = shell_exec($command);
-            $results = file('C:\Users\Home\Desktop\Diplom\Proekt\public\scripts\results.txt', FILE_IGNORE_NEW_LINES);
+            $results = file('C:\Users\Home\Desktop\dp\Proekt\public\scripts\results.txt', FILE_IGNORE_NEW_LINES);
             // Вывод результатов
             foreach ($results as $result) {
                 echo $result . PHP_EOL;

@@ -31,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                {{--<tr>
                     <td style="font-size: 32px">1</td>
                     <td><a href="#">Сетевые игровые технологии как средство повышения эффективности учебного
                             процесса</a></td>
@@ -40,8 +40,8 @@
                     <td>01.12.2023</td>
                     <td>33</td>
                     <td>Внесена в протокол</td>
-                </tr>
-                {{-- @foreach ($worksDB as $index => $work)
+                </tr>--}}
+                     @foreach ($worksDB as $index => $work)
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td><a href="#">{{ $work->name_work }}</a></td>
@@ -51,7 +51,7 @@
                         <td>{{ $work->final_grade }}</td>
                         <td>{{ $work->verification_status }}</td>
                     </tr>
-                @endforeach --}}
+                @endforeach
             </tbody>
         </table>
     </div>

@@ -48,8 +48,12 @@ Route::get('/expertsWorks', [WorksController::class, 'showWorks']);
 
 Route::get('/loadMyWork', [SubjectAreasController::class, 'getSubjectAreas']);
 
-Route::post('/myWorks',
-    [LoadFileController::class, 'upload']
+// Route::get('/myWorks',
+//     [LoadFileController::class, 'upload']
+// );
+
+Route::get('/myWork',
+    [WorksController::class, 'showWorks']
 );
 
 Route::get('/test',
