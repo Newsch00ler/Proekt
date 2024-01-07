@@ -52,6 +52,14 @@ Route::post('/myWorks',
     [LoadFileController::class, 'upload']
 );
 
+// Route::get('/myWorks',
+//     [LoadFileController::class, 'upload']
+// );
+
+Route::get('/myWork',
+    [WorksController::class, 'showWorks']
+);
+
 Route::get('/test',
     // function () {
     //     $db = DB::select('select * from users');

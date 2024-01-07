@@ -48,7 +48,7 @@
                     <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
                 </div>
                 <div class="modal-body">
-                    {{ $message }}
+                    ... {{-- {{ $message }} --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal">Закрыть</button>
