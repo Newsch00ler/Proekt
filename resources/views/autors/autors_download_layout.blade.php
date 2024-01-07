@@ -1,14 +1,15 @@
 @extends('autors/autors_layout')
 
 @section('autors_main_content')
-    <form id="myForm" action="{{ url($url) }}" method="{{ $method }}" enctype="multipart/form-data" style="">
-        {{-- <form action="{{ url('/myWorks') }}" method="post" enctype="multipart/form-data" style=""> --}}
+    {{-- <form id="myForm" action="{{ url($url) }}" method="{{ $method }}" enctype="multipart/form-data" style=""> --}}
+    {{-- <form action="{{ url('/myWorks') }}" method="post" enctype="multipart/form-data" style=""> --}}
+    <form id="myForm" method="post" action="{{ url('/myWorksTest') }}" enctype="multipart/form-data" style="">
         @csrf
         <div class="container" style="flex-direction: column;">
             <h1>Загрузка работы</h1>
             <input class="input" style="width: 100%; margin-top: 30px;" type="text" placeholder="Наименование"
-                autocomplete="off" name="workName">
-            <select style="margin-top: 3%; padding-right: 84px" id="workType" name="typeWork">
+                autocomplete="off" name="nameWork">
+            <select style="margin-top: 3%; padding-right: 84px" id="typeWork" name="typeWork">
                 <option disabled selected>Выбрать вид работы</option>
                 <option>Учебник с грифом</option>
                 <option>Учебное пособие с грифом</option>
@@ -17,7 +18,7 @@
                 <option>Практикум / лабораторный практикум</option>
                 <option>Творческая работа</option>
             </select>
-            <select style="width: auto; margin-top: 3%; padding-right: 84px" name="subAreaWork">
+            <select style="width: auto; margin-top: 3%; padding-right: 84px" name="subjectAreaWork">
                 <option disabled selected>Выбрать предметную область</option>
                 @foreach ($subjectAreas as $subjectArea)
                     <option>{{ $subjectArea->name_subject_area }}</option>
@@ -59,7 +60,7 @@
             </div>
             <input class="input" style="width: 100%; margin-top: 30px;" type="text"
                 placeholder="Ссылка на работу из электронной библиотеки" autocomplete="off" id="linkWork"
-                name="workLink" />
+                name="linkWork" />
             <button style="margin-top: 3%" type="submit">Загрузить</button>
             {{-- action="upload.php" method="post"  --}}
         </div>

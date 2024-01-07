@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Models\Work;
+use App\Models\SubjectArea;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\Test1Controller;
+
 use App\Http\Controllers\SubjectAreasController;
 use App\Http\Controllers\WorksController;
 use App\Http\Controllers\LoadFileController;
@@ -48,17 +53,15 @@ Route::get('/expertsWorks', [WorksController::class, 'showWorks']);
 
 Route::get('/loadMyWork', [SubjectAreasController::class, 'getSubjectAreas']);
 
-Route::post('/myWorks',
-    [LoadFileController::class, 'upload']
-);
+Route::get('/loadMyWork1', [SubjectAreasController::class, 'getSubjectAreas1']);
+
+Route::get('/myWorks', [LoadFileController::class, 'uploadProcess']);
 
 // Route::get('/myWorks',
 //     [LoadFileController::class, 'upload']
 // );
 
-Route::get('/myWork',
-    [WorksController::class, 'showWorks']
-);
+Route::get('/myWork', [WorksController::class, 'showWorks']);
 
 Route::get('/test',
     // function () {
@@ -69,3 +72,20 @@ Route::get('/test',
 );
 
 //Route::get('/autorWorks', [WorksController::class, 'createWorks']);
+
+
+
+Route::get('/loadMyWorkTest', [TestController::class, 'showForm'])->name('loadMyWorkTest');
+Route::post('/myWorksTest', [TestController::class, 'processForm']);
+Route::get('/myWorksTest1', [Test1Controller::class, 'showSuccessPage'])->name('myWorksTest1');
+
+Route::get('/login',
+    function () {
+        return view('login_layout',
+        ["title" => "Авторизация"]);
+    }
+);
+
+
+
+

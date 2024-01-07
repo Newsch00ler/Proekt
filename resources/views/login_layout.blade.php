@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,20 +9,22 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 </head>
-<body>
+
+<body style="padding: 0px">
     <div class="login">
         <div class="container" style=" padding-top: 5%; padding-bottom: 5%;">
             <div class="logo">
-                <img  src="images/logo-IRNITU.png" alt="logo-IRNITU"/>
+                <img src="images/logo-IRNITU.png" alt="logo-IRNITU" />
             </div>
             <h1>
-                ИРКУТСКИЙ НАЦИОНАЛЬНЫЙ<br/>
-                ИССЛЕДОВАТЕЛЬСКИЙ<br/>
+                ИРКУТСКИЙ НАЦИОНАЛЬНЫЙ<br />
+                ИССЛЕДОВАТЕЛЬСКИЙ<br />
                 ТЕХНИЧЕСКИЙ УНИВЕРСИТЕТ
             </h1>
         </div>
 
-        <form class="container" style="background-color: #ffffff; flex-direction: column; width: 25%; height: 50%; border: 1px solid #D9D9D9; border-radius: 25px; min-width: 400px; min-height: 400px">
+        <form class="container"
+            style="background-color: #ffffff; flex-direction: column; width: 25%; height: 50%; border: 1px solid #D9D9D9; border-radius: 25px; min-width: 400px; min-height: 400px">
             <h1 style="color: #000000; margin-bottom: 5%">
                 Авторизация
             </h1>
@@ -40,9 +43,9 @@
 
             <button style="margin-bottom: 5%" type="submit">Войти</button>
 
-            <button  type="submit">Войти с помощью Кампуса</button>
+            <button type="submit">Войти с помощью Кампуса</button>
         </form>
     </div>
 </body>
-</html>
 
+</html>

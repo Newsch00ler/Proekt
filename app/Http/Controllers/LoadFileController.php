@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Work;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -125,12 +126,11 @@ class LoadFileController extends Controller
     public function uploadProcess(Request $request){
         // 1. Загрузка файла
         $message = "";
-        $textInput1 = $request->input('workName');
-        $selectValue1 = $request->input('typeWork');
-        $selectValue2 = $request->input('subAreaWork');
-        $textInput2 = $request->input('workLink');
-
-        if (!empty($textInput1) && !empty($selectValue1) && !empty($selectValue2) && !empty($textInput2)){
+        $workNameInput = $request->input('nameWork'); //получение значений
+        $typeWorkSelect = $request->input('typeWork');
+        $subjectAreaSelect = $request->input('subjectAreaWork');
+        $workLinkInput = $request->input('linkWork');
+        if (!empty($workName) && !empty($typeWorkSelect) && !empty($subjectAreaSelect) && !empty($workLinkInput)){ //проверка на пустоту
             $destinationPdfPath = public_path('loadPdfFiles');
             $destinationExtractPath = public_path('loadExtractFiles');
             $ulpoadFiles = [];
@@ -186,6 +186,23 @@ class LoadFileController extends Controller
                 $textFilePath = $this->convertPdfToText($pythonPath, $scriptPath, $pdfFilePath, $txtFilePath);
             }
 
+            if ($textFilePath === true) {
+                // 3. Вызов Python скрипта для проверки оригинальности
+                $pythonPath = realpath('C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe');
+                $scriptPath = public_path('scripts\TextOriginalityScript.py');
+                $command = escapeshellcmd("$pythonPath $scriptPath 2>&1");
+                $output = array();
+                $returnVar = null;
+                exec($command, $output, $returnVar);
+                if ($returnVar > 0) {
+                    trigger_error("Python script execution failed: " . implode("\n", $output), E_USER_ERROR);
+                } else {
+                    $isOriginal = $this->checkOriginality($pythonPath, $scriptPath);
+                }
+            } else {
+                trigger_error("Failed to execute Python script", E_USER_ERROR);
+            }
+
             if($textFilePath === true){
                 // 3. Вызов Python скрипта для проверки оригинальности
                 $pythonPath =  realpath('C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe');
@@ -195,11 +212,12 @@ class LoadFileController extends Controller
                 // что то написать
             }
 
-            if($isOriginal === true){
+            if ($isOriginal === true) {
                 // 4. Сохранение результатов в БД
-                $this->saveResultsToDatabase($filePath, $textFilePath, $isOriginal);
+                $this->saveResultsToDatabase($textFilePath, $isOriginal);
             } else {
-                // что то написать
+                // Генерация ошибки при сохранении данных в БД
+                trigger_error("Failed to save results to database", E_USER_ERROR);
             }
 
             // 5. Получение результатов из БД
@@ -249,13 +267,46 @@ class LoadFileController extends Controller
         }
     }
 
-    private function saveResultsToDatabase($filePath, $textFilePath, $isOriginal){
-        // Реализуйте логику сохранения результатов в БД
+    private function saveResultsToDatabase($textFilePath, $isOriginal){
+        try {
+            // Получение ссылки на txt файл
+            $txtFileLink = asset('storage/test1/' . basename($textFilePath));
+
+            // Получение процента оригинальности
+            $originalityPercentage = $isOriginal * 100;
+
+            // Получение названия работы
+            $workTitle = request()->input('work_title');
+
+            // Получение выбранной предметной области
+            $subjectArea = request()->input('subject_area');
+
+            // Получение даты загрузки
+            $uploadDate = now();
+
+            // Создание нового результата
+            $result = new Work;
+            $result->txt_file_link = $txtFileLink;
+            $result->originality_percentage = $originalityPercentage;
+            $result->work_title = $workTitle;
+            $result->subject_area = $subjectArea;
+            $result->upload_date = $uploadDate;
+            $result->save();
+        } catch (\Exception $e) {
+            // Обработка ошибки при сохранении данных в БД
+            trigger_error("Failed to save results to database: " . $e->getMessage(), E_USER_ERROR);
+        }
     }
 
     private function getResultsFromDatabase(){
-        // Реализуйте логику получения результатов из БД
+         // Получение всех записей из таблицы works
+        $worksDB = Work::all();
+
+        return view('authors_works_layout', ['worksDB' => $worksDB]);
     }
+
+
+
 
 
 

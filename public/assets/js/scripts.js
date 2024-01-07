@@ -18,43 +18,66 @@ $(document).ready(function () {
     $('#myForm').submit(function(event) { // проверка заполненности формы
         var isEmpty = false;
 
-        $(this).find('input[type="text"]').each(function() {
+        $(this).find('input[name="nameWork"]').each(function() {
             if ($(this).val().trim() === "") {
                 isEmpty = true;
                 return false;
             }
         });
 
-        $(this).find('select').each(function() {
+        $(this).find('select').each(function () {
             if ($(this).find('option:selected').is(':disabled')) {
                 isEmpty = true;
                 return false;
             }
         });
 
+        var isFilesContainer1Visible = $('#filesContainer1').is(':visible');
+        var isFilesContainer2Visible = $('#filesContainer2').is(':visible');
+        if (isFilesContainer1Visible) {
+            $('#filesContainer1 input[type="file"]').each(function() {
+                if ($(this)[0].files.length === 0) {
+                    isEmpty = true;
+                    return false;
+                }
+            });
+            $('input[name="linkWork"]').each(function() {
+                if ($(this).val().trim() === "") {
+                    isEmpty = true;
+                    return false;
+                }
+            });
+        } else if (isFilesContainer2Visible) {
+            $('#filesContainer2 input[type="file"]').each(function() {
+                if ($(this)[0].files.length === 0) {
+                    isEmpty = true;
+                    return false;
+                }
+            });
+        }
+
         if (isEmpty) {
             $('#myModal').modal('show'); // отображение модального окна, если есть пустые поля или селекты
             event.preventDefault(); //предотвращение отправки формы
-        } else {
-            // продолжить отправку формы, если все поля заполнены
         }
     });
 });
 
-var workTypeSelect = document.getElementById('workType');
-var webPage = document.get
+document.addEventListener('DOMContentLoaded', function () {
+    var workTypeSelect = document.getElementById('typeWork');
 
-workTypeSelect.addEventListener('change', function () {
-    var selectedOption = workTypeSelect.options[workTypeSelect.selectedIndex];
-    var selectedIndex = selectedOption.index;
+    workTypeSelect.addEventListener('change', function () {
+        var selectedOption = workTypeSelect.options[workTypeSelect.selectedIndex];
+        var selectedIndex = selectedOption.index;
 
-    if (selectedIndex == 6) {
-        document.getElementById('filesContainer1').style.display = 'none';
-        document.getElementById('linkWork').style.display = 'none';
-        document.getElementById('filesContainer2').style.display = 'flex';
-    } else {
-        document.getElementById('filesContainer2').style.display = 'none';
-        document.getElementById('filesContainer1').style.display = 'flex';
-        document.getElementById('linkWork').style.display = 'flex';
-    }
+        if (selectedIndex == 6) {
+            document.getElementById('filesContainer1').style.display = 'none';
+            document.getElementById('linkWork').style.display = 'none';
+            document.getElementById('filesContainer2').style.display = 'flex';
+        } else {
+            document.getElementById('filesContainer2').style.display = 'none';
+            document.getElementById('filesContainer1').style.display = 'flex';
+            document.getElementById('linkWork').style.display = 'flex';
+        }
+    });
 });

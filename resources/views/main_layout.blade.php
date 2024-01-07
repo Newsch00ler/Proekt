@@ -23,7 +23,7 @@
 <header>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid" style="display: flex;">
-            <a class="navbar-brand container" href="#">
+            <a class="navbar-brand container" href="{{ url('/myWorksTest1') }} ">
                 <div class="logo">
                     <img src="images/logo-IRNITU.png" alt="logo-IRNITU" />
                 </div>
@@ -33,7 +33,9 @@
                 <ul class="navbar-nav" style="align-items: center;">
                     @yield('navbar_ul_content')
                 </ul>
-                <button type="button">Выход</button>
+                <form method="get" action="/login">
+                    <button type="submit">Выход</button>
+                </form>
             </div>
         </div>
     </nav>
@@ -48,7 +50,7 @@
                     <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
                 </div>
                 <div class="modal-body">
-                    ... {{-- {{ $message }} --}}
+                    {{ $message }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal">Закрыть</button>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use File;
-use App\Models\Works;
+use App\Models\Work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +32,7 @@ class WorksController extends Controller
             else{
                 $works3++;
             }
-            $works = Works::create($data);
+            $works = Work::create($data);
         }
 
         $worksDB = DB::select('select * from works');
@@ -42,7 +42,7 @@ class WorksController extends Controller
 
     public function showWorks(){  //работает нормально
         $worksDB = DB::select('select * from works');
-        return view('autors/autors_works_layout', array("worksDB" => $worksDB), ["title" => "Мои работы"]);
+        return view('autors/autors_works_layout', array("worksDB" => $worksDB), ["title" => "Мои работы", "message" => ""]);
     }    /*public function showWorks(){  //работает нормально
         $jsonContent = File::json(base_path('storage/worksData.json'));
         $works1 = $jsonContent['works'];
