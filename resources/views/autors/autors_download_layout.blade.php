@@ -3,7 +3,7 @@
 @section('autors_main_content')
     {{-- <form id="myForm" action="{{ url($url) }}" method="{{ $method }}" enctype="multipart/form-data" style=""> --}}
     {{-- <form action="{{ url('/myWorks') }}" method="post" enctype="multipart/form-data" style=""> --}}
-    <form id="myForm" method="post" action="{{ url('/myWorksTest') }}" enctype="multipart/form-data" style="">
+    <form id="myForm" method="post" action="{{ url('/uploadProcess') }}" enctype="multipart/form-data" style="">
         @csrf
         <div class="container" style="flex-direction: column;">
             <h1>Загрузка работы</h1>

@@ -9,7 +9,7 @@ class SubjectArea extends Model
 {
     use HasFactory;
 
-    protected $fields = [
+    protected $fillable = [
         'id_subject_area',
         'name_subject_area'
     ];

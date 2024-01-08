@@ -246,17 +246,12 @@ button {
     color: #FFFFFF;
 }
 
-button[type="button"]:hover  {
-    background-color: #16bdf5;
-    border: 3px solid #ffffff;
-    cursor: pointer;
-}
-
 button:hover {
     background-color: #16bdf5;
     border: 3px solid #ffffff;
     cursor: pointer;
 }
+
 
 
 .table {

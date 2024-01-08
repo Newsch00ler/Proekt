@@ -8,8 +8,9 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\Test1Controller;
 
 use App\Http\Controllers\SubjectAreasController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\WorksController;
-use App\Http\Controllers\LoadFileController;
+use App\Http\Controllers\AutorWorkController;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 
@@ -51,14 +52,14 @@ Route::get('/expertsWorks', [WorksController::class, 'showWorks']);
 //     }
 // );
 
-Route::get('/loadMyWork', [SubjectAreasController::class, 'getSubjectAreas']);
+
 
 Route::get('/loadMyWork1', [SubjectAreasController::class, 'getSubjectAreas1']);
 
-Route::get('/myWorks', [LoadFileController::class, 'uploadProcess']);
+Route::get('/myWorks', [AutorWorkController::class, 'uploadProcess']);
 
 // Route::get('/myWorks',
-//     [LoadFileController::class, 'upload']
+//     [AutorWorkController::class, 'upload']
 // );
 
 Route::get('/myWork', [WorksController::class, 'showWorks']);
@@ -68,23 +69,30 @@ Route::get('/test',
     //     $db = DB::select('select * from users');
     //     dd($db);
     // },
-    [LoadFileController::class, 'test']
+    [AutorWorkController::class, 'test']
 );
 
 //Route::get('/autorWorks', [WorksController::class, 'createWorks']);
 
+Route::get('/testTime',
+    function () {
+        dd(now());
+    }
+);
 
+Route::get('/login', [LoginController::class, 'showPageLogin']);
 
+// ниже три строки как должно быть
+Route::get('/loadMyWork', [AutorWorkController::class, 'showPageLoadMyWork'])->name('loadMyWork');
+Route::post('/uploadProcess', [AutorWorkController::class, 'uploadProcess']);
+Route::get('/seeMyWorks', [AutorWorkController::class, 'showPageMyWorks'])->name('seeMyWorks');
+
+// ниже тестовые три строки
 Route::get('/loadMyWorkTest', [TestController::class, 'showForm'])->name('loadMyWorkTest');
 Route::post('/myWorksTest', [TestController::class, 'processForm']);
 Route::get('/myWorksTest1', [Test1Controller::class, 'showSuccessPage'])->name('myWorksTest1');
 
-Route::get('/login',
-    function () {
-        return view('login_layout',
-        ["title" => "Авторизация"]);
-    }
-);
+
 
 
 

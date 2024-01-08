@@ -10,7 +10,9 @@ class Work extends Model
 {
     use HasFactory;
 
-    protected $fields = [
+    protected $primaryKey = 'id_work';
+
+    protected $fillable = [
         'id_work',
         'name_work',
         'language',
@@ -20,8 +22,8 @@ class Work extends Model
         'final_grade',
         'id_protocol',
         'original_percent',
-        'download_data', // в БД это поле created_at
-        'link_help_file_library',
+        'created_at',
+        'link_library',
         'link_file_extract_protocol',
         'link_text_file'
     ];
@@ -43,7 +45,7 @@ class Work extends Model
     protected function data(): Attribute{
         return Attribute::make(
             get: fn ($value) => json_decode($value,true),
-            get: fn ($value) => json_encode($value)
+            set: fn ($value) => json_encode($value)
         );
     }
 }

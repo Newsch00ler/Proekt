@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('works', function (Blueprint $table) {
             $table->id('id_work');
             $table->string('name_work');
-            $table->string('language');
+            $table->string('language');->nullable();
             $table->boolean('creative');
             $table->string('signature')->nullable();
             $table->boolean('verification_status');
             $table->unsignedTinyInteger('final_grade')->nullable();
             $table->unsignedBigInteger('id_protocol')->nullable();
-            $table->unsignedTinyInteger('original_percent')->nullable();
-            $table->string('link_help_file_library')->unique();
+            $table->float('original_percent')->nullable();
+            $table->string('link_library')->unique();
             $table->string('link_file_extract_protocol')->unique();
             $table->string('link_text_file')->unique();
             $table->timestamps();

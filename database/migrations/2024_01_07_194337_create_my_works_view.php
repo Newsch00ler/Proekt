@@ -15,12 +15,15 @@ return new class extends Migration
         DB::statement('
             CREATE VIEW my_works AS
             SELECT
-                works.name_work,
-                STRING_AGG(subject_areas.name_subject_area, \', \'),
-                works.original_percent,
-                works.created_at,
-                works.final_grade,
-                works.verification_status
+                works.name_work as name_work,
+                STRING_AGG(subject_areas.name_subject_area, \', \') as name_subject_area,
+                works.original_percent as original_percent,
+                works.created_at as created_at,
+                works.final_grade as final_grade,
+                CASE
+                    WHEN works.verification_status = true THEN \'Внесена в протокол\'
+                    WHEN works.verification_status = false THEN \'На проверке\'
+                END as verification_status
             FROM works
             LEFT JOIN works_subject_areas ON works.id_work = works_subject_areas.id_work
             LEFT JOIN subject_areas ON works_subject_areas.id_subject_area = subject_areas.id_subject_area

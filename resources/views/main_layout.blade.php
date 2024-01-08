@@ -23,7 +23,7 @@
 <header>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid" style="display: flex;">
-            <a class="navbar-brand container" href="{{ url('/myWorksTest1') }} ">
+            <a class="navbar-brand container" href="{{ url('/seeMyWorks') }} ">
                 <div class="logo">
                     <img src="images/logo-IRNITU.png" alt="logo-IRNITU" />
                 </div>
@@ -47,7 +47,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
+                    <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
                 </div>
                 <div class="modal-body">
                     {{ $message }}

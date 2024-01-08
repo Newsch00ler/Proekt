@@ -56,6 +56,14 @@ $(document).ready(function () {
             });
         }
 
+        var messageElement = document.querySelector('.modal-body');
+        var message = messageElement.textContent || messageElement.innerText;
+
+        if (message.startsWith("Файл с именем")) {
+            isEmpty = true;
+            return false;
+        }
+
         if (isEmpty) {
             $('#myModal').modal('show'); // отображение модального окна, если есть пустые поля или селекты
             event.preventDefault(); //предотвращение отправки формы
