@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('protocols', function (Blueprint $table) {
             $table->id('id_protocol');
-            $table->date('date')->unique();
+            $table->date('meeting_date')->unique();
+            $table->string('status')->unique();
             $table->string('link_protocol_file')->unique();
             $table->timestamps();
         });
