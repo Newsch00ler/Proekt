@@ -74,18 +74,16 @@ Route::get('/test',
 
 //Route::get('/autorWorks', [WorksController::class, 'createWorks']);
 
-Route::get('/testTime',
-    function () {
-        dd(now());
-    }
-);
-
-Route::get('/login', [LoginController::class, 'showPageLogin']);
+Route::get('/login', [LoginController::class, 'showPageLogin'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');;
 
 // ниже три строки как должно быть
-Route::get('/loadMyWork', [AutorWorkController::class, 'showPageLoadMyWork'])->name('loadMyWork');
-Route::post('/uploadProcess', [AutorWorkController::class, 'uploadProcess']);
-Route::get('/seeMyWorks', [AutorWorkController::class, 'showPageMyWorks'])->name('seeMyWorks');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/loadMyWork', [AutorWorkController::class, 'showPageLoadMyWork'])->name('loadMyWork');
+    Route::post('/uploadProcess', [AutorWorkController::class, 'uploadProcess']);
+    Route::get('/seeMyWorks', [AutorWorkController::class, 'showPageMyWorks'])->name('seeMyWorks');
+});
 
 // ниже тестовые три строки
 Route::get('/loadMyWorkTest', [TestController::class, 'showForm'])->name('loadMyWorkTest');

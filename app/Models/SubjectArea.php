@@ -9,6 +9,8 @@ class SubjectArea extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id_subject_area';
+
     protected $fillable = [
         'id_subject_area',
         'name_subject_area'

@@ -33,7 +33,8 @@
                 <ul class="navbar-nav" style="align-items: center;">
                     @yield('navbar_ul_content')
                 </ul>
-                <form method="get" action="/login">
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
                     <button type="submit">Выход</button>
                 </form>
             </div>
@@ -42,22 +43,24 @@
 </header>
 
 <body>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
-                </div>
-                <div class="modal-body">
-                    {{ $message }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal">Закрыть</button>
+    @if (isset($message))
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
+                    </div>
+                    <div class="modal-body">
+                        {{ $message }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal">Закрыть</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
     @yield('main_content')
 </body>
 

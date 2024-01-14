@@ -15,6 +15,31 @@ $(document).ready(function () {
         var fileName = e.target.files[0].name;
         document.getElementById('labelForUpload4').textContent = 'Файл ' + fileName.substr(0, 13) + '... загружен';
     });
+
+    $('#myForm1').submit(function(event) { // проверка заполненности формы
+        var isEmpty = false;
+
+        $(this).find('input[name="login"]').each(function() {
+            if ($(this).val().trim() === "") {
+                isEmpty = true;
+                return false;
+            }
+        });
+
+        $(this).find('input[name="password"]').each(function () {
+            if ($(this).val().trim() === "") {
+                isEmpty = true;
+                return false;
+            }
+        });
+
+        if (isEmpty) {
+            console.log("зашел");
+            $('#myModal1').modal('show'); // отображение модального окна, если есть пустые поля или селекты
+            event.preventDefault(); //предотвращение отправки формы
+        }
+    });
+
     $('#myForm').submit(function(event) { // проверка заполненности формы
         var isEmpty = false;
 
@@ -56,13 +81,13 @@ $(document).ready(function () {
             });
         }
 
-        var messageElement = document.querySelector('.modal-body');
-        var message = messageElement.textContent || messageElement.innerText;
+        // var messageElement = document.querySelector('.modal-body');
+        // var message = messageElement.textContent || messageElement.innerText;
 
-        if (message.startsWith("Файл с именем")) {
-            isEmpty = true;
-            return false;
-        }
+        // if (message.startsWith("Файл с именем")) {
+        //     isEmpty = true;
+        //     return false;
+        // }
 
         if (isEmpty) {
             $('#myModal').modal('show'); // отображение модального окна, если есть пустые поля или селекты

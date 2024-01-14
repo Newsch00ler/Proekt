@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('works', function (Blueprint $table) {
             $table->id('id_work');
             $table->string('name_work');
-            $table->string('language');->nullable();
+            $table->string('language')->nullable();
             $table->boolean('creative');
             $table->string('signature')->nullable();
             $table->boolean('verification_status');
