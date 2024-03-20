@@ -78,12 +78,16 @@ Route::get('/login', [LoginController::class, 'showPageLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');;
 
+Route::get('/loadMyWork', [AutorWorkController::class, 'showPageLoadMyWork'])->name('loadMyWork');
+Route::post('/uploadProcess', [AutorWorkController::class, 'uploadProcess']);
+Route::get('/myWorks', [AutorWorkController::class, 'showPageMyWorks'])->name('myWorks');
+
 // ниже три строки как должно быть
-Route::middleware(['auth'])->group(function () {
-    Route::get('/loadMyWork', [AutorWorkController::class, 'showPageLoadMyWork'])->name('loadMyWork');
-    Route::post('/uploadProcess', [AutorWorkController::class, 'uploadProcess']);
-    Route::get('/seeMyWorks', [AutorWorkController::class, 'showPageMyWorks'])->name('seeMyWorks');
-});
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/loadMyWork', [AutorWorkController::class, 'showPageLoadMyWork'])->name('loadMyWork');
+//     Route::post('/uploadProcess', [AutorWorkController::class, 'uploadProcess']);
+//     Route::get('/seeMyWorks', [AutorWorkController::class, 'showPageMyWorks'])->name('seeMyWorks');
+// });
 
 // ниже тестовые три строки
 Route::get('/loadMyWorkTest', [TestController::class, 'showForm'])->name('loadMyWorkTest');

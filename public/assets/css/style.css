@@ -69,6 +69,12 @@ h2{
     color: #FFFFFF;
 }
 
+h3 {
+    font-size: 18px;
+    margin: 0px;
+    color: #FFFFFF;
+}
+
 .navbar{
     border-bottom: 2px solid #ffffff;
     padding: 25px;
