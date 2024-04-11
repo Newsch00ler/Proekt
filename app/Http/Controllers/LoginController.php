@@ -29,7 +29,7 @@ class LoginController extends Controller
                 return redirect('/loadMyWork');
             }
         } else {
-            // Если пользователь не найден или пароль неверен, обработайте ошибку входа
+            // Если пользователь не найден или пароль неверен
             return redirect('/login')->with([
                 "title" => "Авторизация", "message"=> "Неверный логин или пароль"
             ]);

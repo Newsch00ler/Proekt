@@ -2,10 +2,10 @@
 
 @section('navbar_ul_content')
     <li class="nav-item">
-        <a class="nav-link" href="{{ url('/loadMyWork') }}">Загрузка работ</a>
+        <a class="nav-link" href="{{ url('/load-my-work') }}">Загрузка работ</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ url('/seeMyWorks') }} ">Мои работы</a>
+        <a class="nav-link" href="{{ url('/my-works') }} ">Мои работы</a>
     </li>
 @endsection
 

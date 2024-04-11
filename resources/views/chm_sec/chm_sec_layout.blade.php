@@ -2,18 +2,18 @@
 
 @section('navbar_ul_content')
     <li class="nav-item">
-        <select>
+        <select onchange="location = this.value;">
             <option disabled selected>Предс/Секр</option>
-            <option>Работы</option>
-            <option>Эксперты</option>
-            <option>Скачать отчетный документ</option>
+            <option value="show-works">Работы</option>
+            <option value="show-experts">Эксперты</option>
+            <option value="#">Скачать отчетный документ</option>
         </select>
     </li>
     <li class="nav-item">
-        <select>
+        <select onchange="location = this.value;">
             <option disabled selected>Автор</option>
-            <option>Загрузка работ</option>
-            <option>Мои работы</option>
+            <option value="load-my-work">Загрузка работ</option>
+            <option value="show-works">Мои работы</option>
         </select>
     </li>
 @endsection

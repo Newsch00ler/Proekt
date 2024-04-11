@@ -3,18 +3,30 @@ html {
 }
 
 header{
-    min-width: 992px;
-    margin-bottom: 42px;
+    width: 100%;
+}
+
+@media (max-width: 1092px) {
+
+    /* Стили для меньших экранов (таблетки и мобильные устройства) */
+    .navbar-brand {
+        margin-right: auto;
+        /* Переместить .navbar-brand влево */
+    }
+
+    .collapse.navbar-collapse {
+        justify-content: flex-start;
+        /* Выравниваем элементы справа */
+    }
 }
 
 body{
     margin: 0;
-    padding-bottom: 42px;
     min-height: 100%;
     width: 100%;
     justify-content: center;
     font-family: 'Arial';
-    background-image: linear-gradient(to bottom, #32C2F1, rgba(141, 222, 248, 0.5));
+    background-image: linear-gradient(to bottom, #32C2F1, rgb(141, 221, 248));
     background-size: cover;
     background-attachment: fixed;
 }
@@ -29,6 +41,14 @@ form{
     height: 100vh;
 }
 
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    #myForm1 {
+        width: 100%;
+        /* Полная ширина на маленьких экранах */
+    }
+}
+
 .container{
     display: flex;
     width: auto;
@@ -38,15 +58,48 @@ form{
     padding: 0%;
 }
 
+.row-container {
+    display: flex;
+    flex-direction: row;
+    padding-top: 42px;
+    padding-bottom: 42px;
+}
+
+.column-container {
+    display: inline-block;
+    flex-direction: column;
+    width: 20%;
+    padding-left: 40px;
+}
+
+.container-fluid {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.help-text {
+    white-space: pre;
+    background-color: white;
+    color: black;
+    padding: 20px;
+    margin-left: 42px;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    display: none;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: auto auto;
-    gap: 42px;
 }
 
 .grid-item {
+    white-space: nowrap;
+    align-self: center;
     border: none;
-
 }
 
 .logo {
@@ -77,13 +130,16 @@ h3 {
 
 .navbar{
     border-bottom: 2px solid #ffffff;
-    padding: 25px;
+    padding: 0px;
 }
 
 .navbar-brand{
-    flex-direction: row;
-    justify-content: start;
-    width: max-content;
+    display: flex;
+        /* Используем flex-контейнер */
+        align-items: center;
+        /* Выравниваем элементы по центру вертикали */
+        width: max-content;
+        /* Ширина элемента зависит от содержимого */
 }
 
 .nav-item{
@@ -92,8 +148,8 @@ h3 {
 
 .nav-link{
     font-weight: 700;
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 20px;
+    line-height: 23px;
     color: #FFFFFF;
 }
 
@@ -103,11 +159,14 @@ h3 {
 }
 
 label{
+    display: flex;
+    align-items: start;
     margin: 0%;
+    margin-bottom: 42px;
     font-weight: 700;
     font-size: 20px;
     line-height: 23px;
-    color: #000000;
+    color: #ffffff;
 }
 
 .login-input::placeholder,
@@ -219,6 +278,7 @@ select {
     line-height: 23px;
     display: flex;
     align-items: center;
+    border: 1px solid #ffffff;
     color: #FFFFFF;
     text-align: center;
 }
@@ -258,18 +318,17 @@ button:hover {
     cursor: pointer;
 }
 
-
-
 .table {
     border-collapse: collapse;
     border-radius: 25px;
     overflow: hidden;
-    margin-top: 42px;
+    margin: 0px;
+    min-width: 650px;
 }
 
 .table thead tr th{
     color: #ffffff;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 37px;
     font-weight: bold;
     border: none;
@@ -282,7 +341,7 @@ button:hover {
 
 .table tbody tr td {
     color: #000000;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: bold;
     background-color: white;
     text-align: center;
@@ -292,7 +351,7 @@ button:hover {
 
 .table td a{
     color: #000000;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: bold;
     text-decoration: underline;
 }
@@ -321,6 +380,7 @@ input[type="date"]{
     line-height: 23px;
     display: flex;
     align-items: center;
+    border: 3px solid #ffffff;
     color: #FFFFFF;
 }
 

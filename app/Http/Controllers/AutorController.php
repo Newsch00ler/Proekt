@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class AutorWorkController extends Controller
+class AutorController extends Controller
 {
 
     public function showPageLoadMyWork(){
@@ -135,7 +135,7 @@ class AutorWorkController extends Controller
             }
 
             if ($successSaveWorkDB === true) {
-                return redirect()->route('seeMyWorks');
+                return redirect()->route('my-works');
             } else {
                 if (file_exists($destinationExtractPath . $ulpoadFiles[1]->getClientOriginalName())) {
                     chmod($destinationExtractPath . $ulpoadFiles[1]->getClientOriginalName(), 0755);

@@ -53,7 +53,7 @@
         </div>
 
         <form class="container" id="myForm1" method="post"
-            style="background-color: #ffffff; flex-direction: column; width: 25%; height: 50%; border: 1px solid #D9D9D9; border-radius: 25px; min-width: 400px; min-height: 400px">
+            style="background-color: #ffffff; flex-direction: column; width: 25%; height: 50%; min-height: 410px; border: 1px solid #D9D9D9; border-radius: 25px; min-width: 400px;">
             @csrf
             <h1 style="color: #000000; margin-bottom: 5%">
                 Авторизация
@@ -65,9 +65,9 @@
             <input class="login-input" style="margin-bottom: 5%; width: 85%;" type="password" placeholder="Пароль"
                 name="password" id="password">
 
-            <div class="container" style="align-items: center; margin-bottom: 5%">
+            <div class="container" style="flex-wrap: wrap; align-items: center; margin-bottom: 5%">
                 <input type="checkbox" style="margin-right: 10px;" name="remember" id="remember">
-                <label for="remember">Запомнить меня на этом компьютере</label>
+                <label for="remember" style="color: black; margin: 0%;">Запомнить меня на этом компьютере</label>
             </div>
 
             <button style="margin-bottom: 5%" type="submit">Войти</button>

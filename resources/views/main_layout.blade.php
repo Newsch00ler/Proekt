@@ -22,8 +22,9 @@
 </head>
 <header>
     <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid" style="display: flex;">
+        <div class="container-fluid" style="justify-content: space-around">
             <a class="navbar-brand container" href="{{ url('/seeMyWorks') }} ">
+                {{-- надо сделать переход на основную страницу в зависимости от пользователя --}}
                 <div class="logo">
                     <img src="images/logo-IRNITU.png" alt="logo-IRNITU" />
                 </div>

@@ -96,6 +96,36 @@ $(document).ready(function () {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const helpText = document.querySelector('.help-text');
+
+    document.querySelectorAll('.grid-item select').forEach(select => {
+        select.addEventListener('mouseenter', () => {
+            switch (select.id) {
+                case 'grItemRelevance':
+                    helpText.textContent = '1. Текст для актуальности \n 2. \n 3. \n 4. \n 5. \n 6. \n 7. \n 8. \n 9. \n 10. ';
+                    break;
+                case 'grItemCompleteness':
+                    helpText.textContent = 'Текст для полноты';
+                    break;
+                case 'grItemDepth':
+                    helpText.textContent = 'Текст для глубины';
+                    break;
+                case 'grItemQuestions':
+                    helpText.textContent = 'Текст для вопросов';
+                    break;
+                case 'grItemQuality':
+                    helpText.textContent = 'Текст для качества графического материала';
+                    break;
+            }
+            helpText.style.display = 'block';
+        });
+        select.addEventListener('mouseleave', () => {
+            helpText.style.display = 'none';
+        });
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     var workTypeSelect = document.getElementById('typeWork');
 
