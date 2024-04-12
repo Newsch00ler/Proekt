@@ -320,16 +320,19 @@ button:hover {
 
 .table {
     border-collapse: collapse;
-    border-radius: 25px;
+    border-radius: 5px;
     overflow: hidden;
     margin: 0px;
     min-width: 650px;
 }
 
+.table thead{
+    border: 3px solid #ffffff;
+}
+
 .table thead tr th{
     color: #ffffff;
     font-size: 20px;
-    line-height: 37px;
     font-weight: bold;
     border: none;
     background: #2FC6F7;
@@ -337,6 +340,10 @@ button:hover {
     text-align: center;
     vertical-align: middle;
     padding: 20px;
+}
+
+.table tbody {
+    border: 3px solid #ffffff;
 }
 
 .table tbody tr td {

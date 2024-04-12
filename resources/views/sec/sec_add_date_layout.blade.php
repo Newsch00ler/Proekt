@@ -10,9 +10,9 @@
                     <label
                         style="margin: 0px; margin-right:40px; white-space: nowrap; justify-self: center; align-self: center">Выбор
                         даты</label>
-                    <input type="date" name="calendar">
+                    <input type="date" name="calendar" min="{{ date('Y-m-d') }}" value="{{ $dateFormatted }}">
                 </div>
-                <button type="submit" style="align-items: center;">Подтвердить</button>
+                <button type="submit" style="align-items: center;" id="submitDateButton"> {{ $textButton }}</button>
             </form>
         </div>
     </div>

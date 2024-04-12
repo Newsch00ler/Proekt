@@ -9,13 +9,35 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use DateTime;
 
 class AutorController extends Controller
 {
 
     public function showPageLoadMyWork(){
+        $filePath = storage_path('date.txt');
+        if(File::size($filePath) !== 0){
+            $date = File::exists($filePath) ? File::get($filePath) : date('d.m.Y');
+            $date = new DateTime($date);
+            $dateFormatted = $date->format('Y-m-d');
+            $dateFormatted1 = $date->format('d.m.Y');
+            $currentDate = new DateTime();
+            if ($currentDate->modify('+5 days') < $date) {
+                $isDisabled = false;
+                $isVisible = false;
+            }
+            else {
+                $isDisabled = true;
+                $isVisible = true;
+            }
+        }
+        else {
+            $dateFormatted1 = '';
+            $isDisabled = false;
+            $isVisible = false;
+        }
         $subjectAreasDB = DB::select('select * from subject_areas');
-        return view('autors/autors_download_layout', ["title" => "Загрузка работы", "message" => "Пожалуйста, заполните все поля и загрузите все файлы", "subjectAreas" => $subjectAreasDB]);
+        return view('autors/autors_download_layout', ["title" => "Загрузка работы", "message" => "Пожалуйста, заполните все поля и загрузите все файлы", "subjectAreas" => $subjectAreasDB, 'date' => $dateFormatted1, 'isDisabled' => $isDisabled, 'isVisible' => $isVisible]);
     }
 
     public function showPageMyWorks() {

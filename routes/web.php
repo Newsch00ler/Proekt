@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use App\Models\Work;
 use App\Models\SubjectArea;
 use App\Http\Controllers\TestController;
@@ -20,10 +21,10 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 Route::get('/', function () {
     // сделать адапт для селектов и инпутов
     // предс/секр
-    //return view('chm_sec/chm_sec_works_layout', // адаптацию надо
+    return view('chm_sec/chm_sec_works_layout', // адаптацию надо
     // return view('chm_sec/chm_sec_experts_layout', // адаптацию надо
     // секр
-    return view('sec/sec_add_date_layout', // адаптацию надо
+    // return view('sec/sec_add_date_layout', // адаптацию надо
     // return view('sec/sec_work_verification_layout', // адаптацию надо
     // эксперт
     // return view('experts/experts_scoring_layout', // адаптацию надо
@@ -38,7 +39,7 @@ Route::get('/', function () {
 
 // по БД вход
 Route::get('/login', [LoginController::class, 'showPageLogin'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login'])->name('login');;
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');;
 
 
@@ -65,6 +66,11 @@ Route::get('/load-my-work', [AutorController::class, 'showPageLoadMyWork'])->nam
 Route::post('/upload-process', [AutorController::class, 'uploadProcess'])->name('upload.process');
 Route::get('/my-works', [AutorController::class, 'showPageMyWorks'])->name('my.works');
 
+Route::get('/check-file111', function () {
+    $filePath = storage_path('date.txt'); // Путь к вашему файлу
+    $fileContent = File::get($filePath);
+    return response()->json(['isEmpty' => empty($fileContent)]);
+});
 
 // пока что оставить
 // Route::middleware(['auth'])->group(function () {
