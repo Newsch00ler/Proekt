@@ -25,7 +25,8 @@ class Work extends Model
         'created_at',
         'link_library',
         'link_file_extract_protocol',
-        'link_text_file'
+        'link_text_file',
+        'validation'
     ];
 
     public function subjectAreas() {

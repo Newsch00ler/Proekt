@@ -48,7 +48,8 @@ Route::get('/show-works', [SecController::class, 'showWorks'])->name('show.works
 Route::get('/show-experts', [SecController::class, 'showExperts'])->name('show.experts');
 Route::get('/add-date', [SecController::class, 'addDate'])->name('add.date');
 Route::post('/save-date', [SecController::class, 'saveDate'])->name('save.date');
-Route::get('/verification-works', [SecController::class, 'verWorks'])->name('verification.works');
+Route::get('/validation-works', [SecController::class, 'valWorks'])->name('validation.works');
+Route::post('/save-validation', [SecController::class, 'saveVal'])->name('save.validation');
 
 
 //председатель
@@ -65,12 +66,6 @@ Route::get('/check-work', [ExpertController::class, 'checkWork'])->name('check.w
 Route::get('/load-my-work', [AutorController::class, 'showPageLoadMyWork'])->name('load.my.work');
 Route::post('/upload-process', [AutorController::class, 'uploadProcess'])->name('upload.process');
 Route::get('/my-works', [AutorController::class, 'showPageMyWorks'])->name('my.works');
-
-Route::get('/check-file111', function () {
-    $filePath = storage_path('date.txt'); // Путь к вашему файлу
-    $fileContent = File::get($filePath);
-    return response()->json(['isEmpty' => empty($fileContent)]);
-});
 
 // пока что оставить
 // Route::middleware(['auth'])->group(function () {

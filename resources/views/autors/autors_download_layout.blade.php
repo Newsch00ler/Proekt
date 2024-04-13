@@ -68,7 +68,7 @@
             <label style="color: #ff0000; font-size: 18px; margin-top: 1%; <?php if (!$isVisible) {
                 echo 'display: none;';
             } ?>">
-                Следующая загрузка работпосле {{ $date }}
+                Следующая загрузка работ после {{ $date }}
             </label>
         </div>
     </form>

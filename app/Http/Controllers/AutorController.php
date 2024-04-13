@@ -246,7 +246,6 @@ class AutorController extends Controller
                 $success = true;
             }
         } catch (\Exception $e) {
-            // Обработка ошибки при сохранении данных в БД
             dd("Failed to save results to database: " . $e->getMessage(), E_USER_ERROR);
             trigger_error("Failed to save results to database: " . $e->getMessage(), E_USER_ERROR);
         }
