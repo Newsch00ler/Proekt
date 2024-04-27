@@ -26,5 +26,3 @@ text = extract_text(pdf_file)
 # Запись текста в TXT-файл
 with open(txt_file, 'w', encoding='utf-8') as output_file:
     output_file.write(text)
-
-

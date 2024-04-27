@@ -20,10 +20,8 @@ return new class extends Migration
                 works.original_percent as original_percent,
                 works.created_at as created_at,
                 works.final_grade as final_grade,
-                CASE
-                    WHEN works.verification_status = true THEN \'Внесена в протокол\'
-                    WHEN works.verification_status = false THEN \'На проверке\'
-                END as verification_status
+                works.status as status,
+	            SPLIT_PART(link_pdf_file, '\\', -1) AS file_name
             FROM works
             LEFT JOIN works_subject_areas ON works.id_work = works_subject_areas.id_work
             LEFT JOIN subject_areas ON works_subject_areas.id_subject_area = subject_areas.id_subject_area

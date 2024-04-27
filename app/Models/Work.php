@@ -18,7 +18,7 @@ class Work extends Model
         'language',
         'creative',
         'signature',
-        'verification_status',
+        'status',
         'final_grade',
         'id_protocol',
         'original_percent',
@@ -26,7 +26,7 @@ class Work extends Model
         'link_library',
         'link_file_extract_protocol',
         'link_text_file',
-        'validation'
+        'link_pdf_file'
     ];
 
     public function subjectAreas() {

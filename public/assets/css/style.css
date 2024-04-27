@@ -20,13 +20,20 @@ header{
     }
 }
 
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+
 body{
     margin: 0;
     min-height: 100%;
     width: 100%;
     justify-content: center;
     font-family: 'Arial';
-    background-image: linear-gradient(to bottom, #32C2F1, rgb(141, 221, 248));
+    background-image: linear-gradient(to bottom, #32C2F1, #8DDEF8);
     background-size: cover;
     background-attachment: fixed;
 }
@@ -41,11 +48,9 @@ form{
     height: 100vh;
 }
 
-/* Медиа-запросы для адаптивности */
 @media (max-width: 768px) {
     #myForm1 {
         width: 100%;
-        /* Полная ширина на маленьких экранах */
     }
 }
 
@@ -61,8 +66,6 @@ form{
 .row-container {
     display: flex;
     flex-direction: row;
-    padding-top: 42px;
-    padding-bottom: 42px;
 }
 
 .column-container {
@@ -73,10 +76,7 @@ form{
 }
 
 .container-fluid {
-    padding-top: 25px;
-    padding-bottom: 25px;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding: 25px 40px 25px 40px;
 }
 
 .help-text {
@@ -135,22 +135,22 @@ h3 {
 
 .navbar-brand{
     display: flex;
-        /* Используем flex-контейнер */
-        align-items: center;
-        /* Выравниваем элементы по центру вертикали */
-        width: max-content;
-        /* Ширина элемента зависит от содержимого */
+    align-items: center;
+    width: max-content;
 }
 
 .nav-item{
-    margin-right: 92px;
+    margin-right: 42px;
+    word-wrap: normal;
 }
 
 .nav-link{
     font-weight: 700;
     font-size: 20px;
     line-height: 23px;
+    padding: 0;
     color: #FFFFFF;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -161,8 +161,7 @@ h3 {
 label{
     display: flex;
     align-items: start;
-    margin: 0%;
-    margin-bottom: 42px;
+    margin: 0 0 42px 0;
     font-weight: 700;
     font-size: 20px;
     line-height: 23px;
@@ -251,40 +250,39 @@ textarea::placeholder {
 }
 
 label[name="upload"] {
+    width: 100%;
+    min-width: 445px;
+    display: inline-block;
+    justify-content: center;
+    align-content: center;
     background: #D9D9D9;
     border: 1px solid #000000;
     border-radius: 25px;
     color:#9B9B9B;
     text-align: center;
-    width: 40%;
-    min-height: 196px;
+    margin-bottom: 0px;
     padding: 30px;
     cursor: pointer;
-    font-size: 32px;
-    line-height: 32px;
+}
+
+label input{
+    margin: 0px;
+    padding: 0px;
 }
 
 select {
     appearance: none;
-    background: #2FC6F7 url("data:image/svg+xml,<svg width='22' height='18' viewBox='0 0 22 18' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M11 18L0.607697 0L21.3923 0L11 18Z' fill='white'/></svg>") no-repeat calc(100% - 32px);
-    border: none;
+    /* background: #2FC6F7 url("data:image/svg+xml,<svg width='22' height='18' viewBox='0 0 22 18' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M11 18L0.607697 0L21.3923 0L11 18Z' fill='white'/></svg>") no-repeat calc(100% - 32px); */
+    background: #2FC6F7;
     border-radius: 15px;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    padding-left: 32px;
-    padding-right: 32px;
+    padding: 16px 32px 16px 32px;
     font-weight: bold;
     font-size: 20px;
     line-height: 23px;
     display: flex;
-    align-items: center;
     border: 1px solid #ffffff;
     color: #FFFFFF;
     text-align: center;
-}
-
-.nav-item select {
-    border: 3px solid #ffffff;
 }
 
 select:hover {
@@ -292,18 +290,11 @@ select:hover {
     cursor: pointer;
 }
 
-select option {
-    justify-content: start;
-}
-
 button {
     background: #2FC6F7;
     border: 3px solid #ffffff;
     border-radius: 15px;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    padding-left: 32px;
-    padding-right: 32px;
+    padding: 16px 32px 16px 32px;
     font-weight: bold;
     font-size: 20px;
     line-height: 23px;
@@ -315,6 +306,11 @@ button {
 button:hover {
     background-color: #16bdf5;
     border: 3px solid #ffffff;
+    cursor: pointer;
+}
+
+.card button:hover {
+    border: 3px solid #1E6C8C;
     cursor: pointer;
 }
 
@@ -340,6 +336,10 @@ button:hover {
     text-align: center;
     vertical-align: middle;
     padding: 20px;
+}
+
+th:hover {
+    cursor: pointer;
 }
 
 .table tbody {
@@ -378,10 +378,7 @@ input[type="date"]{
     background: #2FC6F7;
     border: none;
     border-radius: 15px;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    padding-left: 32px;
-    padding-right: 32px;
+    padding: 16px 32px 16px 32px;
     font-weight: bold;
     font-size: 20px;
     line-height: 23px;
@@ -419,49 +416,146 @@ input[type="date"]:hover {
     cursor: pointer;
 }
 
-/* #zatemnenie {
-    background: rgba(102, 102, 102, 0.5);
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: none;
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 42px 0 40px 0;
+    border-radius: 4px;
 }
 
-#messageBox {
-    width: 300px;
-    height: 50px;
-    text-align: center;
-    padding: 15px;
-    border: 3px solid #0000cc;
-    border-radius: 10px;
-    color: #0000cc;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: auto;
-    background: #fff;
+nav[role="navigation"]{
+    background-color: #4400ff;
+}
+.pagination .page-item {
+
 }
 
-#zatemnenie:target {
-    display: block;
-}
+.pagination .page-link {
 
-.close {
-    display: inline-block;
-    border: 1px solid #0000cc;
-    color: #0000cc;
-    padding: 0 12px;
-    margin: 10px;
+    color: #2FC6F7;
     text-decoration: none;
-    background: #f2f2f2;
-    font-size: 14pt;
-    cursor: pointer;
+    border: 1px solid #ff0000;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.close:hover {
-    background: #e6e6ff;
-} */
+.pagination .page-item.active .page-link {
+    background-color: #f72f2f;
+    color: #ffffff;
+    border-color: #2FC6F7;
+}
+
+.pagination .page-link:hover {
+    background-color: #ff0000;
+}
+
+.admin button {
+    background: #1E6C8C;
+}
+
+.admin button:hover {
+    border: 3px solid #1E6C8C;
+}
+
+.admin select{
+    background: #1E6C8C;
+}
+
+.admin select:hover {
+    border: 1px solid #1E6C8C;
+}
+
+.admin table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin table thead tr th{
+    background: #1E6C8C;
+    font-size: 12px;
+    padding: 0 5px 0 0;
+}
+
+.admin table tbody tr td {
+    font-size: 12px;
+    padding: 0 5px 0 0;
+}
+
+.admin table tbody tr td input {
+    min-width: 30px;
+    width: 100%;
+}
+
+.admin table tbody tr td select {
+    font-size: 12px;
+    padding: 2px 4px 2px 4px;
+}
+
+.select2-container--default .select2-selection--multiple {
+    background: #2FC6F7;
+    border-radius: 15px;
+    margin-top: 9%;
+    padding: 16px 32px 16px 32px;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+    display: flex;
+    border: 1px solid #ffffff;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.select2-container--default .select2-results__option {
+    background-color: #ffffff;
+    color: #2FC6F7;
+}
+
+.select2-container--default .select2-results__option:hover {
+    background-color: #2FC6F7;
+    color: #ffffff;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    float: left;
+    margin-bottom: 5px;
+    color: #2FC6F7;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #2FC6F7;
+    color: #ffffff;
+}
+
+.select2-container--default .select2-results>.select2-results__options {
+    max-height: max-content;
+    overflow-y: hidden;
+}
+
+.select2-container--default .select2-search--inline .select2-search__field {
+    margin: 0;
+    font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.select2-search__field::placeholder {
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff;
+}
+
+.select2-container--default .select2-selection--single {
+    background: #2FC6F7;
+    border-radius: 15px;
+    padding: 16px 32px 16px 32px;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+    display: flex;
+    border: 1px solid #ffffff;
+    color: #FFFFFF;
+    text-align: center;
+}

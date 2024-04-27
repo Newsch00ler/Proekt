@@ -38,9 +38,6 @@ table = str.maketrans('', '', string.punctuation)
 with open(check_text, 'r', encoding='utf-8') as file:
     text1 = file.read().translate(table)
 
-# Путь к директории с другими текстами
-directory_path = 'C:/Users/Home/Desktop/Diplom/Proekt/public/test2/'
-
 # Получение списка файлов в директории
 texts = os.listdir(check_directory)
 

@@ -1,18 +1,28 @@
-@extends('chm_sec/chm_sec_layout')
+@extends('main_layout')
 
-@section('chm_sec_main_content')
-    <div class="row-container">
+@section('main_content')
+    <div class="row-container" style="margin-top: 42px;">
         <div class="container-fluid" style="padding-top: 0px; padding-bottom: 0px;">
-            <table class="table">
+            <table class="table" id="dataNameTable">
                 <thead>
                     <tr>
-                        <th>№</th>
-                        <th>ФИО</th>
+                        <th onclick="sortTable(0)">№</th>
+                        <th onclick="sortTable(1)">ФИО</th>
                         <th>Предметные области</th>
-                        <th>Работы</th>
+                        <th onclick="sortTable(2)">Работы</th>
                     </tr>
                 </thead>
-                <tbody>
+                {{-- <tbody id="dataTable">
+                    @foreach ($expertsDB as $index => $expert)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $expert->full_name }}</td>
+                            <td>{{ $expert->expert_subject_areas }}</td>
+                            <td>{{ $expert->expert_works }}</td>
+                        </tr>
+                    @endforeach
+                </tbody> --}}
+                <tbody id="dataTable">
                     <tr>
                         <td>1</td>
                         <td><a href="#">Иванов Иван Иванович</a></td>

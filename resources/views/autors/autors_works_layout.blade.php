@@ -1,51 +1,45 @@
-@extends('autors/autors_layout')
+@extends('main_layout')
 
-@section('autors_main_content')
-    <div class="row-container">
+@section('main_content')
+    <div class="row-container" style="margin-top: 42px;">
         <div class="column-container">
             <label>Всего работ: {{ $countAllWorks }}</label>
             <label>Проверенные работы: {{ $countAllVerifiedWorks }}</label>
             <label>Непроверенные работы: {{ $countAllUnverifiedWorks }}</label>
         </div>
         <div class="container-fluid" style="padding-top: 0px; padding-bottom: 0px;">
-            <table class="table" style="margin-right: 40px">
+            <table class="table" id="dataNameTable">
                 <thead>
                     <tr>
-                        <th>№</th>
-                        <th>Наименование</th>
-                        <th>Предметная область</th>
-                        <th>Процент оригинальности</th>
-                        <th>Дата загрузки</th>
-                        <th>Итоговый балл</th>
-                        <th>Статус</th>
+                        <th onclick="sortTable(0)">№</th>
+                        <th onclick="sortTable(1)">Наименование</th>
+                        <th onclick="sortTable(2)">Предметная область</th>
+                        <th onclick="sortTable(3)">Процент оригинальности</th>
+                        <th onclick="sortTable(4)">Дата загрузки</th>
+                        <th onclick="sortTable(5)">Итоговый балл</th>
+                        <th onclick="sortTable(7)">Статус</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="dataTable">
                     @foreach ($worksDB as $index => $work)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td><a href="#">{{ $work->name_work }}</a></td>
+                            <td>
+                                <a href="/loadPdfFiles/{{ $work->file_name }}" download>{{ $work->name_work }}</a>
+                            </td>
                             <td>{{ $work->name_subject_area }}</td>
-                            <td><a href="#">{{ $work->original_percent }}%</a></td>
+                            <td>
+                                <a href="#" onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
+                                    {{ $work->original_percent }}%
+                                </a>
+                            </td>
                             <td>{{ date('d.m.Y', strtotime($work->created_at)) }}</td>
                             <td>{{ $work->final_grade }}</td>
-                            <td>{{ $work->verification_status }}</td>
+                            <td>{{ $work->status }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-
-    {{-- <div class="container" style="justify-content: space-between; margin-left: 40px;">
-        <div class="label">
-            <h1>Всего работ: ...</h1>
-        </div>
-        <div class="label">
-            <h1>Проверенные работы: ...</h1>
-        </div>
-        <div class="label">
-            <h1>Непроверенные работы: ...</h1>
-        </div>
-    </div> --}}
 @endsection

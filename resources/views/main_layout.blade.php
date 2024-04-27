@@ -17,14 +17,15 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
 </head>
 <header>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid" style="justify-content: space-around">
-            <a class="navbar-brand container" href="{{ url('/seeMyWorks') }} ">
-                {{-- надо сделать переход на основную страницу в зависимости от пользователя --}}
+            <a class="navbar-brand container" href="{{ $url }} ">
                 <div class="logo">
                     <img src="images/logo-IRNITU.png" alt="logo-IRNITU" />
                 </div>
@@ -32,7 +33,83 @@
             </a>
             <div class="collapse navbar-collapse" style="justify-content: end;">
                 <ul class="navbar-nav" style="align-items: center;">
-                    @yield('navbar_ul_content')
+                    @if ($role === 'Председатель')
+                        <li class="nav-item">
+                            <select onchange="location = this.value;">
+                                <option disabled selected>Председатель</option>
+                                <option value="show-works">Работы</option>
+                                <option value="show-experts">Эксперты</option>
+                                <option value="#">Скачать отчетный документ</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <select onchange="location = this.value;">
+                                <option disabled selected>Эксперт</option>
+                                <option value="e-show-works">Работы для оценивания</option>
+                                {{-- убрать потом --}}
+                                <option value="check-work">Типо оценка работы</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <select onchange="location = this.value;">
+                                <option disabled selected>Автор</option>
+                                <option value="load-my-work">Загрузка работ</option>
+                                <option value="my-works">Мои работы</option>
+                            </select>
+                        </li>
+                    @endif
+                    @if ($role === 'Секретарь')
+                        <li class="nav-item">
+                            <select onchange="location = this.value;">
+                                <option disabled selected>Секретарь</option>
+                                <option value="show-works">Работы</option>
+                                <option value="show-experts">Эксперты</option>
+                                <option value="validation-works">Подтверждение работ</option>
+                                <option value="add-date">Добавление заседания</option>
+                                <option value="#">Скачать отчетный документ</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <select onchange="location = this.value;">
+                                <option disabled selected>Эксперт</option>
+                                <option value="e-show-works">Работы для оценивания</option>
+                                {{-- убрать потом --}}
+                                <option value="check-work">Типо оценка работы</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <select onchange="location = this.value;">
+                                <option disabled selected>Автор</option>
+                                <option value="load-my-work">Загрузка работ</option>
+                                <option value="my-works">Мои работы</option>
+                            </select>
+                        </li>
+                    @endif
+                    @if ($role === 'Эксперт')
+                        <li class="nav-item">
+                            <select onchange="location = this.value;">
+                                <option disabled selected>Эксперт</option>
+                                <option value="e-show-works">Работы для оценивания</option>
+                                {{-- убрать потом --}}
+                                <option value="check-work">Типо оценка работы</option>
+                            </select>
+                        </li>
+                        <li class="nav-item">
+                            <select onchange="location = this.value;">
+                                <option disabled selected>Автор</option>
+                                <option value="load-my-work">Загрузка работ</option>
+                                <option value="my-works">Мои работы</option>
+                            </select>
+                        </li>
+                    @endif
+                    @if ($role === 'Автор')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/load-my-work') }}">Загрузка работы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/my-works') }} ">Мои работы</a>
+                        </li>
+                    @endif
                 </ul>
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
@@ -52,8 +129,10 @@
                     <div class="modal-header">
                         <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" id="modalMessage">
                         {{ $message }}
+                        {{-- <a href="{{ $message }}" target="_blank">1. {{ $message }}</a>
+                        <a href="{{ $message }}" target="_blank">2. {{ $message }}</a> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal">Закрыть</button>
@@ -62,7 +141,25 @@
             </div>
         </div>
     @endif
+    @if (isset($message1) || isset($message2) || isset($percent))
+        <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
+                    </div>
+                    <div class="modal-body" id="modalMessage1"></div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     @yield('main_content')
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> --}}
 </body>
 
 </html>

@@ -1,16 +1,23 @@
-@extends('experts/experts_layout')
+@extends('main_layout')
 
-@section('experts_main_content')
+@section('main_content')
     <div class="column-container" style="margin-top: 2%; display: flex; align-items: stretch;">
         <h1 style="margin-bottom: 10%;">Проверка работы</h1>
-        <h2 style="margin-bottom: 10%; white-space: nowrap;"><a href="#" style="color: #ffffff">Сетевые игровые
-                технологии как средство
-                повышения эффективности учебного процесса</a></h2>
+        <h2 style="margin-bottom: 10%; white-space: nowrap; text-decoration: underline">
+            <a href="{{ $link }}" download style="color: #ffffff">Сетевые игровые технологии как
+                средство повышения эффективности учебного процесса</a>
+
+        </h2>
         <div class="row-container" style="padding: 0%;">
             <div class="grid-container">
                 <div class="grid-item" style="margin-top: 0%; margin-bottom: 5%; margin-left: 0%; margin-right: 5%;">
                     <h2 style="white-space: nowrap;">
-                        Процент оригинальности работы <a href="#" style="color: #ffffff">...%</a></h2>
+                        Процент оригинальности работы
+                        <a href="#" onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')"
+                            style="color: #ffffff; text-decoration: underline">
+                            99 %
+                        </a>
+                    </h2>
                 </div>
                 <div class="grid-item"></div>
                 <div class="grid-item">

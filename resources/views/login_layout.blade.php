@@ -22,24 +22,6 @@
 </head>
 
 <body style="padding: 0px">
-    @if (isset($message))
-        <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
-                    </div>
-                    <div id="modal-body" class="modal-body">
-                        {{ $message }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">Закрыть</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
     <div class="login">
         <div class="container" style=" padding-top: 5%; padding-bottom: 5%;">
             <div class="logo">
@@ -75,6 +57,24 @@
             <button type="submit">Войти с помощью Кампуса</button>
         </form>
     </div>
+    @if (isset($message))
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
+                    </div>
+                    <div class="modal-body" id="modalMessage">
+                        {{ $message }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 </body>
 
 </html>
