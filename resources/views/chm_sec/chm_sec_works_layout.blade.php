@@ -24,6 +24,7 @@
                         <th onclick="sortTable(3)">Процент оригинальности</th>
                         <th onclick="sortTable(4)">Дата загрузки</th>
                         <th onclick="sortTable(5)">Итоговый балл</th>
+                        <th onclick="sortTable(6)">Статус</th>
                         <th>Проверяющие</th>
                     </tr>
                 </thead>
@@ -46,6 +47,7 @@
                                     {{ $work->final_grade }}
                                 </a>
                             </td>
+                            <td>{{ $work->status }}</td>
                             <td>Проверяющие</td>
                         </tr>
                     @endforeach

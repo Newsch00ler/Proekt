@@ -11,19 +11,27 @@ use DateTime;
 class SecController extends Controller
 {
     public function showWorks(){
-        $worksDB = DB::select('select * from my_works');
+        $worksDB = DB::select('select * from all_works');
         $countAllWorks = DB::select('select COUNT(*) from works');
         $countAllVerifiedWorks = DB::select('select COUNT(*) from works where status = \'Внесена в протокол\'');
         $countAllUnverifiedWorks = DB::select('select COUNT(*) from works where status = \'Не подтверждена\' or status = \'На проверке\'');
         $role = Auth::user()->role;
         $url = url('/show-works');
+        // dd($worksDB);
         return view('chm_sec/chm_sec_works_layout', ["title" => "Работы", "message1" => "Тут работы", "message2" => "Тут оценки","link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "worksDB" => $worksDB, "countAllWorks" => $countAllWorks[0]->count, "countAllVerifiedWorks" => $countAllVerifiedWorks[0]->count, "countAllUnverifiedWorks" => $countAllUnverifiedWorks[0]->count, 'url' => $url, 'role' => $role]);
     }
 
     public function showExperts(){
+        $expertsDB = DB::select('select users.full_name,
+            STRING_AGG(subject_areas.name_subject_area, \', \') as name_subject_area
+        from users
+        inner join users_subject_areas on users.id_user = users_subject_areas.id_user
+        inner join subject_areas on users_subject_areas.id_subject_area  = subject_areas.id_subject_area
+        where users.role != \'Автор\' and users.role != \'Администратор\'
+        group by users.id_user');
         $role = Auth::user()->role;
         $url = url('/show-works');
-        return view('chm_sec/chm_sec_experts_layout', ["title" => "Эксперты", 'url' => $url, 'role' => $role]);
+        return view('chm_sec/chm_sec_experts_layout', ["title" => "Эксперты", 'expertsDB' => $expertsDB, 'url' => $url, 'role' => $role]);
     }
 
     public function addDate() {
@@ -71,6 +79,17 @@ class SecController extends Controller
         $workIds = $request->input('work_ids', []);
         if (!empty($workIds)) {
             DB::table('works')->whereIn('id_work', $workIds)->update(['status' => 'На проверке']);
+            foreach ($workIds as $workId) {
+                $workSubjectAreas = DB::select('select
+                    STRING_AGG(subject_areas.name_subject_area, \', \') as name_subject_area
+                from works
+                left join works_subject_areas ON works.id_work = works_subject_areas.id_work
+                left join subject_areas ON works_subject_areas.id_subject_area = subject_areas.id_subject_area
+                where works.id_work = ?', [$workId]);
+                dd($workSubjectAreas[0]->name_subject_area);
+                // продолжить делать добавление работ на проверку к экспертам после подтверждения
+                DB::table('works')->whereIn('id_work', $workIds)->update(['status' => 'На проверке']);
+            }
         }
         return redirect()->back();
     }

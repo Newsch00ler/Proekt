@@ -13,7 +13,7 @@ return new class extends Migration
     public function up()
     {
         DB::statement('
-            CREATE VIEW my_works AS
+            CREATE VIEW all_works AS
             SELECT
                 works.name_work as name_work,
                 STRING_AGG(subject_areas.name_subject_area, \', \') as name_subject_area,
@@ -21,7 +21,7 @@ return new class extends Migration
                 works.created_at as created_at,
                 works.final_grade as final_grade,
                 works.status as status,
-	            SPLIT_PART(link_pdf_file, '\\', -1) AS file_name
+	            SPLIT_PART(link_pdf_file, \'\\\', -1) AS file_name
             FROM works
             LEFT JOIN works_subject_areas ON works.id_work = works_subject_areas.id_work
             LEFT JOIN subject_areas ON works_subject_areas.id_subject_area = subject_areas.id_subject_area

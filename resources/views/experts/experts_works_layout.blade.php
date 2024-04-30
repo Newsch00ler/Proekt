@@ -2,11 +2,11 @@
 
 @section('main_content')
     <div class="row-container" style="margin-top: 42px;">
-        <div class="column-container">
+        {{-- <div class="column-container">
             <label>Всего работ: {{ $countAllWorks }}</label>
             <label>Проверенные работы: {{ $countAllVerifiedWorks }}</label>
             <label>Непроверенные работы: {{ $countAllUnverifiedWorks }}</label>
-        </div>
+        </div> --}}
         <div class="container-fluid" style="padding-top: 0px; padding-bottom: 0px;">
             <table class="table">
                 <thead>
@@ -19,11 +19,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($worksDB as $index => $work)
+                    @foreach ($worksForCheck as $index => $work)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>
-                                <a href="/loadPdfFiles/{{ $work->file_name }}" download>{{ $work->name_work }}</a>
+                                <a href="/checkWork/{{ $work->name_work }}">{{ $work->name_work }}</a>
                             </td>
                             <td>{{ $work->name_subject_area }}</td>
                             <td>

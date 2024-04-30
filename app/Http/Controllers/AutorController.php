@@ -52,7 +52,6 @@ class AutorController extends Controller
 
     // отображение работ только авторизованного пользователя
     public function showPageMyWorks() {
-        $worksDB = DB::select('select * from my_works');
         $worksDB = DB::select('select works.name_work,
             STRING_AGG(subject_areas.name_subject_area, \', \') as name_subject_area,
             works.original_percent as original_percent,
@@ -85,6 +84,7 @@ class AutorController extends Controller
         else if ($role === 'Автор'){
             $url = url('/my-works');
         }
+        // dd($worksDB);
         return view('autors/autors_works_layout', ["title" => "Мои работы", "message1" => "Тут надо менять всё", "link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "worksDB" => $worksDB, "countAllWorks" => $countAllWorks[0]->count, "countAllVerifiedWorks" => $countAllVerifiedWorks[0]->count, "countAllUnverifiedWorks" => $countAllUnverifiedWorks[0]->count, 'url' => $url, 'role' => $role]); //"url" => "/myWorksTest", "method" => "get",
     }
 
