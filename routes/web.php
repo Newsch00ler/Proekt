@@ -52,16 +52,19 @@ Route::middleware([CheckRole::class . ':Председатель,Секрета�
 
 //только секретарь
 Route::middleware([CheckRole::class . ':Секретарь'])->group(function () {
-    Route::get('/add-date', [SecController::class, 'addDate'])->name('add.date');
+    Route::get('/meeting', [SecController::class, 'meeting'])->name('meeting');
     Route::post('/save-date', [SecController::class, 'saveDate'])->name('save.date');
+    Route::post('/approve-protocol', [SecController::class, 'approveProtocol'])->name('approve.protocol');
+    Route::post('/not-approve-protocol', [SecController::class, 'notApproveProtocol'])->name('not.approve.protocol');
     Route::get('/validation-works', [SecController::class, 'valWorks'])->name('validation.works');
     Route::post('/save-validation', [SecController::class, 'saveVal'])->name('save.validation');
 });
 
 //для председателя, секретаря и эксперта
 Route::middleware([CheckRole::class . ':Председатель,Секретарь,Эксперт'])->group(function () {
-    Route::get('/e-show-works', [ExpertController::class, 'showWorks'])->name('show.works');
-    Route::get('/check-work', [ExpertController::class, 'checkWork'])->name('check.works');
+    Route::get('/e-show-works', [ExpertController::class, 'showWorks'])->name('e.show.works');
+    Route::get('/check-work', [ExpertController::class, 'checkWork'])->name('check.work');
+    Route::post('/save-check-work', [ExpertController::class, 'saveCheckWork'])->name('save.check.work');
 });
 
 //для всех

@@ -3,10 +3,13 @@
 @section('main_content')
     <div class="row-container" style="margin-top: 42px;">
         <div class="column-container">
-            <select style="margin-bottom: 42px; width: 100%;">
+            <select style="margin-bottom: 42px; width: 100%;" id="statusSelect" onchange="filterTableByStatus()">
                 <option disabled selected>Фильтровать</option>
+                <option>Внесена в протокол</option>
                 <option>Проверена</option>
                 <option>На проверке</option>
+                <option>Не подтверждена</option>
+                <option>Сбросить</option>
             </select>
             <input class="input" type="text" id="searchInput" name="search" autocomplete="off" onkeyup="filterTable()"
                 style="margin-bottom: 42px; width: 100%;" placeholder="Поиск">
@@ -31,24 +34,55 @@
                 <tbody id="dataTable">
                     @foreach ($worksDB as $index => $work)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                <a href="/loadPdfFiles/{{ $work->file_name }}" download>{{ $work->name_work }}</a>
-                            </td>
-                            <td>{{ $work->name_subject_area }}</td>
-                            <td>
-                                <a href="#" onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
-                                    {{ $work->original_percent }}%
-                                </a>
-                            </td>
-                            <td>{{ date('d.m.Y', strtotime($work->created_at)) }}</td>
-                            <td>
-                                <a href="#" onclick="openModal(event, '{{ $message2 }}')">
-                                    {{ $work->final_grade }}
-                                </a>
-                            </td>
-                            <td>{{ $work->status }}</td>
-                            <td>Проверяющие</td>
+                            @if ($work->original_percent < 61)
+                                <td class="yelowwTd">{{ $index + 1 }}</td>
+                                <td class="yelowwTd">
+                                    <a href="/loadPdfFiles/{{ $work->file_name }}" download>{{ $work->name_work }}</a>
+                                </td>
+                                <td class="yelowwTd">{{ $work->name_subject_area }}</td>
+                                <td class="yelowwTd">
+                                    <a class="redA" href=""
+                                        onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
+                                        {{ $work->original_percent }}%
+                                    </a>
+                                </td>
+                                <td class="yelowwTd">{{ date('d.m.Y', strtotime($work->created_at)) }}</td>
+                                <td class="yelowwTd">
+                                    <a href="" onclick="openModal(event, '{{ $message2[$index] }}')">
+                                        {{ $work->final_grade }}
+                                    </a>
+                                </td>
+                                <td class="yelowwTd">{{ $work->status }}</td>
+                                @if ($work->status === 'Не подтверждена')
+                                    <td class="yelowwTd"></td>
+                                @else
+                                    <td class="yelowwTd">{{ $work->experts }}</td>
+                                @endif
+                            @else
+                                <td>{{ $index + 1 }}</td>
+                                <td>
+                                    <a href="/loadPdfFiles/{{ $work->file_name }}" download>{{ $work->name_work }}</a>
+                                </td>
+                                <td>{{ $work->name_subject_area }}</td>
+                                <td>
+                                    <a href=""
+                                        onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
+                                        {{ $work->original_percent }}%
+                                    </a>
+                                </td>
+                                <td>{{ date('d.m.Y', strtotime($work->created_at)) }}</td>
+                                <td>
+                                    <a href="" onclick="openModal(event, '{{ $message2[$index] }}')">
+                                        {{ $work->final_grade }}
+                                    </a>
+                                </td>
+                                <td>{{ $work->status }}</td>
+                                @if ($work->status === 'Не подтверждена' || $work->status === 'Отклонена')
+                                    <td></td>
+                                @else
+                                    <td>{{ $work->experts }}</td>
+                                @endif
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

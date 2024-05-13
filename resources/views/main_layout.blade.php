@@ -29,29 +29,32 @@
                 <div class="logo">
                     <img src="images/logo-IRNITU.png" alt="logo-IRNITU" />
                 </div>
-                <h1>Личный кабинет</h1>
+                <div>
+                    <h1>Личный кабинет</h1>
+                    <hr style="margin: 2px 0 2px 0; border: 1px solid white; background: white">
+                    <h3>{{ $full_name }}</h3>
+                    <h3>{{ $viewRole }}</h3>
+                </div>
             </a>
             <div class="collapse navbar-collapse" style="justify-content: end;">
                 <ul class="navbar-nav" style="align-items: center;">
                     @if ($role === 'Председатель')
                         <li class="nav-item">
-                            <select onchange="location = this.value;">
-                                <option disabled selected>Председатель</option>
+                            <select onchange="location = this.value; resetOptions(this);">
+                                <option style="padding-left: 32px" disabled selected>Председатель</option>
                                 <option value="show-works">Работы</option>
                                 <option value="show-experts">Эксперты</option>
                                 <option value="#">Скачать отчетный документ</option>
                             </select>
                         </li>
                         <li class="nav-item">
-                            <select onchange="location = this.value;">
+                            <select onchange="location = this.value; resetOptions(this);">
                                 <option disabled selected>Эксперт</option>
                                 <option value="e-show-works">Работы для оценивания</option>
-                                {{-- убрать потом --}}
-                                <option value="check-work">Типо оценка работы</option>
                             </select>
                         </li>
                         <li class="nav-item">
-                            <select onchange="location = this.value;">
+                            <select onchange="location = this.value; resetOptions(this);">
                                 <option disabled selected>Автор</option>
                                 <option value="load-my-work">Загрузка работ</option>
                                 <option value="my-works">Мои работы</option>
@@ -60,25 +63,23 @@
                     @endif
                     @if ($role === 'Секретарь')
                         <li class="nav-item">
-                            <select onchange="location = this.value;">
+                            <select onchange="location = this.value; resetOptions(this);">
                                 <option disabled selected>Секретарь</option>
                                 <option value="show-works">Работы</option>
                                 <option value="show-experts">Эксперты</option>
                                 <option value="validation-works">Подтверждение работ</option>
-                                <option value="add-date">Добавление заседания</option>
+                                <option value="meeting">Заседание и протокол</option>
                                 <option value="#">Скачать отчетный документ</option>
                             </select>
                         </li>
                         <li class="nav-item">
-                            <select onchange="location = this.value;">
+                            <select onchange="location = this.value; resetOptions(this);">
                                 <option disabled selected>Эксперт</option>
                                 <option value="e-show-works">Работы для оценивания</option>
-                                {{-- убрать потом --}}
-                                <option value="check-work">Типо оценка работы</option>
                             </select>
                         </li>
                         <li class="nav-item">
-                            <select onchange="location = this.value;">
+                            <select onchange="location = this.value; resetOptions(this);">
                                 <option disabled selected>Автор</option>
                                 <option value="load-my-work">Загрузка работ</option>
                                 <option value="my-works">Мои работы</option>
@@ -87,15 +88,13 @@
                     @endif
                     @if ($role === 'Эксперт')
                         <li class="nav-item">
-                            <select onchange="location = this.value;">
+                            <select onchange="location = this.value; resetOptions(this);">
                                 <option disabled selected>Эксперт</option>
                                 <option value="e-show-works">Работы для оценивания</option>
-                                {{-- убрать потом --}}
-                                <option value="check-work">Типо оценка работы</option>
                             </select>
                         </li>
                         <li class="nav-item">
-                            <select onchange="location = this.value;">
+                            <select onchange="location = this.value; resetOptions(this);">
                                 <option disabled selected>Автор</option>
                                 <option value="load-my-work">Загрузка работ</option>
                                 <option value="my-works">Мои работы</option>
@@ -131,8 +130,6 @@
                     </div>
                     <div class="modal-body" id="modalMessage">
                         {{ $message }}
-                        {{-- <a href="{{ $message }}" target="_blank">1. {{ $message }}</a>
-                        <a href="{{ $message }}" target="_blank">2. {{ $message }}</a> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal">Закрыть</button>
@@ -141,13 +138,13 @@
             </div>
         </div>
     @endif
-    @if (isset($message1) || isset($message2) || isset($percent))
+    @if (isset($message1) || isset($message2))
         <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
+                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Информация
                     </div>
                     <div class="modal-body" id="modalMessage1"></div>
                     <div class="modal-footer">
@@ -158,8 +155,6 @@
         </div>
     @endif
     @yield('main_content')
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> --}}
 </body>
 
 </html>

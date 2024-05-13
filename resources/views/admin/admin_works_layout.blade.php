@@ -17,15 +17,16 @@
                             <th onclick="sortTable(1)">Наименование</th>
                             <th>Язык</th>
                             <th>Творческая</th>
-                            <th>Гриф</th>
-                            <th>Статус проверки</th>
+                            <th>Тип</th>
+                            <th>Статус</th>
+                            <th>Оценка</th>
                             <th>ID протокола</th>
                             <th>Процент оригинальности</th>
                             <th>Дата загрузки</th>
                             <th>Ссылка из эл. библиотеки</th>
                             <th>Ссылка на файл выписки</th>
+                            <th>Ссылка на pdf файл</th>
                             <th>Ссылка на текст. файл</th>
-                            <th>Одобрение</th>
                         </tr>
                     </thead>
                     <tbody id="dataTable">
@@ -37,7 +38,19 @@
                                 <td>
                                     <input name="names[{{ $work->id_work }}]" value="{{ $work->name_work }}">
                                 </td>
-                                <td><input name="languages[{{ $work->id_work }}]" value="{{ $work->language }}"></td>
+                                <td>
+                                    <div style="margin: auto; width: fit-content;">
+                                        <select name="languages[{{ $work->id_work }}]" class="type-select">
+                                            <option value="" {{ $work->language == '' ? 'selected' : '' }}></option>
+                                            <option value="Русский" {{ $work->language == 'Русский' ? 'selected' : '' }}>
+                                                Русский
+                                            </option>
+                                            <option value="Иностранный"
+                                                {{ $work->language == 'Иностранный' ? 'selected' : '' }}>
+                                                Иностранный</option>
+                                        </select>
+                                    </div>
+                                </td>
                                 <td>
                                     <input name="creatives[{{ $work->id_work }}]" type="checkbox"
                                         style="height: 20px; width: 20px; align-self: center"
@@ -45,36 +58,51 @@
                                 </td>
                                 <td>
                                     <div style="margin: auto; width: fit-content;">
-                                        <select name="signatures[{{ $work->id_work }}]" class="signature-select">
-                                            <option value="" {{ $work->signature == '' ? 'selected' : '' }}></option>
+                                        <select name="types[{{ $work->id_work }}]" class="type-select">
+                                            <option value="" {{ $work->type == '' ? 'selected' : '' }}></option>
                                             <option value="Учебник с грифом"
-                                                {{ $work->signature == 'Учебник с грифом' ? 'selected' : '' }}>
+                                                {{ $work->type == 'Учебник с грифом' ? 'selected' : '' }}>
                                                 Учебник с грифом
                                             </option>
                                             <option value="Учебное пособие с грифом"
-                                                {{ $work->signature == 'Учебное пособие с грифом' ? 'selected' : '' }}>
+                                                {{ $work->type == 'Учебное пособие с грифом' ? 'selected' : '' }}>
                                                 Учебное
                                                 пособие с грифом</option>
                                             <option value="Учебное пособие"
-                                                {{ $work->signature == 'Учебное пособие' ? 'selected' : '' }}>
+                                                {{ $work->type == 'Учебное пособие' ? 'selected' : '' }}>
                                                 Учебное пособие
                                             </option>
                                             <option value="Сборник задач"
-                                                {{ $work->signature == 'Сборник задач' ? 'selected' : '' }}>
+                                                {{ $work->type == 'Сборник задач' ? 'selected' : '' }}>
                                                 Сборник задач</option>
                                             <option value="Практикум / лабораторный практикум"
-                                                {{ $work->signature == 'Практикум / лабораторный практикум' ? 'selected' : '' }}>
+                                                {{ $work->type == 'Практикум / лабораторный практикум' ? 'selected' : '' }}>
                                                 Практикум / лабораторный практикум</option>
                                             <option value="Творческая работа"
-                                                {{ $work->signature == 'Творческая работа' ? 'selected' : '' }}>
+                                                {{ $work->type == 'Творческая работа' ? 'selected' : '' }}>
                                                 Творческая работа</option>
                                         </select>
                                     </div>
                                 </td>
                                 <td>
-                                    <input name="verification_statuses[{{ $work->id_work }}]" type="checkbox"
-                                        style="height: 20px; width: 20px;"
-                                        {{ $work->verification_status ? 'checked' : '' }}>
+                                    <div style="margin: auto; width: fit-content;">
+                                        <select name="statuses[{{ $work->id_work }}]" class="status-select">
+                                            <option value="" {{ $work->status == '' ? 'selected' : '' }}></option>
+                                            <option value="Не подтверждена"
+                                                {{ $work->status == 'Не подтверждена' ? 'selected' : '' }}>
+                                                Не подтверждена
+                                            </option>
+                                            <option value="На проверке"
+                                                {{ $work->status == 'На проверке' ? 'selected' : '' }}>
+                                                На проверке</option>
+                                            <option value="Внесена в протокол"
+                                                {{ $work->status == 'Внесена в протокол' ? 'selected' : '' }}>
+                                                Внесена в протокол
+                                            </option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td><input name="final_grades[{{ $work->id_work }}]" value="{{ $work->final_grade }}">
                                 </td>
                                 <td><input name="ids_protocol[{{ $work->id_work }}]" value="{{ $work->id_protocol }}">
                                 </td>
@@ -85,12 +113,10 @@
                                 </td>
                                 <td><input name="links_file_extract_protocol[{{ $work->id_work }}]"
                                         value="{{ $work->link_file_extract_protocol }}"></td>
+                                <td><input name="links_pdf_file[{{ $work->id_work }}]" value="{{ $work->link_pdf_file }}">
+                                </td>
                                 <td><input name="links_text_file[{{ $work->id_work }}]"
                                         value="{{ $work->link_text_file }}"></td>
-                                <td>
-                                    <input name="validations[{{ $work->id_work }}]" type="checkbox"
-                                        style="height: 20px; width: 20px;" {{ $work->validation ? 'checked' : '' }}>
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>

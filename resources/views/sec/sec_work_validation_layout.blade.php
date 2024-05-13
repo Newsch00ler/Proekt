@@ -19,27 +19,35 @@
                             <th onclick="sortTable(3)">Процент оригинальности</th>
                             <th onclick="sortTable(4)">Дата загрузки</th>
                             <th>Подтверждение</th>
+                            {{-- <th>Отклонение</th> --}}
                         </tr>
                     </thead>
                     <tbody id="dataTable">
-                        {{-- @foreach ($worksDB as $index => $work)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td><a href="#">{{ $work->id_subject_area }}</a></td>
-                                <td>{{ $work->name_subject_area }}</td>
-                            </tr>
-                        @endforeach --}}
                         @foreach ($worksDB as $index => $work)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td><a href="#">{{ $work->name_work }}</a></td>
+                                <td><a href="/loadPdfFiles/{{ $work->file_name }}" download>{{ $work->name_work }}</a></td>
                                 <td>{{ $work->name_subject_area }}</td>
-                                <td><a href="#">{{ $work->original_percent }}%</a></td>
+                                <td><a href="#"
+                                        onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
+                                        {{ $work->original_percent }}%
+                                    </a></td>
                                 <td>{{ date('d.m.Y', strtotime($work->created_at)) }}</td>
-                                <td>
+                                <td style="flex-direction: column;">
+                                    <div class="container" style="display: flex; align-items: center; margin-bottom: 5px">
+                                        <input type="radio" name="action_{{ $work->id_work }}" value="approve">
+                                        <label>Подтвердить</label>
+                                    </div>
+                                    <div class="container" style="display: flex; align-items: center;">
+                                        <input type="radio" name="action_{{ $work->id_work }}" value="reject">
+                                        <label>Отклонить</label>
+                                    </div>
+                                </td>
+
+                                {{-- <td>
                                     <input type="checkbox" style="height: 30px; width: 30px;" name="work_ids[]"
                                         value="{{ $work->id_work }}">
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>

@@ -6,6 +6,7 @@
             <label>Всего работ: {{ $countAllWorks }}</label>
             <label>Проверенные работы: {{ $countAllVerifiedWorks }}</label>
             <label>Непроверенные работы: {{ $countAllUnverifiedWorks }}</label>
+            <label>Отклоненные работы: {{ $countAllRejectedWorks }}</label>
         </div>
         <div class="container-fluid" style="padding-top: 0px; padding-bottom: 0px;">
             <table class="table" id="dataNameTable">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Work;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -9,56 +10,167 @@ use Illuminate\Http\Request;
 class ExpertController extends Controller
 {
     public function showWorks(){
-        $expertSubjectAreas = DB::select('select subject_areas.name_subject_area as name_subject_area
-        from subject_areas
-        inner join users_subject_areas on subject_areas.id_subject_area = users_subject_areas.id_subject_area
-        inner join users on users_subject_areas.id_user  = users.id_user
-        where users.id_user = ?', [Auth::user()->id_user]);
-        $expertSubjectAreas = array_column($expertSubjectAreas, 'name_subject_area'); // предметные области эксперта
-        $worksSubjectAreas = []; // работы по предметным областям эксперта
-        foreach ($expertSubjectAreas as $expertSubjectArea) {
-            $worksForSubjectArea = DB::select('select works.name_work,
-                STRING_AGG(DISTINCT subject_areas.name_subject_area, \', \') as name_subject_area,
-                works.original_percent as original_percent,
-                works.created_at as created_at,
-                SPLIT_PART(link_pdf_file, \'\\\', -1) as file_name,
-                works.status as status
-            from works
-            inner join works_subject_areas on works.id_work = works_subject_areas.id_work
-            inner join subject_areas on works_subject_areas.id_subject_area = subject_areas.id_subject_area
-            where works.status != \'Не подтверждена\' and works.id_work IN (
-                SELECT works_subject_areas.id_work
-                from works_subject_areas
+        try {
+            $id_user = Auth::user()->id_user;
+            $expertSubjectAreas = DB::select('select subject_areas.name_subject_area as name_subject_area
+            from subject_areas
+            inner join users_subject_areas on subject_areas.id_subject_area = users_subject_areas.id_subject_area
+            inner join users on users_subject_areas.id_user  = users.id_user
+            where users.id_user = ?', [Auth::user()->id_user]);
+            $expertSubjectAreas = array_column($expertSubjectAreas, 'name_subject_area'); // предметные области эксперта
+            $worksSubjectAreas = []; // работы по предметным областям эксперта
+            foreach ($expertSubjectAreas as $expertSubjectArea) {
+                $worksForSubjectArea = DB::select('select works.id_work,
+                    works.name_work,
+                    STRING_AGG(DISTINCT subject_areas.name_subject_area, \', \') as name_subject_area,
+                    works.original_percent as original_percent,
+                    works.created_at as created_at,
+                    SPLIT_PART(link_pdf_file, \'\\\', -1) as file_name,
+                    works.status as status
+                from works
+                inner join works_subject_areas on works.id_work = works_subject_areas.id_work
                 inner join subject_areas on works_subject_areas.id_subject_area = subject_areas.id_subject_area
-                where subject_areas.name_subject_area = ?
-            )
-            group by works.name_work, works.original_percent, works.created_at, works.link_pdf_file, works.status', [$expertSubjectArea]);
-            $worksSubjectAreas = array_merge($worksSubjectAreas, $worksForSubjectArea); // добавление всех работ по предметным областям эксперта
+                inner join experts_works on works.id_work = experts_works.id_work
+                inner join users on experts_works.id_user = users.id_user
+                where experts_works.criterion1 is null and
+                experts_works.criterion2 is null and
+                experts_works.criterion3 is null and
+                experts_works.criterion4 is null and
+                experts_works.criterion5 is null and
+                works.status = \'На проверке\' and works.id_work IN (
+                    SELECT works_subject_areas.id_work
+                    from works_subject_areas
+                    inner join subject_areas on works_subject_areas.id_subject_area = subject_areas.id_subject_area
+                    where subject_areas.name_subject_area = ?
+                ) and experts_works.id_user = ?
+                group by works.id_work', [$expertSubjectArea, $id_user]);
+                $worksSubjectAreas = array_merge($worksSubjectAreas, $worksForSubjectArea); // добавление всех работ по предметным областям эксперта
+            }
+            $worksForCheck = array_unique($worksSubjectAreas, SORT_REGULAR);  // оставить только единожды поввторяющиеся работы
+            $full_name = Auth::user()->full_name;
+            $role = Auth::user()->role;
+            if ($role === 'Председатель' || $role === 'Секретарь'){
+                $url = url('/show-works');
+            }
+            else if ($role === 'Эксперт'){
+                $url = url('/e-show-works');
+            }
+            $viewRole = 'Эксперт';
+            return view('experts/experts_works_layout', ["title" => "Работы для оценивания", "message1" => "Тут ссылки на другие работы", "link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "worksForCheck" => $worksForCheck, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
+        } catch (\Exception $exception) {
+            error_log("{$exception->getMessage()}\n");
+            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
         }
-        $worksForCheck = array_unique($worksSubjectAreas, SORT_REGULAR);  // оставить только единожды поввторяющиеся работы
-        // $countAllWorks = count($worksSubjectAreas);
-        // $countAllVerifiedWorks = array_filter($worksSubjectAreas, function($work) {
-        //     return $work->status === 'Внесена в протокол';
-        // });
-        // $countAllVerifiedWorks = array_values($countAllVerifiedWorks);
-        $role = Auth::user()->role;
-        if ($role === 'Председатель' || $role === 'Секретарь'){
-            $url = url('/show-works');
-        }
-        else if ($role === 'Эксперт'){
-            $url = url('/e-show-works');
-        }
-        return view('experts/experts_works_layout', ["title" => "Работы для оценивания", "message1" => "Тут надо менять всё", "link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "worksForCheck" => $worksForCheck, 'url' => $url, 'role' => $role]);
     }
 
-    public function checkWork(){
-        $role = Auth::user()->role;
-        if ($role === 'Председатель' || $role === 'Секретарь'){
-            $url = url('/show-works');
+    public function checkWork(Request $request){
+        try {
+            $id_user = Auth::user()->id_user;
+            $full_name = Auth::user()->full_name;
+            $role = Auth::user()->role;
+            if ($role === 'Председатель' || $role === 'Секретарь'){
+                $url = url('/show-works');
+            }
+            else if ($role === 'Эксперт'){
+                $url = url('/e-show-works');
+            }
+            $viewRole = 'Эксперт';
+            $id_work = $request->query('id');
+            $work = DB::select('select * from works where id_work = ?', [$id_work]);
+            $workForCheck = DB::select('select experts_works.id_user as id_user,
+                experts_works.id_work as id_work,
+                experts_works.criterion1 as criterion1,
+                experts_works.criterion2 as criterion2,
+                experts_works.criterion3 as criterion3,
+                experts_works.criterion4 as criterion4,
+                experts_works.criterion5 as criterion5,
+                works.name_work as name_work,
+                works.original_percent as original_percent,
+                SPLIT_PART(works.link_pdf_file, \'\\\', -1) as file_name
+            from experts_works
+            inner join works on experts_works.id_work = works.id_work
+            where experts_works.id_user = ? and experts_works.id_work = ?', [$id_user, $id_work]);
+            return view('experts/experts_scoring_layout', ["title" => "Оценка работы", "message" => "Пожалуйста, оцените все критерии", "message1" => "Тут ссылки на другие работы", "link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "work" => $workForCheck[0], 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
+        } catch (\Exception $exception) {
+            error_log("{$exception->getMessage()}\n");
+            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
         }
-        else if ($role === 'Эксперт'){
-            $url = url('/e-show-works');
+    }
+
+    public function saveCheckWork(Request $request) {
+        try {
+            $id_user = Auth::user()->id_user;
+            $workId = $request->input('id_work');
+            $criterion1 = $request->input('selectRelevance');
+            $criterion2 = $request->input('selectCompleteness');
+            $criterion3 = $request->input('selectDepth');
+            $criterion4 = $request->input('selectQuestions');
+            $criterion5 = $request->input('selectQuality');
+            DB::update('update experts_works set criterion1 = ?,
+            criterion2 = ?,
+            criterion3 = ?,
+            criterion4 = ?,
+            criterion5 = ?
+            where id_user = ? and id_work = ?', [$criterion1, $criterion2, $criterion3, $criterion4, $criterion5, $id_user, $workId]);
+            $counts = DB::select('select count(*) as all,
+                (select count(*)
+                from experts_works
+                where criterion1 is not null and
+                criterion2 is not null and
+                criterion3 is not null and
+                criterion4 is not null and
+                criterion5 is not null and
+                id_work = ?) as all_check
+            from experts_works
+            where id_work = ?', [$workId, $workId]);
+            if ($counts[0]->all === $counts[0]->all_check) {
+                $grades = DB::select('select criterion1 + criterion2 + criterion3 + criterion4 + criterion5 as grade
+                from experts_works
+                where id_work = ?', [$workId]);
+                $final_grade = 0;
+                foreach ($grades as $grade) {
+                    $final_grade = $final_grade + $grade->grade;
+                }
+                $type_work = DB::select('select type from works where id_work = ?', [$workId]);
+                $language_work = DB::select('select language from works where id_work = ?', [$workId]);
+                if ($type_work[0]->type === "Учебник с грифом"){
+                    $k = 60;
+                }
+                else if ($type_work[0]->type === "Учебное пособие с грифом"){
+                    $k = 40;
+                }
+                else if ($type_work[0]->type === "Учебное пособие"){
+                    if ($language_work[0]->language === "Русский"){
+                        $k = 30;
+                    }
+                    else {
+                        $k = 40;
+                    }
+                }
+                else if ($type_work[0]->type === "Сборник задач" || $type_work[0]->type === "Практикум / лабораторный практикум"){
+                    if ($language_work[0]->language === "Русский"){
+                        $k = 25;
+                    }
+                    else {
+                        $k = 30;
+                    }
+                }
+                else{
+                    $k = 1;
+                }
+                $final_grade = $k * ($final_grade / (count($grades) * 50));
+                $maxIdProtocol = DB::select('select max(id_protocol) from protocols where status = \'Создан\'');
+                if ($maxIdProtocol[0]->max === null) {
+                    DB::update('update works set status = \'Проверена\', final_grade = ? where id_work = ?', [$final_grade, $workId]);
+                }
+                else {
+                    DB::update('update works set status = \'Внесена в протокол\', final_grade = ?, id_protocol = ? where id_work = ?', [$final_grade, $maxIdProtocol[0]->max, $workId]);
+                }
+            }
+            return redirect()->route('e.show.works');
+        } catch (\Exception $exception) {
+            error_log("{$exception->getMessage()}\n");
+            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
         }
-        return view('experts/experts_scoring_layout', ["title" => "Оценка работы/id", "message1" => "Тут надо менять всё", "link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", 'url' => $url, 'role' => $role]);
     }
 }

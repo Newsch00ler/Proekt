@@ -17,6 +17,44 @@ $(document).ready(function () {
         document.getElementById('labelForUpload4').textContent = 'Файл ' + fileName.substr(0, 13) + '... загружен';
     });
 
+
+    // отображение модального окна на странице оценки работы
+    $('#myForm2').submit(function(event) {
+        var isEmpty = false;
+
+        $(this).find('#selectRelevance').each(function () {
+            if ($(this).find('option:selected').text() === 'Не оценено') {
+                isEmpty = true;
+            }
+        });
+        $(this).find('#selectCompleteness').each(function () {
+            if ($(this).find('option:selected').text() === 'Не оценено') {
+                isEmpty = true;
+            }
+        });
+        $(this).find('#selectDepth').each(function () {
+            if ($(this).find('option:selected').text() === 'Не оценено') {
+                isEmpty = true;
+            }
+        });
+        $(this).find('#selectQuestions').each(function () {
+            if ($(this).find('option:selected').text() === 'Не оценено') {
+                isEmpty = true;
+            }
+        });
+        $(this).find('#selectQuality').each(function () {
+            if ($(this).find('option:selected').text() === 'Не оценено') {
+                isEmpty = true;
+            }
+        });
+
+        if (isEmpty) {
+            $('#myModal').modal('show');
+            event.preventDefault();
+        }
+    });
+
+
     // отображение модального окна на странице авторизации
     $('#myForm1').submit(function(event) {
         var isEmpty = false;
@@ -34,7 +72,7 @@ $(document).ready(function () {
         });
 
         if (isEmpty) {
-            $('#myModal').modal('show');
+            $('#myModalLogin').modal('show');
             event.preventDefault();
         }
     });
@@ -55,8 +93,8 @@ $(document).ready(function () {
             }
         });
 
-        var selectedValues = $(this).find('#subjectAreaWork').val();
-        if (!selectedValues || selectedValues.length === 0) {
+        var selectedValues1 = $(this).find('#subjectAreaWork').val();
+        if (!selectedValues1 || selectedValues1.length === 0) {
             isEmpty = true;
         }
 
@@ -68,11 +106,11 @@ $(document).ready(function () {
                     isEmpty = true;
                 }
             });
-            $('input[name="linkWork"]').each(function() {
-                if ($(this).val().trim() === "") {
-                    isEmpty = true;
-                }
-            });
+            // $('input[name="linkWork"]').each(function() {
+            //     if ($(this).val().trim() === "") {
+            //         isEmpty = true;
+            //     }
+            // });
         } else if (isFilesContainer2Visible) {
             $('#filesContainer2 input[type="file"]').each(function() {
                 if ($(this)[0].files.length === 0) {
@@ -90,7 +128,7 @@ $(document).ready(function () {
     $('#subjectAreaWork').select2({
         minimumResultsForSearch: Infinity,
         placeholder: function () {
-            $(this).data('placeholder');
+            return $(this).data('placeholder');
         }
     });
 });
@@ -116,20 +154,20 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.grid-item select').forEach(select => {
         select.addEventListener('mouseenter', () => {
             switch (select.id) {
-                case 'grItemRelevance':
-                    helpText.textContent = '1. Текст для актуальности \n 2. \n 3. \n 4. \n 5. \n 6. \n 7. \n 8. \n 9. \n 10. ';
+                case 'selectRelevance':
+                    helpText.textContent = 'Актуальность (0 – 10 баллов)\n\n\n0. Отсутствие актуальности, работа не имеет\nотношения к текущим событиям или проблемам.\n\n10. Высокая актуальность, работа тесно связана\nс современными событиями, тематикой или\nпроблемами.';
                     break;
-                case 'grItemCompleteness':
-                    helpText.textContent = 'Текст для полноты';
+                case 'selectCompleteness':
+                    helpText.textContent = 'Полнота (0 – 10 баллов)\n\n\n0. Неполные данные, работа содержит мало\nинформации или недостаточно развивает тему.\n\n10. Полнота данных, работа содержит всю\nнеобходимую информацию, тщательно\nразработана и исследована.';
                     break;
-                case 'grItemDepth':
-                    helpText.textContent = 'Текст для глубины';
+                case 'selectDepth':
+                    helpText.textContent = 'Глубина (0 – 10 баллов)\n\n\n0. Поверхностный анализ, работа не\nпредоставляет глубоких исследований\nили аргументации.\n\n10. Глубокий анализ, работа представляет\nглубокие исследования, аргументацию и\nпонимание темы.';
                     break;
-                case 'grItemQuestions':
-                    helpText.textContent = 'Текст для вопросов';
+                case 'selectQuestions':
+                    helpText.textContent = 'Наличие вопросов для самопроверки и\nссылки на литературу (0 – 10 балла)\n\n\n0. Отсутствие вопросов или ссылок,\nработа не содержит дополнительных\nисточников или инструментов для\nсамопроверки.\n\n10. Обширные вопросы и ссылки,\nработа содержит множество вопросов\nдля самопроверки и полезные ссылки\nна литературу.';
                     break;
-                case 'grItemQuality':
-                    helpText.textContent = 'Текст для качества графического материала';
+                case 'selectQuality':
+                    helpText.textContent = 'Качество иллюстраций и графического\nматериала (0 – 10 баллов)\n\n\n0. Графический материал отсутствует или\nпредставлен нечитаемым или\nнеинформативным образом.\n\n10. Представлены высококачественные и\nинформативные графические материалы,\nкоторые дополняют и обогащают текст работы.';
                     break;
             }
             helpText.style.display = 'block';
@@ -150,15 +188,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (selectedIndex == 6) {
             document.getElementById('filesContainer1').style.display = 'none';
-            document.getElementById('linkWork').style.display = 'none';
+            // document.getElementById('linkWork').style.display = 'none';
             document.getElementById('filesContainer2').style.display = 'flex';
         } else {
             document.getElementById('filesContainer2').style.display = 'none';
             document.getElementById('filesContainer1').style.display = 'flex';
-            document.getElementById('linkWork').style.display = 'flex';
+            // document.getElementById('linkWork').style.display = 'flex';
         }
     });
 });
+
+function filterTableByStatus() {
+    var statusSelect = document.getElementById("statusSelect");
+    var selectedStatus = statusSelect.options[statusSelect.selectedIndex].text;
+    var table = document.getElementById("dataNameTable");
+    var rows = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var statusCell = rows[i].getElementsByTagName("td")[6];
+        if (statusCell) {
+            var status = statusCell.textContent || statusCell.innerText;
+            if (selectedStatus === "Сбросить" || status === selectedStatus) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+    statusSelect.selectedIndex = 0;
+}
+// Добавляем обработчик события change для селекта
+document.getElementById('statusSelect').addEventListener('change', filterTableByStatus);
 
 // поиск по таблице
 function filterTable() {
@@ -243,10 +303,7 @@ function sortTable(n) {
     }
 }
 
-// $(document).ready(function() {
-//     $('#typeWork').select2({
-//         placeholder: function () {
-//             $(this).data('placeholder');
-//         }
-//     });
-// });
+// сброс селектов на 1ое значение
+function resetOptions(selectElement) {
+    selectElement.selectedIndex = 0;
+}

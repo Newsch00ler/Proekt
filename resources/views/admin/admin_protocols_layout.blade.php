@@ -25,11 +25,36 @@
                                 <td> {{ $protocol->id_protocol }}
                                     <input type="hidden" name="protocol_ids[]" value="{{ $protocol->id_protocol }}">
                                 </td>
-                                <td><input name="meeting_dates[{{ $protocol->id_protocol }}]"
-                                        value="{{ $protocol->meeting_date }}"></td>
+                                <td>
+                                    @if ($protocol->status == 'Утвержден')
+                                        <input style="background: #1E6C8C; margin: auto;" type="date"
+                                            name="meeting_dates[{{ $protocol->id_protocol }}]" min="{{ date('Y-m-d') }}"
+                                            value="{{ $protocol->meeting_date }}" disabled>
+                                    @else
+                                        <input style="background: #1E6C8C; margin: auto;" type="date"
+                                            name="meeting_dates[{{ $protocol->id_protocol }}]" min="{{ date('Y-m-d') }}"
+                                            value="{{ $protocol->meeting_date }}">
+                                    @endif
+                                </td>
                                 <td><input name="links_protocol_file[{{ $protocol->id_protocol }}]"
                                         value="{{ $protocol->link_protocol_file }}"></td>
-                                <td><input name="statuses[{{ $protocol->id_protocol }}]" value="{{ $protocol->status }}">
+                                <td>
+                                    <div style="margin: auto; width: fit-content;">
+                                        <select name="statuses[{{ $protocol->id_protocol }}]" class="status-select">
+                                            <option value="" {{ $protocol->status == '' ? 'selected' : '' }}>
+                                            </option>
+                                            <option value="Создан" {{ $protocol->status == 'Создан' ? 'selected' : '' }}>
+                                                Создан
+                                            </option>
+                                            <option value="К утверждению"
+                                                {{ $protocol->status == 'К утверждению' ? 'selected' : '' }}>
+                                                К утверждению</option>
+                                            <option value="Утвержден"
+                                                {{ $protocol->status == 'Утвержден' ? 'selected' : '' }}>
+                                                Утвержден
+                                            </option>
+                                        </select>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
