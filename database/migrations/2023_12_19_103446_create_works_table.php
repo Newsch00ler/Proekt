@@ -21,7 +21,9 @@ return new class extends Migration
             $table->float('final_grade')->nullable();
             $table->unsignedBigInteger('id_protocol')->nullable();
             $table->float('original_percent')->nullable();
-            $table->boolean('link_library')->nullable();
+            $table->string('publisher')->nullable();
+            $table->integer('publishing_year')->nullable();
+            $table->float('pages_number')->nullable();
             $table->string('link_file_extract_protocol')->unique();
             $table->string('link_pdf_file')->unique();
             $table->string('link_text_file')->unique();

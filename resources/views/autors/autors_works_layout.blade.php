@@ -30,7 +30,7 @@
                             </td>
                             <td>{{ $work->name_subject_area }}</td>
                             <td>
-                                <a href="#" onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
+                                <a href="" onclick="openModal1(event, {{ json_encode($message1[$index]) }})">
                                     {{ $work->original_percent }}%
                                 </a>
                             </td>

@@ -129,7 +129,7 @@ h3 {
 }
 
 .navbar{
-    border-bottom: 2px solid #ffffff;
+    border-bottom: 5px solid #ffffff;
     padding: 0px;
 }
 
@@ -460,37 +460,15 @@ input[type="date"]:hover {
     cursor: pointer;
 }
 
-.pagination {
-    display: flex;
-    justify-content: center;
-    margin: 42px 0 40px 0;
-    border-radius: 4px;
+.modal-body a {
+    color: #000000;
+    /* Цвет ссылки по умолчанию */
+    text-decoration: underline;
+    /* Подчеркивание ссылки */
 }
 
-nav[role="navigation"]{
-    background-color: #4400ff;
-}
-.pagination .page-item {
-
-}
-
-.pagination .page-link {
-
-    color: #2FC6F7;
-    text-decoration: none;
-    border: 1px solid #ff0000;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.pagination .page-item.active .page-link {
-    background-color: #f72f2f;
-    color: #ffffff;
-    border-color: #2FC6F7;
-}
-
-.pagination .page-link:hover {
-    background-color: #ff0000;
+.modal-body a:hover {
+    color: #16bdf5;
 }
 
 .admin button {

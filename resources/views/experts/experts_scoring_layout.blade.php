@@ -16,12 +16,12 @@
                         <h2 style="white-space: nowrap;">
                             Процент оригинальности работы
                             @if ($work->original_percent < 61)
-                                <a href="#" onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')"
+                                <a href="" onclick="openModal1(event, {{ json_encode($message1) }})"
                                     style="color: #ff0000; text-decoration: underline">
                                     {{ $work->original_percent }} %
                                 </a>
                             @else
-                                <a href="#" onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')"
+                                <a href="" onclick="openModal1(event, {{ json_encode($message1) }})"
                                     style="color: #ffffff; text-decoration: underline">
                                     {{ $work->original_percent }} %
                                 </a>

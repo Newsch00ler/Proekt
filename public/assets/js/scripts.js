@@ -106,11 +106,6 @@ $(document).ready(function () {
                     isEmpty = true;
                 }
             });
-            // $('input[name="linkWork"]').each(function() {
-            //     if ($(this).val().trim() === "") {
-            //         isEmpty = true;
-            //     }
-            // });
         } else if (isFilesContainer2Visible) {
             $('#filesContainer2 input[type="file"]').each(function() {
                 if ($(this)[0].files.length === 0) {
@@ -122,6 +117,10 @@ $(document).ready(function () {
         if (isEmpty) {
             $('#myModal').modal('show');
             event.preventDefault();
+        }
+        else {
+            $('#download').click();
+            $('#waitModal').modal('show');
         }
     });
 
@@ -140,11 +139,54 @@ function openModal(event, message, link) {
     event.preventDefault();
 }
 
-// модальное окно 2 для ссылок в таблицах
-function openModal(event, message) {
-    document.getElementById('modalMessage1').innerText = message;
+function openModal1(event, message1) {
+    // console.log(message1[1], message1[2], message1[3], message1[4], message1[5], message1[6], message1[7], message1[8], message1[9], message1[10]);
+    for (let i = 1; i <= 5; i++) {
+        let div = document.getElementById(`m${i}`);
+        let link = div.querySelector("a");
+        link.href = `/loadPdfFiles/${message1[i]}`;
+        let textNode = document.createTextNode(`Работа №${i}: ${message1[i + 5]}%`);
+        link.textContent = '';
+        link.appendChild(textNode);
+    }
     $('#myModal1').modal('show');
     event.preventDefault();
+}
+
+function updateModalContent(message1) {
+    for (let i = 0; i < message1.length; i++) {
+        let workNumber = i + 1;
+        let fileTextPercent = message1[i][0];
+        let percent = message1[i][1];
+
+        let link = document.querySelector(`#m${workNumber} a`);
+        link.href = `/loadPdfFiles/${fileTextPercent}`;
+        link.innerText = `Работа №${workNumber}`;
+
+        let percentDiv = document.querySelector(`#m${workNumber}`);
+        percentDiv.innerText = '';
+        percentDiv.innerHTML += `<a href="/loadPdfFiles/${fileTextPercent}" download>Работа №${workNumber}</a>: ${percent}%`;
+    }
+}
+
+// модальное окно 2 для ссылок в таблицах
+function openModal2(event, message) {
+    document.getElementById('modalMessage2').innerText = message;
+    $('#myModal2').modal('show');
+    event.preventDefault();
+}
+
+// роутинг или скачивание файла протокола
+function handleSelectChange(selectElement) {
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+
+    if (selectedOption.hasAttribute('data-download')) {
+        const downloadUrl = selectedOption.getAttribute('data-download');
+        window.location.href = downloadUrl;
+    } else {
+        location = selectElement.value;
+    }
+    resetOptions(selectElement);
 }
 
 // отображение вспомогательного текста на странице оценки работы экспертом

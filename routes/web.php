@@ -1,42 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use App\Models\Work;
-use App\Models\SubjectArea;
-use App\Http\Controllers\TestController;
-use App\Http\Controllers\Test1Controller;
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SecController;
 use App\Http\Controllers\ExpertController;
 use App\Http\Controllers\AutorController;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 use App\Http\Middleware\CheckRole;
-
-//тестовые
-Route::get('/dsds', function () {
-    // сделать адапт для селектов и инпутов
-    // предс/секр
-    return view('chm_sec/chm_sec_works_layout', // адаптацию надо
-    // return view('chm_sec/chm_sec_experts_layout', // адаптацию надо
-    // секр
-    // return view('sec/sec_add_date_layout', // адаптацию надо
-    // return view('sec/sec_work_verification_layout', // адаптацию надо
-    // эксперт
-    // return view('experts/experts_scoring_layout', // адаптацию надо
-    // return view('experts/experts_works_layout', // адаптацию надо
-             ["title" => "тест"]);
-});
-
-
-// по мудл
-//Route::get('loginM', 'AuthController@login');
-
 
 // по БД вход
 Route::get('/login', [LoginController::class, 'showPageLogin'])->name('login');
@@ -89,16 +61,3 @@ Route::prefix('admin')->middleware(CheckRole::class . ':Администрато
     Route::get('/subject-areas', [AdminController::class, 'subjectAreas'])->name('admin.subjectAreas');
     Route::post('/save-subject-areas', [AdminController::class, 'saveSubjectAreas'])->name('admin.save.subject.areas');
 });
-
-// пока что оставить
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/loadMyWork', [AutorController::class, 'showPageLoadMyWork'])->name('loadMyWork');
-//     Route::post('/uploadProcess', [AutorController::class, 'uploadProcess']);
-//     Route::get('/seeMyWorks', [AutorController::class, 'showPageMyWorks'])->name('seeMyWorks');
-// });
-
-
-
-
-
-

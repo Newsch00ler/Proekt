@@ -115,9 +115,7 @@ class AdminController extends Controller
 
     public function works() {
         try {
-            $worksDB = DB::table('works')
-                ->orderBy('id_work', 'asc')
-                ->simplePaginate(10);
+            $worksDB = DB::select('select * from works order by id_work desc');
             return view('admin/admin_works_layout', ["title" => "Работы", "worksDB" => $worksDB]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
@@ -132,16 +130,28 @@ class AdminController extends Controller
                 $names = $request->input('names');
                 $languages = $request->input('languages');
                 $creatives = $request->input('creatives');
-                $types = $request->input('types');
                 $statuses = $request->input('statuses');
+                $types = $request->input('types');
                 $final_grades = $request->input('final_grades');
                 $id_protocol = $request->input('ids_protocol');
-                $original_percentes = $request->input('original_percentes');
+                $original_percents = $request->input('original_percents');
                 $created_at = $request->input('created_at');
-                $links_library = $request->input('links_library');
+                $publishers = $request->input('publishers');
+                $pages = $request->input('pages');
+                $publish_dates = $request->input('publish_dates');
                 $links_file_extract_protocol = $request->input('links_file_extract_protocol');
                 $links_pdf_file = $request->input('links_pdf_file');
                 $links_text_file = $request->input('links_text_file');
+                $links_text_percent1 = $request->input('links_text_percent1');
+                $links_text_percent2 = $request->input('links_text_percent2');
+                $links_text_percent3 = $request->input('links_text_percent3');
+                $links_text_percent4 = $request->input('links_text_percent4');
+                $links_text_percent5 = $request->input('links_text_percent5');
+                $percents1 = $request->input('percents1');
+                $percents2 = $request->input('percents2');
+                $percents3 = $request->input('percents3');
+                $percents4 = $request->input('percents4');
+                $percents5 = $request->input('percents5');
                 foreach ($workIds as $workId) {
                     DB::table('works')
                         ->where('id_work', $workId)
@@ -149,16 +159,28 @@ class AdminController extends Controller
                             'name_work' => $names[$workId],
                             'language' => $languages[$workId],
                             'creative' => isset($creatives[$workId]) && $creatives[$workId] == 'on' ? 1 : 0,
-                            'type' => $types[$workId],
                             'status' => $statuses[$workId],
                             'final_grade' => $final_grades[$workId],
                             'id_protocol' => $id_protocol[$workId],
-                            'original_percent' => $original_percentes[$workId],
-                            'created_at' => $created_at[$workId],
-                            'link_library' => $links_library[$workId],
+                            'original_percent' => $original_percents[$workId],
                             'link_file_extract_protocol' => $links_file_extract_protocol[$workId],
-                            'link_pdf_file' => $links_pdf_file[$workId],
                             'link_text_file' => $links_text_file[$workId],
+                            'created_at' => $created_at[$workId],
+                            'link_pdf_file' => $links_pdf_file[$workId],
+                            'type' => $types[$workId],
+                            'link_text_percent1' => $links_text_percent1[$workId],
+                            'link_text_percent2' => $links_text_percent2[$workId],
+                            'link_text_percent3' => $links_text_percent3[$workId],
+                            'link_text_percent4' => $links_text_percent4[$workId],
+                            'link_text_percent5' => $links_text_percent5[$workId],
+                            'percent1' => $percents1[$workId],
+                            'percent2' => $percents2[$workId],
+                            'percent3' => $percents3[$workId],
+                            'percent4' => $percents4[$workId],
+                            'percent5' => $percents5[$workId],
+                            'publisher' => $publishers[$workId],
+                            'pages_number' => $pages[$workId],
+                            'publishing_year' => $publish_dates[$workId],
                         ]);
                 }
                 return redirect()->back()->with('success', 'Данные успешно обновлены');
@@ -168,6 +190,7 @@ class AdminController extends Controller
             }
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
+            dd($exception->getMessage());
             return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
         }
     }
@@ -229,7 +252,7 @@ class AdminController extends Controller
                 ->select('works.name_work')
                 ->join('works', 'experts_works.id_work', '=', 'works.id_work')
                 ->get();
-            return view('admin/admin_experts_works_layout', ["title" => "Оценка работ", "experts_worksDB" => $experts_worksDB, "full_names_expertsDB" => $full_names_expertsDB, "names_worksDB" => $names_worksDB]);
+            return view('admin/admin_experts_works_layout', ["title" => "Оценки работ", "experts_worksDB" => $experts_worksDB, "full_names_expertsDB" => $full_names_expertsDB, "names_worksDB" => $names_worksDB]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
             return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);

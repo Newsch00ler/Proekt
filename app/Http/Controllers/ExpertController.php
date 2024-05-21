@@ -26,7 +26,17 @@ class ExpertController extends Controller
                     works.original_percent as original_percent,
                     works.created_at as created_at,
                     SPLIT_PART(link_pdf_file, \'\\\', -1) as file_name,
-                    works.status as status
+                    works.status as status,
+                    SPLIT_PART(works.link_text_percent1, \'\\\', -1) as file_text_percent1,
+                    SPLIT_PART(works.link_text_percent2, \'\\\', -1) as file_text_percent2,
+                    SPLIT_PART(works.link_text_percent3, \'\\\', -1) as file_text_percent3,
+                    SPLIT_PART(works.link_text_percent4, \'\\\', -1) as file_text_percent4,
+                    SPLIT_PART(works.link_text_percent5, \'\\\', -1) as file_text_percent5,
+                    works.percent1 as percent1,
+                    works.percent2 as percent2,
+                    works.percent3 as percent3,
+                    works.percent4 as percent4,
+                    works.percent5 as percent5
                 from works
                 inner join works_subject_areas on works.id_work = works_subject_areas.id_work
                 inner join subject_areas on works_subject_areas.id_subject_area = subject_areas.id_subject_area
@@ -47,6 +57,20 @@ class ExpertController extends Controller
                 $worksSubjectAreas = array_merge($worksSubjectAreas, $worksForSubjectArea); // добавление всех работ по предметным областям эксперта
             }
             $worksForCheck = array_unique($worksSubjectAreas, SORT_REGULAR);  // оставить только единожды поввторяющиеся работы
+            $message1 = [];
+            foreach ($worksForCheck as $work) {
+                $message = [];
+                foreach ($work as $index => $value) {
+                    if (strpos($index, 'file_text_percent') === 0 || strpos($index, 'percent') === 0) {
+                        if ($value !== null) {
+                            $message[] = $value;
+                        }
+                    }
+                }
+                if (!empty($message)) {
+                    $message1[] = array_combine(range(1, count($message)), array_values($message));
+                }
+            }
             $full_name = Auth::user()->full_name;
             $role = Auth::user()->role;
             if ($role === 'Председатель' || $role === 'Секретарь'){
@@ -56,7 +80,7 @@ class ExpertController extends Controller
                 $url = url('/e-show-works');
             }
             $viewRole = 'Эксперт';
-            return view('experts/experts_works_layout', ["title" => "Работы для оценивания", "message1" => "Тут ссылки на другие работы", "link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "worksForCheck" => $worksForCheck, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
+            return view('experts/experts_works_layout', ["title" => "Работы для оценивания", "message1" => $message1, "worksForCheck" => $worksForCheck, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
             return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
@@ -86,11 +110,35 @@ class ExpertController extends Controller
                 experts_works.criterion5 as criterion5,
                 works.name_work as name_work,
                 works.original_percent as original_percent,
-                SPLIT_PART(works.link_pdf_file, \'\\\', -1) as file_name
+                SPLIT_PART(works.link_pdf_file, \'\\\', -1) as file_name,
+                SPLIT_PART(works.link_text_percent1, \'\\\', -1) as file_text_percent1,
+                SPLIT_PART(works.link_text_percent2, \'\\\', -1) as file_text_percent2,
+                SPLIT_PART(works.link_text_percent3, \'\\\', -1) as file_text_percent3,
+                SPLIT_PART(works.link_text_percent4, \'\\\', -1) as file_text_percent4,
+                SPLIT_PART(works.link_text_percent5, \'\\\', -1) as file_text_percent5,
+                works.percent1 as percent1,
+                works.percent2 as percent2,
+                works.percent3 as percent3,
+                works.percent4 as percent4,
+                works.percent5 as percent5
             from experts_works
             inner join works on experts_works.id_work = works.id_work
             where experts_works.id_user = ? and experts_works.id_work = ?', [$id_user, $id_work]);
-            return view('experts/experts_scoring_layout', ["title" => "Оценка работы", "message" => "Пожалуйста, оцените все критерии", "message1" => "Тут ссылки на другие работы", "link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "work" => $workForCheck[0], 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
+            $message1 = [];
+            foreach ($workForCheck as $work) {
+                $message = [];
+                foreach ($work as $index => $value) {
+                    if (strpos($index, 'file_text_percent') === 0 || strpos($index, 'percent') === 0) {
+                        if ($value !== null) {
+                            $message[] = $value;
+                        }
+                    }
+                }
+                if (!empty($message)) {
+                    $message1[] = array_combine(range(1, count($message)), array_values($message));
+                }
+            }
+            return view('experts/experts_scoring_layout', ["title" => "Оценка работы", "message" => "Пожалуйста, оцените все критерии", "message1" => $message1[0], "work" => $workForCheck[0], 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
             return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
@@ -140,7 +188,7 @@ class ExpertController extends Controller
                     $k = 40;
                 }
                 else if ($type_work[0]->type === "Учебное пособие"){
-                    if ($language_work[0]->language === "Русский"){
+                    if ($language_work[0]->language === "Russian"){
                         $k = 30;
                     }
                     else {
@@ -148,7 +196,7 @@ class ExpertController extends Controller
                     }
                 }
                 else if ($type_work[0]->type === "Сборник задач" || $type_work[0]->type === "Практикум / лабораторный практикум"){
-                    if ($language_work[0]->language === "Русский"){
+                    if ($language_work[0]->language === "Russian"){
                         $k = 25;
                     }
                     else {
@@ -164,6 +212,13 @@ class ExpertController extends Controller
                     DB::update('update works set status = \'Проверена\', final_grade = ? where id_work = ?', [$final_grade, $workId]);
                 }
                 else {
+                    DB::update('update works set status = \'Проверена\' where id_work = ?', [$workId]);
+                    $protocolWorks = DB::select('select * from protocol_works');
+                    $scriptPath = public_path('scripts\CreateProtocol.py');
+                    $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
+                    $encodedJsonWorksDB = base64_encode($jsonWorksDB);
+                    $command = "python $scriptPath $encodedJsonWorksDB 2>&1";
+                    exec($command);
                     DB::update('update works set status = \'Внесена в протокол\', final_grade = ?, id_protocol = ? where id_work = ?', [$final_grade, $maxIdProtocol[0]->max, $workId]);
                 }
             }

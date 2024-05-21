@@ -7,8 +7,9 @@
                 <option disabled selected>Фильтровать</option>
                 <option>Внесена в протокол</option>
                 <option>Проверена</option>
-                <option>На проверке</option>
+                <option value="check">На проверке</option>
                 <option>Не подтверждена</option>
+                <option>Отклонена</option>
                 <option>Сбросить</option>
             </select>
             <input class="input" type="text" id="searchInput" name="search" autocomplete="off" onkeyup="filterTable()"
@@ -16,6 +17,7 @@
             <label>Всего работ: {{ $countAllWorks }}</label>
             <label>Проверенные работы: {{ $countAllVerifiedWorks }}</label>
             <label>Непроверенные работы: {{ $countAllUnverifiedWorks }}</label>
+            <label>Отклоненные работы: {{ $countAllRejectedWorks }}</label>
         </div>
         <div class="container-fluid" style="padding-top: 0px; padding-bottom: 0px;">
             <table class="table" id="dataNameTable">
@@ -42,13 +44,13 @@
                                 <td class="yelowwTd">{{ $work->name_subject_area }}</td>
                                 <td class="yelowwTd">
                                     <a class="redA" href=""
-                                        onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
+                                        onclick="openModal1(event, {{ json_encode($message1[$index]) }})">
                                         {{ $work->original_percent }}%
                                     </a>
                                 </td>
                                 <td class="yelowwTd">{{ date('d.m.Y', strtotime($work->created_at)) }}</td>
                                 <td class="yelowwTd">
-                                    <a href="" onclick="openModal(event, '{{ $message2[$index] }}')">
+                                    <a href="" onclick="openModal2(event, '{{ $message2[$index] }}')">
                                         {{ $work->final_grade }}
                                     </a>
                                 </td>
@@ -65,14 +67,13 @@
                                 </td>
                                 <td>{{ $work->name_subject_area }}</td>
                                 <td>
-                                    <a href=""
-                                        onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
+                                    <a href="" onclick="openModal1(event, {{ json_encode($message1[$index]) }})">
                                         {{ $work->original_percent }}%
                                     </a>
                                 </td>
                                 <td>{{ date('d.m.Y', strtotime($work->created_at)) }}</td>
                                 <td>
-                                    <a href="" onclick="openModal(event, '{{ $message2[$index] }}')">
+                                    <a href="" onclick="openModal2(event, '{{ $message2[$index] }}')">
                                         {{ $work->final_grade }}
                                     </a>
                                 </td>

@@ -40,7 +40,17 @@ return new class extends Migration
                     END
                 ),
                 \', \'
-                ) as experts
+                ) as experts,
+            SPLIT_PART(works.link_text_percent1, \'\\\', -1) as file_text_percent1,
+            SPLIT_PART(works.link_text_percent2, \'\\\', -1) as file_text_percent2,
+            SPLIT_PART(works.link_text_percent3, \'\\\', -1) as file_text_percent3,
+            SPLIT_PART(works.link_text_percent4, \'\\\', -1) as file_text_percent4,
+            SPLIT_PART(works.link_text_percent5, \'\\\', -1) as file_text_percent5,
+            works.percent1 as percent1,
+            works.percent2 as percent2,
+            works.percent3 as percent3,
+            works.percent4 as percent4,
+            works.percent5 as percent5
             FROM works
             LEFT JOIN works_subject_areas ON works.id_work = works_subject_areas.id_work
             LEFT JOIN subject_areas ON works_subject_areas.id_subject_area = subject_areas.id_subject_area
@@ -57,6 +67,6 @@ return new class extends Migration
      */
     public function down()
     {
-        DB::statement('DROP VIEW IF EXISTS my_works;');
+        DB::statement('DROP VIEW IF EXISTS all_works;');
     }
 };

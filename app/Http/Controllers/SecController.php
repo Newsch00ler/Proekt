@@ -12,7 +12,7 @@ use DateTime;
 class SecController extends Controller
 {
     public function showWorks(){
-        try {
+         try {
             $worksDB = DB::select('select all_works.* from all_works
             left join protocols on all_works.id_protocol = protocols.id_protocol
             where (case
@@ -31,8 +31,7 @@ class SecController extends Controller
                         when all_works.id_protocol is null or (protocols.id_protocol is not null and protocols.status in (\'Создан\', \'К утверждению\')) then true
                         else false
                     end
-            end) and
-            all_works.status != \'Отклонена\'
+            end)
             order by all_works.created_at asc');
             $countAllVerifiedWorks = array_filter($worksDB, function($work) {
                 return ($work->status === 'Внесена в протокол' || $work->status === 'Проверена');
@@ -40,11 +39,29 @@ class SecController extends Controller
             $countAllUnverifiedWorks = array_filter($worksDB, function($work) {
                 return $work->status === 'На проверке';
             });
+            $countAllRejectedWorks = array_filter($worksDB, function($work) {
+                return $work->status === 'Отклонена';
+            });
             $countAllWorks = count($worksDB);
             $countAllVerifiedWorks = count($countAllVerifiedWorks);
             $countAllUnverifiedWorks = count($countAllUnverifiedWorks);
-            $message1 = 0;
+            $countAllRejectedWorks = count($countAllRejectedWorks);
+            $message1 = [];
+            foreach ($worksDB as $work) {
+                $message = [];
+                foreach ($work as $index => $value) {
+                    if (strpos($index, 'file_text_percent') === 0 || strpos($index, 'percent') === 0) {
+                        if ($value !== null) {
+                            $message[] = $value;
+                        }
+                    }
+                }
+                if (!empty($message)) {
+                    $message1[] = array_combine(range(1, count($message)), array_values($message));
+                }
+            }
             $grades = [];
+            $message2 = [];
             foreach ($worksDB as $work) {
                 $grades[] = DB::select('select
                     experts_works.id_work as id_work,
@@ -55,7 +72,6 @@ class SecController extends Controller
                 inner join users on experts_works.id_user = users.id_user
                 where (works.status = \'Проверена\' or works.status = \'Внесена в протокол\') and works.id_work = ?', [$work->id_work]);
             }
-            $message2 = [];
             foreach ($grades as $grade) {
                 $message = '';
                 foreach ($grade as $index => $gr) {
@@ -77,8 +93,9 @@ class SecController extends Controller
                 $viewRole = 'Секретарь';
             }
             $url = url('/show-works');
-            return view('chm_sec/chm_sec_works_layout', ["title" => "Работы", "message1" => $message1, "message2" => $message2, "grades" => $grades, "link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "worksDB" => $worksDB, "countAllWorks" => $countAllWorks, "countAllVerifiedWorks" => $countAllVerifiedWorks, "countAllUnverifiedWorks" => $countAllUnverifiedWorks, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
+            return view('chm_sec/chm_sec_works_layout', ["title" => "Работы", "message1" => $message1, "message2" => $message2, "link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "worksDB" => $worksDB, "countAllWorks" => $countAllWorks, "countAllVerifiedWorks" => $countAllVerifiedWorks, "countAllUnverifiedWorks" => $countAllUnverifiedWorks, "countAllRejectedWorks" => $countAllRejectedWorks, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
         } catch (\Exception $exception) {
+            dd($exception);
             error_log("{$exception->getMessage()}\n");
             return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
         }
@@ -255,7 +272,7 @@ class SecController extends Controller
             $full_name = Auth::user()->full_name;
             $role = Auth::user()->role;
             $url = url('/show-works');
-            return view('sec/sec_add_date_layout', ["title" => "Заседание и протокол", "dateFormatted" => $dateFormatted, "textButton" => $textButton, 'isVisible1' => $isVisible1, 'isVisible2' => $isVisible2, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $role]);
+            return view('sec/sec_meeting_layout', ["title" => "Заседание и протокол", "dateFormatted" => $dateFormatted, "textButton" => $textButton, 'isVisible1' => $isVisible1, 'isVisible2' => $isVisible2, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $role]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
             return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
@@ -267,10 +284,16 @@ class SecController extends Controller
             $maxIdProtocol = DB::select('select max(id_protocol) from protocols');
             $dateString = $request->input('calendar');
             $date = new DateTime($dateString);
+            $protocolWorks = DB::select('select * from protocol_works');
+            $scriptPath = public_path('scripts\CreateProtocol.py');
+            $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
+            $encodedJsonWorksDB = base64_encode($jsonWorksDB);
+            $command = "python $scriptPath $encodedJsonWorksDB 2>&1";
             if($maxIdProtocol[0]->max === null) {
                 DB::insert('insert into protocols (meeting_date, status) values(?, \'Создан\')', [$date]);
                 $maxIdProtocol = DB::select('select max(id_protocol) from protocols');
                 $works = DB::select('select id_work from works where final_grade is not null and id_protocol is null');
+                exec($command);
                 foreach ($works as $work) {
                     DB::update('update works set status = \'Внесена в протокол\', id_protocol = ? where id_work = ?', [$maxIdProtocol[0]->max, $work->id_work]);
                 }
@@ -281,6 +304,7 @@ class SecController extends Controller
                     DB::insert('insert into protocols (meeting_date, status) values(?, \'Создан\')', [$date]);
                     $maxIdProtocol = DB::select('select max(id_protocol) from protocols');
                     $works = DB::select('select id_work from works where final_grade is not null and id_protocol is null');
+                    exec($command);
                     foreach ($works as $work) {
                         DB::update('update works set status = \'Внесена в протокол\', id_protocol = ? where id_work = ?', [$maxIdProtocol[0]->max, $work->id_work]);
                     }
@@ -327,10 +351,24 @@ class SecController extends Controller
         try {
             $worksDB = DB::select('select * from all_works where status = \'Не подтверждена\'
             order by created_at asc');
+            $message1 = [];
+            foreach ($worksDB as $work) {
+                $message = [];
+                foreach ($work as $index => $value) {
+                    if (strpos($index, 'file_text_percent') === 0 || strpos($index, 'percent') === 0) {
+                        if ($value !== null) {
+                            $message[] = $value;
+                        }
+                    }
+                }
+                if (!empty($message)) {
+                    $message1[] = array_combine(range(1, count($message)), array_values($message));
+                }
+            }
             $full_name = Auth::user()->full_name;
             $role = Auth::user()->role;
             $url = url('/show-works');
-            return view('sec/sec_work_validation_layout', ["title" => "Подтверждение работ", "message1" => "Тут работы", "message2" => "Тут оценки","link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "worksDB" => $worksDB, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $role]);
+            return view('sec/sec_work_validation_layout', ["title" => "Подтверждение работ", "message1" => $message1, "worksDB" => $worksDB, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $role]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
             return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);

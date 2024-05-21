@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $title }}</title>
+    <title>{{ $viewRole }} - {{ $title }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -40,11 +40,11 @@
                 <ul class="navbar-nav" style="align-items: center;">
                     @if ($role === 'Председатель')
                         <li class="nav-item">
-                            <select onchange="location = this.value; resetOptions(this);">
+                            <select onchange="handleSelectChange(this);" id="selectSec">
                                 <option style="padding-left: 32px" disabled selected>Председатель</option>
                                 <option value="show-works">Работы</option>
                                 <option value="show-experts">Эксперты</option>
-                                <option value="#">Скачать отчетный документ</option>
+                                <option data-download="/protocols/Протокол.docx">Скачать отчетный документ</option>
                             </select>
                         </li>
                         <li class="nav-item">
@@ -56,32 +56,32 @@
                         <li class="nav-item">
                             <select onchange="location = this.value; resetOptions(this);">
                                 <option disabled selected>Автор</option>
-                                <option value="load-my-work">Загрузка работ</option>
+                                <option value="load-my-work">Загрузка работы</option>
                                 <option value="my-works">Мои работы</option>
                             </select>
                         </li>
                     @endif
                     @if ($role === 'Секретарь')
                         <li class="nav-item">
-                            <select onchange="location = this.value; resetOptions(this);">
+                            <select onchange="handleSelectChange(this);" id="selectSec">
                                 <option disabled selected>Секретарь</option>
                                 <option value="show-works">Работы</option>
                                 <option value="show-experts">Эксперты</option>
                                 <option value="validation-works">Подтверждение работ</option>
                                 <option value="meeting">Заседание и протокол</option>
-                                <option value="#">Скачать отчетный документ</option>
+                                <option data-download="/protocols/Протокол.docx">Скачать отчетный документ</option>
                             </select>
                         </li>
                         <li class="nav-item">
-                            <select onchange="location = this.value; resetOptions(this);">
+                            <select onchange="location = this.value; resetOptions(this);" id="selectExp">
                                 <option disabled selected>Эксперт</option>
                                 <option value="e-show-works">Работы для оценивания</option>
                             </select>
                         </li>
                         <li class="nav-item">
-                            <select onchange="location = this.value; resetOptions(this);">
+                            <select onchange="location = this.value; resetOptions(this);" id="selectAut">
                                 <option disabled selected>Автор</option>
-                                <option value="load-my-work">Загрузка работ</option>
+                                <option value="load-my-work">Загрузка работы</option>
                                 <option value="my-works">Мои работы</option>
                             </select>
                         </li>
@@ -96,7 +96,7 @@
                         <li class="nav-item">
                             <select onchange="location = this.value; resetOptions(this);">
                                 <option disabled selected>Автор</option>
-                                <option value="load-my-work">Загрузка работ</option>
+                                <option value="load-my-work">Загрузка работы</option>
                                 <option value="my-works">Мои работы</option>
                             </select>
                         </li>
@@ -112,7 +112,7 @@
                 </ul>
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
-                    <button type="submit">Выход</button>
+                    <button type="submit" id="logout_button">Выход</button>
                 </form>
             </div>
         </div>
@@ -138,15 +138,40 @@
             </div>
         </div>
     @endif
-    @if (isset($message1) || isset($message2))
+    @if (isset($message1))
         <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Информация
+                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Заимствованный материал
                     </div>
-                    <div class="modal-body" id="modalMessage1"></div>
+                    <div class="modal-body" id="m1"><a href="" download></a>
+                    </div>
+                    <div class="modal-body" id="m2"><a href="" download></a>
+                    </div>
+                    <div class="modal-body" id="m3"><a href="" download></a>
+                    </div>
+                    <div class="modal-body" id="m4"><a href="" download></a>
+                    </div>
+                    <div class="modal-body" id="m5"><a href="" download></a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" id="closeMyModal1">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if (isset($message2))
+        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Оценки экспертов
+                    </div>
+                    <div class="modal-body" id="modalMessage2"></div>
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal">Закрыть</button>
                     </div>
@@ -154,6 +179,21 @@
             </div>
         </div>
     @endif
+    <div class="modal fade" id="waitModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLongTitle">Ожидайте загрузку</h5>
+                </div>
+                <div class="modal-body" id="waitModalMessage">
+                    <div class="loading-indicator">
+                        Выполняется техническая проверка
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     @yield('main_content')
 </body>
 

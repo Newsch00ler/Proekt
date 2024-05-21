@@ -52,7 +52,7 @@
                 <label for="remember" style="color: black; margin: 0%;">Запомнить меня на этом компьютере</label>
             </div>
 
-            <button style="margin-bottom: 5%" type="submit">Войти</button>
+            <button style="margin-bottom: 5%" type="submit" id="login_button">Войти</button>
 
             <button type="submit">Войти с помощью Кампуса</button>
         </form>

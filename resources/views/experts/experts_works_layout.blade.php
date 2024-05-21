@@ -24,7 +24,7 @@
                                 <td class="yelowwTd">{{ $work->name_subject_area }}</td>
                                 <td class="yelowwTd">
                                     <a class="redA" href=""
-                                        onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
+                                        onclick="openModal1(event, {{ json_encode($message1[$index]) }})">
                                         {{ $work->original_percent }}%
                                     </a>
                                 </td>
@@ -36,8 +36,7 @@
                                 </td>
                                 <td>{{ $work->name_subject_area }}</td>
                                 <td>
-                                    <a href=""
-                                        onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
+                                    <a href="" onclick="openModal1(event, {{ json_encode($message1[$index]) }})">
                                         {{ $work->original_percent }}%
                                     </a>
                                 </td>

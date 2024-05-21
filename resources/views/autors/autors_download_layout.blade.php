@@ -71,11 +71,7 @@
                     </label>
                 </div>
 
-                {{-- <input class="input" style="width: 100%; margin-top: 4.5%;" type="text"
-                    placeholder="Ссылка на работу из электронной библиотеки" autocomplete="off" id="linkWork"
-                    name="linkWork" /> --}}
-
-                <button style="display: block; margin: 4.5% auto 1.5% auto;" type="submit"
+                <button style="display: block; margin: 4.5% auto 1.5% auto;" type="submit" id="download"
                     <?php if ($isDisabled) {
                         echo 'disabled';
                     } ?>>Загрузить</button>

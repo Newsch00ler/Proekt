@@ -28,10 +28,11 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td><a href="/loadPdfFiles/{{ $work->file_name }}" download>{{ $work->name_work }}</a></td>
                                 <td>{{ $work->name_subject_area }}</td>
-                                <td><a href="#"
-                                        onclick="openModal(event, '{{ $message1 }}', '{{ $link }}')">
+                                <td>
+                                    <a href="" onclick="openModal1(event, {{ json_encode($message1[$index]) }})">
                                         {{ $work->original_percent }}%
-                                    </a></td>
+                                    </a>
+                                </td>
                                 <td>{{ date('d.m.Y', strtotime($work->created_at)) }}</td>
                                 <td style="flex-direction: column;">
                                     <div class="container" style="display: flex; align-items: center; margin-bottom: 5px">
