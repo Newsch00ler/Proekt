@@ -30,7 +30,8 @@ return new class extends Migration
             LEFT JOIN subject_areas ON works_subject_areas.id_subject_area = subject_areas.id_subject_area
             LEFT JOIN autors_works ON works.id_work = autors_works.id_work
             LEFT JOIN users ON autors_works.id_user = users.id_user
-            --where works.status = \'Проверена\' -----------СНЯТЬ
+            LEFT JOIN protocols ON works.id_protocol = protocols.id_protocol
+            where works.status = \'Внесена в протокол\' and protocols.status = \'Создан\'
             GROUP BY works.id_work, users.full_name
         ');
     }

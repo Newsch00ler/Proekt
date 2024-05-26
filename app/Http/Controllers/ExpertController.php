@@ -56,6 +56,7 @@ class ExpertController extends Controller
                 group by works.id_work', [$expertSubjectArea, $id_user]);
                 $worksSubjectAreas = array_merge($worksSubjectAreas, $worksForSubjectArea); // добавление всех работ по предметным областям эксперта
             }
+
             $worksForCheck = array_unique($worksSubjectAreas, SORT_REGULAR);  // оставить только единожды поввторяющиеся работы
             $message1 = [];
             foreach ($worksForCheck as $work) {
@@ -71,6 +72,7 @@ class ExpertController extends Controller
                     $message1[] = array_combine(range(1, count($message)), array_values($message));
                 }
             }
+
             $full_name = Auth::user()->full_name;
             $role = Auth::user()->role;
             if ($role === 'Председатель' || $role === 'Секретарь'){
@@ -79,11 +81,19 @@ class ExpertController extends Controller
             else if ($role === 'Эксперт'){
                 $url = url('/e-show-works');
             }
+
             $viewRole = 'Эксперт';
+
+            $protocolWorks = DB::select('select * from protocol_works');
+            $scriptPath = public_path('scripts\CreateProtocol.py');
+            $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
+            $encodedJsonWorksDB = base64_encode($jsonWorksDB);
+            $command = "python $scriptPath $encodedJsonWorksDB 2>&1";
+            exec($command);
             return view('experts/experts_works_layout', ["title" => "Работы для оценивания", "message1" => $message1, "worksForCheck" => $worksForCheck, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -141,7 +151,7 @@ class ExpertController extends Controller
             return view('experts/experts_scoring_layout', ["title" => "Оценка работы", "message" => "Пожалуйста, оцените все критерии", "message1" => $message1[0], "work" => $workForCheck[0], 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -212,20 +222,38 @@ class ExpertController extends Controller
                     DB::update('update works set status = \'Проверена\', final_grade = ? where id_work = ?', [$final_grade, $workId]);
                 }
                 else {
-                    DB::update('update works set status = \'Проверена\' where id_work = ?', [$workId]);
-                    $protocolWorks = DB::select('select * from protocol_works');
-                    $scriptPath = public_path('scripts\CreateProtocol.py');
-                    $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
-                    $encodedJsonWorksDB = base64_encode($jsonWorksDB);
-                    $command = "python $scriptPath $encodedJsonWorksDB 2>&1";
-                    exec($command);
                     DB::update('update works set status = \'Внесена в протокол\', final_grade = ?, id_protocol = ? where id_work = ?', [$final_grade, $maxIdProtocol[0]->max, $workId]);
+                    try{
+                        $protocolWorks = DB::select('select * from protocol_works');
+                        $scriptPath = public_path('scripts\CreateProtocol.py');
+                        $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
+                        $encodedJsonWorksDB = base64_encode($jsonWorksDB);
+                        $command = "python $scriptPath $encodedJsonWorksDB 2>&1";
+                        exec($command);
+                    } catch (\Exception $exception) {
+                        error_log("{$exception->getMessage()}\n");
+                        DB::update('update experts_works set criterion1 = ?,
+                        criterion2 = ?,
+                        criterion3 = ?,
+                        criterion4 = ?,
+                        criterion5 = ?
+                        where id_user = ? and id_work = ?', [null, null, null, null, null, Auth::user()->id_user, $request->input('id_work')]);
+                        DB::update('update works set status = \'На проверке\', final_grade = ?, id_protocol = ? where id_work = ?', [null, null, $request->input('id_work')]);
+                        return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
+                    }
                 }
             }
             return redirect()->route('e.show.works');
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            DB::update('update experts_works set criterion1 = ?,
+            criterion2 = ?,
+            criterion3 = ?,
+            criterion4 = ?,
+            criterion5 = ?
+            where id_user = ? and id_work = ?', [null, null, null, null, null, Auth::user()->id_user, $request->input('id_work')]);
+            DB::update('update works set status = \'На проверке\', final_grade = ?, id_protocol = ? where id_work = ?', [null, null, $request->input('id_work')]);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 }

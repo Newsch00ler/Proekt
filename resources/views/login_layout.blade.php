@@ -37,28 +37,41 @@
         <form class="container" id="myForm1" method="post"
             style="background-color: #ffffff; flex-direction: column; width: 25%; height: 50%; min-height: 410px; border: 1px solid #D9D9D9; border-radius: 25px; min-width: 400px;">
             @csrf
-            <h1 style="color: #000000; margin-bottom: 5%">
+            <h1 style="color: #000000; margin-bottom: 5%" id="errorMessage" data-error="{{ session('error') }}">
                 Авторизация
             </h1>
-
             <input class="login-input" style="margin-bottom: 5%; width: 85%;" type="text" placeholder="Логин"
                 name="login" id="login">
-
             <input class="login-input" style="margin-bottom: 5%; width: 85%;" type="password" placeholder="Пароль"
                 name="password" id="password">
-
             <div class="container" style="flex-wrap: wrap; align-items: center; margin-bottom: 5%">
                 <input type="checkbox" style="margin-right: 10px;" name="remember" id="remember">
                 <label for="remember" style="color: black; margin: 0%;">Запомнить меня на этом компьютере</label>
             </div>
-
             <button style="margin-bottom: 5%" type="submit" id="login_button">Войти</button>
-
             <button type="submit">Войти с помощью Кампуса</button>
         </form>
     </div>
-    @if (isset($message))
-        <div class="modal fade" id="myModalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+
+    <div class="modal fade" id="myModalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
+                </div>
+                <div class="modal-body" id="modalMessage">
+                    {{ $message }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (session()->has('error'))
+        <div class="modal fade" id="myModalLoginError" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -66,7 +79,7 @@
                         <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
                     </div>
                     <div class="modal-body" id="modalMessage">
-                        {{ $message }}
+                        {{ session('error') }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal">Закрыть</button>

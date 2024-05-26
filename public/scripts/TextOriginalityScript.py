@@ -77,8 +77,11 @@ output_list = [[round(average_percent_borrowings,2)]]
 for pair in borrowing_pairs[:5]:
     output_list.append([pair[0], pair[1]])
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+save_path = os.path.join(current_dir, 'resultOrig.txt')
+
 # Запись списка в файл result.txt
-with open('C:\\Users\\Home\\Desktop\\Diplom\\Proekt\\public\\scripts\\resultOrig.txt', 'w', encoding='utf-8') as file:
+with open(save_path, 'w', encoding='utf-8') as file:
     for item in output_list:
         file.write('\n'.join(map(str, item)) + '\n')
 

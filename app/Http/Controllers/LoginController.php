@@ -29,7 +29,7 @@ class LoginController extends Controller
             return view('login_layout', ["title" => "Авторизация", "message" => "Введите данные для входа"]);
         } catch (\Exception $exception) {
             error_log("Ошибка выполнения запроса в БД: {$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -61,58 +61,18 @@ class LoginController extends Controller
                             $redirectUrl = '/show-works';
                             break;
                         default:
-                            return redirect()->back()->with(['message' => 'Ошибка аутентификации']);
+                            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
                     }
                     $token = $user->createToken('AppName')->accessToken;
                     return redirect($redirectUrl)->with(['token' => $token]);
                 }
             } else {
-                return redirect()->back()->with(['message' => 'Неверный логин или пароль']);
+                return redirect()->back()->with(["error" => "Неправильный логин или пароль"]);
             }
         } catch (\Exception $exception) {
             error_log("Ошибка выполнения запроса в БД: {$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
-        // try {
-        //     $credentials = $request->validate([
-        //         'login' => ['required', 'string'],
-        //         'password' => ['required'],
-        //     ]);
-        //     $user = User::where('login', $credentials['login'])->first();
-        //     if ($user && password_verify($credentials['password'], $user->password)) {
-        //         if (Auth::attempt(['login' => $credentials['login'], 'password' => $credentials['password']])) {
-        //             $request->session()->regenerate();
-        //             if ($user->isRole() === "Администратор") {
-        //                 $token = $user->createToken('AppName')->accessToken;
-        //                 return redirect('/admin/dashboard')->with(['token' => $token]);
-        //             }
-        //             else if ($user->isRole() === "Автор") {
-        //                 $token = $user->createToken('AppName')->accessToken;
-        //                 return redirect('/my-works')->with(['token' => $token]);
-        //             }
-        //             else if ($user->isRole() === "Эксперт") {
-        //                 $token = $user->createToken('AppName')->accessToken;
-        //                 return redirect('/e-show-works')->with(['token' => $token]);
-        //             }
-        //             else if ($user->isRole() === "Председатель") {
-        //                 $token = $user->createToken('AppName')->accessToken;
-        //                 return redirect('/show-works')->with(['token' => $token]);
-        //             }
-        //             else if ($user->isRole() === "Секретарь") {
-        //                 $token = $user->createToken('AppName')->accessToken;
-        //                 return redirect('/show-works')->with(['token' => $token]);
-        //             }
-        //             else {
-        //                 return redirect()->back()->withInput();
-        //             }
-        //         }
-        //     } else {
-        //         return redirect()->back()->withInput();
-        //     }
-        // } catch (\Exception $exception) {
-        //     error_log("Ошибка выполнения запроса в БД: {$exception->getMessage()}\n");
-        //     return redirect()->back()->withInput();
-        // }
     }
 
     public function logout(Request $request) : RedirectResponse {

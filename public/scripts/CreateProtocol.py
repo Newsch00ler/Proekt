@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import base64
@@ -91,5 +92,11 @@ for row_data in data:
         cells[i].paragraphs[0].style = header_style
         cells[i].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-# Сохраняем документ
-doc.save('C:\\Users\\Home\\Desktop\\Diplom\\Proekt\\public\\protocols\\Протокол.docx')
+# Текущая директория
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Поднимаемся на уровень выше
+public_dir = os.path.abspath(os.path.join(current_dir, '..'))
+# Переход в нужную директорию + название файла
+save_path = os.path.join(public_dir, 'protocols', 'Протокол.docx')
+# СОхранение фалйа
+doc.save(save_path)

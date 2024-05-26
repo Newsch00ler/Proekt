@@ -2,6 +2,9 @@
 /node_modules
 /public/build
 /public/hot
+/public/loadExtractFiles
+/public/loadPdfFiles
+/public/loadTxtFiles
 /public/storage
 /storage/*.key
 /vendor

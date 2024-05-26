@@ -1,4 +1,35 @@
 $(document).ready(function () {
+    // отображение модального окна c неправильным логином или паролем на странице авторизации
+    if ($('#errorMessage').data('error') !== "") {
+        $('#myModalLoginError').modal('show');
+    }
+
+    // отображение модального окна при пустых полях на странице авторизации
+    $('#myForm1').submit(function(event) {
+        var isEmpty = false;
+
+        $(this).find('input[name="login"]').each(function() {
+            if ($(this).val().trim() === "") {
+                isEmpty = true
+            }
+        });
+
+        $(this).find('input[name="password"]').each(function () {
+            if ($(this).val().trim() === "") {
+                isEmpty = true
+            }
+        });
+
+        if (isEmpty) {
+            $('#myModalLogin').modal('show');
+            event.preventDefault();
+        }
+    });
+
+    if ($('#errorMessage1').data('error') !== "") {
+        $('#myModalLoginError1').modal('show');
+    }
+
     // изменение полей для файлов
     $('input[id="upload1"]').change(function(e){
         var fileName = e.target.files[0].name;
@@ -16,7 +47,6 @@ $(document).ready(function () {
         var fileName = e.target.files[0].name;
         document.getElementById('labelForUpload4').textContent = 'Файл ' + fileName.substr(0, 13) + '... загружен';
     });
-
 
     // отображение модального окна на странице оценки работы
     $('#myForm2').submit(function(event) {
@@ -50,29 +80,6 @@ $(document).ready(function () {
 
         if (isEmpty) {
             $('#myModal').modal('show');
-            event.preventDefault();
-        }
-    });
-
-
-    // отображение модального окна на странице авторизации
-    $('#myForm1').submit(function(event) {
-        var isEmpty = false;
-
-        $(this).find('input[name="login"]').each(function() {
-            if ($(this).val().trim() === "") {
-                isEmpty = true
-            }
-        });
-
-        $(this).find('input[name="password"]').each(function () {
-            if ($(this).val().trim() === "") {
-                isEmpty = true
-            }
-        });
-
-        if (isEmpty) {
-            $('#myModalLogin').modal('show');
             event.preventDefault();
         }
     });
@@ -132,15 +139,14 @@ $(document).ready(function () {
     });
 });
 
-// модальное окно для ссылок в таблицах
-function openModal(event, message, link) {
-    document.getElementById('modalMessage1').innerHTML = '<a href="' + link + '" target="_blank">' + message + '</a>';
-    $('#myModal1').modal('show');
-    event.preventDefault();
+// модельное окно у дамина при выгрузке файлов
+function showModalAndSubmitForm() {
+    $('#waitModalAdmin').modal('show');
+    document.getElementById('exportForm').submit();
 }
 
+// модальное окно для заимствованного материала в таблицах
 function openModal1(event, message1) {
-    // console.log(message1[1], message1[2], message1[3], message1[4], message1[5], message1[6], message1[7], message1[8], message1[9], message1[10]);
     for (let i = 1; i <= 5; i++) {
         let div = document.getElementById(`m${i}`);
         let link = div.querySelector("a");
@@ -153,23 +159,23 @@ function openModal1(event, message1) {
     event.preventDefault();
 }
 
-function updateModalContent(message1) {
-    for (let i = 0; i < message1.length; i++) {
-        let workNumber = i + 1;
-        let fileTextPercent = message1[i][0];
-        let percent = message1[i][1];
+// function updateModalContent(message1) {
+//     for (let i = 0; i < message1.length; i++) {
+//         let workNumber = i + 1;
+//         let fileTextPercent = message1[i][0];
+//         let percent = message1[i][1];
 
-        let link = document.querySelector(`#m${workNumber} a`);
-        link.href = `/loadPdfFiles/${fileTextPercent}`;
-        link.innerText = `Работа №${workNumber}`;
+//         let link = document.querySelector(`#m${workNumber} a`);
+//         link.href = `/loadPdfFiles/${fileTextPercent}`;
+//         link.innerText = `Работа №${workNumber}`;
 
-        let percentDiv = document.querySelector(`#m${workNumber}`);
-        percentDiv.innerText = '';
-        percentDiv.innerHTML += `<a href="/loadPdfFiles/${fileTextPercent}" download>Работа №${workNumber}</a>: ${percent}%`;
-    }
-}
+//         let percentDiv = document.querySelector(`#m${workNumber}`);
+//         percentDiv.innerText = '';
+//         percentDiv.innerHTML += `<a href="/loadPdfFiles/${fileTextPercent}" download>Работа №${workNumber}</a>: ${percent}%`;
+//     }
+// }
 
-// модальное окно 2 для ссылок в таблицах
+// модальное окно для оценок в таблицах
 function openModal2(event, message) {
     document.getElementById('modalMessage2').innerText = message;
     $('#myModal2').modal('show');
@@ -186,6 +192,7 @@ function handleSelectChange(selectElement) {
     } else {
         location = selectElement.value;
     }
+
     resetOptions(selectElement);
 }
 
@@ -230,16 +237,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (selectedIndex == 6) {
             document.getElementById('filesContainer1').style.display = 'none';
-            // document.getElementById('linkWork').style.display = 'none';
             document.getElementById('filesContainer2').style.display = 'flex';
         } else {
             document.getElementById('filesContainer2').style.display = 'none';
             document.getElementById('filesContainer1').style.display = 'flex';
-            // document.getElementById('linkWork').style.display = 'flex';
         }
     });
 });
 
+// фильтрация по таблице
 function filterTableByStatus() {
     var statusSelect = document.getElementById("statusSelect");
     var selectedStatus = statusSelect.options[statusSelect.selectedIndex].text;
@@ -259,7 +265,7 @@ function filterTableByStatus() {
     }
     statusSelect.selectedIndex = 0;
 }
-// Добавляем обработчик события change для селекта
+// добавление обработчика события change для селекта фильтрации
 document.getElementById('statusSelect').addEventListener('change', filterTableByStatus);
 
 // поиск по таблице

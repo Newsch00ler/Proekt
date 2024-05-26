@@ -23,7 +23,7 @@ return new class extends Migration
             $table->float('original_percent')->nullable();
             $table->string('publisher')->nullable();
             $table->integer('publishing_year')->nullable();
-            $table->float('pages_number')->nullable();
+            $table->integer('pages_number')->nullable();
             $table->string('link_file_extract_protocol')->unique();
             $table->string('link_pdf_file')->unique();
             $table->string('link_text_file')->unique();

@@ -95,9 +95,8 @@ class SecController extends Controller
             $url = url('/show-works');
             return view('chm_sec/chm_sec_works_layout', ["title" => "Работы", "message1" => $message1, "message2" => $message2, "link" => "/loadPdfFiles/Varianty_k_PR_5.pdf", "worksDB" => $worksDB, "countAllWorks" => $countAllWorks, "countAllVerifiedWorks" => $countAllVerifiedWorks, "countAllUnverifiedWorks" => $countAllUnverifiedWorks, "countAllRejectedWorks" => $countAllRejectedWorks, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
         } catch (\Exception $exception) {
-            dd($exception);
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -166,61 +165,6 @@ class SecController extends Controller
             left join experts_works ON users.id_user = experts_works.id_user
             where users.role != \'Автор\' and users.role != \'Администратор\'
             group by users.id_user');
-            // $expertsDB = DB::select('select users.full_name,
-            //     string_agg(distinct subject_areas.name_subject_area, \', \') as name_subject_area,
-            //     concat(
-            //         (select count(*)
-            //         from experts_works
-            //         left join works on experts_works.id_work = works.id_work
-            //         left join protocols on works.id_protocol = protocols.id_protocol
-            //         where id_user = users.id_user and experts_works.criterion1 is not null and
-            //         experts_works.criterion2 is not null and
-            //         experts_works.criterion3 is not null and
-            //         experts_works.criterion4 is not null and
-            //         experts_works.criterion5 is not null and
-            //         (case
-            //         when ((select count(*) from protocols) < 2) then
-            //             case
-            //                 when (works.created_at <= (select max(meeting_date) from protocols) or works.created_at > (select max(meeting_date) from protocols)) then true
-            //                 else false
-            //             end
-            //         else
-            //             case
-            //                 when works.created_at < (select max(protocols.meeting_date) from protocols)
-            //                 -- and works.created_at > (select max(meeting_date) from protocols where meeting_date < (select max(meeting_date) from protocols))
-            //                 -- and works.status != \'Не подтверждена\'
-            //                 and (works.id_protocol is null or (protocols.id_protocol is not null and protocols.status in (\'Создан\', \'К утверждению\'))) then true
-            //                 else false
-            //             end
-            //         end)),
-            //         \'/\',
-            //         (select count(*)
-            //         from experts_works
-            //         left join works on experts_works.id_work = works.id_work
-            //         left join protocols on works.id_protocol = protocols.id_protocol
-            //         where id_user = users.id_user and
-            //         (case
-            //         when ((select count(*) from protocols) < 2) then
-            //             case
-            //                 when (works.created_at <= (select max(meeting_date) from protocols) or works.created_at > (select max(meeting_date) from protocols)) then true
-            //                 else false
-            //             end
-            //         else
-            //             case
-            //                 when works.created_at < (select max(protocols.meeting_date) from protocols)
-            //                 -- and works.created_at > (select max(meeting_date) from protocols where meeting_date < (select max(meeting_date) from protocols))
-            //                 -- and works.status != \'Не подтверждена\'
-            //                 and (works.id_protocol is null or (protocols.id_protocol is not null and protocols.status in (\'Создан\', \'К утверждению\'))) then true
-            //                 else false
-            //             end
-            //         end))
-            //     ) as checked_works
-            // from users
-            // left join users_subject_areas on users.id_user = users_subject_areas.id_user
-            // left join subject_areas on users_subject_areas.id_subject_area  = subject_areas.id_subject_area
-            // left join experts_works ON users.id_user = experts_works.id_user
-            // where users.role != \'Автор\' and users.role != \'Администратор\'
-            // group by users.id_user');
             $full_name = Auth::user()->full_name;
             $role = Auth::user()->role;
             if ($role === 'Председатель') {
@@ -233,7 +177,7 @@ class SecController extends Controller
             return view('chm_sec/chm_sec_experts_layout', ["title" => "Эксперты", 'expertsDB' => $expertsDB, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -252,7 +196,6 @@ class SecController extends Controller
                 $date = new DateTime($protocol[0]->meeting_date);
                 $dateFormatted = $date->format('Y-m-d');
                 $currentDate = new DateTime();
-                // для === проверка в login - если ===, то меняется статус на К утверждению
                 if ($protocol[0]->status === 'Утвержден') {
                     $dateFormatted = '';
                     $textButton = "Подтвердить";
@@ -275,7 +218,7 @@ class SecController extends Controller
             return view('sec/sec_meeting_layout', ["title" => "Заседание и протокол", "dateFormatted" => $dateFormatted, "textButton" => $textButton, 'isVisible1' => $isVisible1, 'isVisible2' => $isVisible2, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $role]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -284,16 +227,10 @@ class SecController extends Controller
             $maxIdProtocol = DB::select('select max(id_protocol) from protocols');
             $dateString = $request->input('calendar');
             $date = new DateTime($dateString);
-            $protocolWorks = DB::select('select * from protocol_works');
-            $scriptPath = public_path('scripts\CreateProtocol.py');
-            $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
-            $encodedJsonWorksDB = base64_encode($jsonWorksDB);
-            $command = "python $scriptPath $encodedJsonWorksDB 2>&1";
             if($maxIdProtocol[0]->max === null) {
                 DB::insert('insert into protocols (meeting_date, status) values(?, \'Создан\')', [$date]);
                 $maxIdProtocol = DB::select('select max(id_protocol) from protocols');
                 $works = DB::select('select id_work from works where final_grade is not null and id_protocol is null');
-                exec($command);
                 foreach ($works as $work) {
                     DB::update('update works set status = \'Внесена в протокол\', id_protocol = ? where id_work = ?', [$maxIdProtocol[0]->max, $work->id_work]);
                 }
@@ -304,7 +241,7 @@ class SecController extends Controller
                     DB::insert('insert into protocols (meeting_date, status) values(?, \'Создан\')', [$date]);
                     $maxIdProtocol = DB::select('select max(id_protocol) from protocols');
                     $works = DB::select('select id_work from works where final_grade is not null and id_protocol is null');
-                    exec($command);
+
                     foreach ($works as $work) {
                         DB::update('update works set status = \'Внесена в протокол\', id_protocol = ? where id_work = ?', [$maxIdProtocol[0]->max, $work->id_work]);
                     }
@@ -313,10 +250,16 @@ class SecController extends Controller
                     DB::update('update protocols set meeting_date = ? where id_protocol = ?', [$date, $maxIdProtocol[0]->max]);
                 }
             }
+            $protocolWorks = DB::select('select * from protocol_works');
+            $scriptPath = public_path('scripts\CreateProtocol.py');
+            $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
+            $encodedJsonWorksDB = base64_encode($jsonWorksDB);
+            $command = "python $scriptPath $encodedJsonWorksDB 2>&1";
+            exec($command);
             return redirect()->back();
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -324,10 +267,12 @@ class SecController extends Controller
         try {
             $maxIdProtocol = DB::select('select max(id_protocol) from protocols');
             DB::update('update protocols set status = \'Утвержден\' where id_protocol = ?', [$maxIdProtocol[0]->max]);
+            $file_path = public_path('protocols\\Протокол.docx');
+            $file = fopen($file_path, 'w');
             return redirect()->back();
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -340,10 +285,12 @@ class SecController extends Controller
                 DB::update('update works set status = \'Не подтверждена\', final_grade = null, id_protocol = null where id_work = ?', [$work->id_work]);
             }
             DB::delete('delete from protocols where id_protocol = ?', [$maxIdProtocol[0]->max]);
+            $file_path = public_path('protocols\\Протокол.docx');
+            $file = fopen($file_path, 'w');
             return redirect()->back();
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -371,45 +318,12 @@ class SecController extends Controller
             return view('sec/sec_work_validation_layout', ["title" => "Подтверждение работ", "message1" => $message1, "worksDB" => $worksDB, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $role]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
     public function saveVal(Request $request) {
         try {
-            // $workIds = $request->input('action', []);
-            // if (!empty($workIds)) {
-            //     foreach ($workIds as $workId) {
-            //         $action = $request->input('action_' . $workId);
-            //         dd($action);
-            //         $workSubjectAreas = DB::select('select
-            //             subject_areas.name_subject_area as name_subject_area
-            //         from works
-            //         left join works_subject_areas ON works.id_work = works_subject_areas.id_work
-            //         left join subject_areas ON works_subject_areas.id_subject_area = subject_areas.id_subject_area
-            //         where works.id_work = ?', [$workId]);
-            //         $id_autor = DB::select('select id_user
-            //         from autors_works
-            //         where id_work = ?', [$workId]);
-            //         $expertsIds = [];
-            //         foreach ($workSubjectAreas as $workSubjectArea) {
-            //             $experts = DB::select('select
-            //                 users.id_user
-            //             from users
-            //             inner join users_subject_areas on users.id_user = users_subject_areas.id_user
-            //             inner join subject_areas on users_subject_areas.id_subject_area  = subject_areas.id_subject_area
-            //             where users.id_user != ? and users."role" != \'Автор\' and users."role" != \'Администратор\' and subject_areas.name_subject_area = ?', [$id_autor[0]->id_user, $workSubjectArea->name_subject_area]);
-            //             foreach ($experts as $expert) {
-            //                 $expertsIds[] = $expert->id_user;
-            //             }
-            //         }
-            //         $expertsIds = array_unique($expertsIds, SORT_REGULAR);
-            //         foreach ($expertsIds as $expertId){
-            //             DB::insert('insert into experts_works (id_user, id_work) values (?, ?)', [$expertId, $workId]);
-            //         }
-            //         DB::update('update works set status = \'На проверке\' where id_work = ?', [$workId]);
-            //     }
-            // }
             $radioInputs = collect($request->input())->filter(function ($value, $key) {
                 return Str::startsWith($key, 'action_');
             })->toArray();
@@ -451,7 +365,7 @@ class SecController extends Controller
             return redirect()->back();
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 }

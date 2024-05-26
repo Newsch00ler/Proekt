@@ -42,7 +42,7 @@ class AdminController extends Controller
             return view('admin/admin_dashboard_layout', ["title" => "Обзор", "dateFormatted" => $dateFormatted, "textButton" => $textButton]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -76,7 +76,19 @@ class AdminController extends Controller
             return redirect()->back();
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
+        }
+    }
+
+    public function addFiles(Request $request) {
+        try {
+            $scriptPath = public_path('scripts\AdminAddFiles.py');
+            $command = "python $scriptPath";
+            exec($command);
+            return redirect()->back();
+        } catch (\Exception $exception) {
+            error_log("{$exception->getMessage()}\n");
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -88,7 +100,7 @@ class AdminController extends Controller
             return view('admin/admin_users_layout', ["title" => "Пользователи", "usersDB" => $usersDB]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -109,7 +121,7 @@ class AdminController extends Controller
             }
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -119,7 +131,7 @@ class AdminController extends Controller
             return view('admin/admin_works_layout', ["title" => "Работы", "worksDB" => $worksDB]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -191,7 +203,7 @@ class AdminController extends Controller
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
             dd($exception->getMessage());
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -203,7 +215,7 @@ class AdminController extends Controller
             return view('admin/admin_protocols_layout', ["title" => "Протоколы", "protocolsDB" => $protocolsDB]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -235,7 +247,7 @@ class AdminController extends Controller
             }
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -255,7 +267,7 @@ class AdminController extends Controller
             return view('admin/admin_experts_works_layout', ["title" => "Оценки работ", "experts_worksDB" => $experts_worksDB, "full_names_expertsDB" => $full_names_expertsDB, "names_worksDB" => $names_worksDB]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -288,7 +300,7 @@ class AdminController extends Controller
             }
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -300,7 +312,7 @@ class AdminController extends Controller
             return view('admin/admin_subject_areas_layout', ["title" => "Предметные области", "subject_areasDB" => $subject_areasDB]);
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 
@@ -323,7 +335,7 @@ class AdminController extends Controller
             }
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(['message' => 'Произошла ошибка, попробуйте позже']);
+            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
         }
     }
 }

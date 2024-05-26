@@ -29,7 +29,7 @@
                 <div class="logo">
                     <img src="images/logo-IRNITU.png" alt="logo-IRNITU" />
                 </div>
-                <div>
+                <div id="errorMessage1" data-error="{{ session('error') }}">
                     <h1>Личный кабинет</h1>
                     <hr style="margin: 2px 0 2px 0; border: 1px solid white; background: white">
                     <h3>{{ $full_name }}</h3>
@@ -172,6 +172,24 @@
                         <h5 class="modal-title text-center" id="exampleModalLongTitle">Оценки экспертов
                     </div>
                     <div class="modal-body" id="modalMessage2"></div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if (session()->has('error'))
+        <div class="modal fade" id="myModalLoginError1" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
+                    </div>
+                    <div class="modal-body" id="modalMessage">
+                        {{ session('error') }}
+                    </div>
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal">Закрыть</button>
                     </div>

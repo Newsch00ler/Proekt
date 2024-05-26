@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -30,20 +31,15 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
+
         if ($this->isHttpException($exception)) {
             switch ($exception->getStatusCode()) {
                 case 404:
-                    return response()->view('errors.404', ["title" => "404"], 404);
-                    break;
+                    return redirect()->route('404');
                 case 500:
-                    return response()->view('errors.500', ["title" => "500"], 500);
-                    break;
+                    return redirect()->route('500');
                 case 503:
-                    return response()->view('errors.503', ["title" => "503"], 503);
-                    break;
-                default:
-                    return $this->renderHttpException($exception);
-                    break;
+                    return redirect()->route('503');
             }
         }
 

@@ -22,14 +22,15 @@
 </head>
 <header class="admin">
     <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid" style="justify-content: space-around">
+        <div id="errorMessage1" data-error="{{ session('error') }}" class="container-fluid"
+            style="justify-content: space-around">
             <a class="navbar-brand container" href="{{ url('/admin/dashboard') }} ">
                 <h1>Администратор</h1>
             </a>
             <div class="collapse navbar-collapse" style="justify-content: end;">
                 <ul class="navbar-nav" style="align-items: center;">
                     <li class="nav-item">
-                        <select onchange="location = this.value;">
+                        <select onchange="location = this.value; resetOptions(this);">
                             <option disabled selected>Управление</option>
                             <option value="/admin/users">Пользователи</option>
                             <option value="/admin/works">Работы</option>
@@ -68,6 +69,39 @@
             </div>
         </div>
     @endif
+    @if (session()->has('error'))
+        <div class="modal fade" id="myModalLoginError1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение</h5>
+                    </div>
+                    <div class="modal-body" id="modalMessage">
+                        {{ session('error') }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    <div class="modal fade" id="waitModalAdmin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLongTitle">Ожидайте загрузку</h5>
+                </div>
+                <div class="modal-body" id="waitModalMessage">
+                    <div class="loading-indicator">
+                        Выполняется выгрузка файлов
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     @yield('admin_main_content')
 </body>
 

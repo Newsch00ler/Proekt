@@ -19,7 +19,6 @@
                             <th onclick="sortTable(3)">Процент оригинальности</th>
                             <th onclick="sortTable(4)">Дата загрузки</th>
                             <th>Подтверждение</th>
-                            {{-- <th>Отклонение</th> --}}
                         </tr>
                     </thead>
                     <tbody id="dataTable">
@@ -44,11 +43,6 @@
                                         <label>Отклонить</label>
                                     </div>
                                 </td>
-
-                                {{-- <td>
-                                    <input type="checkbox" style="height: 30px; width: 30px;" name="work_ids[]"
-                                        value="{{ $work->id_work }}">
-                                </td> --}}
                             </tr>
                         @endforeach
                     </tbody>

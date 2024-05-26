@@ -45,7 +45,11 @@ if results[0].boxes is not None and len(results[0].boxes) > 0:
 else:
     print("Ошибка: результаты не содержат ограничивающих прямоугольников")
 
-with open('C:\\Users\\Home\\Desktop\\Diplom\\Proekt\\public\\scripts\\resultRec.txt', 'w', encoding='utf-8') as file:
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Переход в нужную директорию + название файла
+save_path = os.path.join(current_dir, 'resultRec.txt')
+
+with open(save_path, 'w', encoding='utf-8') as file:
     file.write('\n'.join(map(str, all_text)) + '\n')
 # Вывод всей собранной строки с распознанным текстом
 # print(all_text)

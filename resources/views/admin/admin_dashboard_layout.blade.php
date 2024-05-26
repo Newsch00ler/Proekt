@@ -4,12 +4,6 @@
     <div class="fluid-container" style="margin: 2%; display: grid;">
         <h1 style="margin-bottom: 2%;">Панель управления</h1>
         <div class="row-container" style="padding: 0%;">
-            {{-- <div class="card" style="margin-right: 2%;">
-                <h2 class="card-header" style="color: #1E6C8C;">Обзор</h2>
-                <div class="card-body">
-                    <h3 style="color: #1E6C8C;">Можно добавить общую информацию<br>или статистику если надо</h3>
-                </div>
-            </div> --}}
             <div class="card" style="margin-right: 2%;">
                 <h2 class="card-header" style="color: #1E6C8C;">Быстрый доступ</h2>
                 <div class="card-body">
@@ -56,9 +50,13 @@
                 <h2 class="card-header" style="color: #1E6C8C;">Выгрузка файлов методического<br>материала из электронной
                     библиотеки ИРНИТУ</h2>
                 <div class="card-body">
-                    <button type="submit" style="align-items: center; background: #1E6C8C; font-size: 18px;">
-                        Выгрузить
-                    </button>
+                    <form method="post" action="{{ url('/admin/add-files') }}">
+                        @csrf
+                        <button type="submit" onclick="showModalAndSubmitForm()"
+                            style="align-items: center; background: #1E6C8C; font-size: 18px;">
+                            Выгрузить
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

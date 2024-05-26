@@ -7,14 +7,21 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SecController;
 use App\Http\Controllers\ExpertController;
 use App\Http\Controllers\AutorController;
+use App\Http\Controllers\ErrorController;
 
 use App\Http\Middleware\CheckRole;
+
+// обработка ошибок
+Route::middleware(['logout_if_authenticated'])->group(function () {
+    Route::get('/404', [ErrorController::class, 'show404'])->name('404');
+    Route::get('/500', [ErrorController::class, 'show500'])->name('500');
+    Route::get('/503', [ErrorController::class, 'show503'])->name('503');
+});
 
 // по БД вход
 Route::get('/login', [LoginController::class, 'showPageLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
 
 // для председателя и секретаря
 Route::middleware([CheckRole::class . ':Председатель,Секретарь'])->group(function () {
@@ -50,6 +57,7 @@ Route::middleware([CheckRole::class . ':Председатель,Секрета�
 Route::prefix('admin')->middleware(CheckRole::class . ':Администратор')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/save-date', [AdminController::class, 'saveDate'])->name('admin.save.date');
+    Route::post('/add-files', [AdminController::class, 'addFiles'])->name('admin.add.files');
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::post('/save-users', [AdminController::class, 'saveUsers'])->name('admin.save.users');
     Route::get('/works', [AdminController::class, 'works'])->name('admin.works');

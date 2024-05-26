@@ -16,7 +16,10 @@ driver = webdriver.Chrome(service=svc)
 
 try:
     # Открываем веб-страницу
-    driver.get('http://opac.istu.edu/Opac/')
+    # driver.get('http://opac.istu.edu/Opac/')
+    # ниже временно
+    driver.get('http://84.237.19.2:8081/Opac/Index.aspx')
+
 
     # Находим элемент формы и кнопки
     form_field = driver.find_element("xpath", "//input[@name='valueBox2']")
