@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\CampusLoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SecController;
 use App\Http\Controllers\ExpertController;
@@ -17,6 +18,9 @@ Route::middleware(['logout_if_authenticated'])->group(function () {
     Route::get('/500', [ErrorController::class, 'show500'])->name('500');
     Route::get('/503', [ErrorController::class, 'show503'])->name('503');
 });
+
+Route::post('/campusAuth', [CampusLoginController::class, 'campusAuth'])->name('campus.Auth');
+Route::post('/bitrix/auth', [CampusLoginController::class, 'bitrixAuth'])->name('bitrix.Auth');
 
 // по БД вход
 Route::get('/login', [LoginController::class, 'showPageLogin'])->name('login');

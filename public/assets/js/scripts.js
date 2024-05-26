@@ -5,7 +5,7 @@ $(document).ready(function () {
     }
 
     // отображение модального окна при пустых полях на странице авторизации
-    $('#myForm1').submit(function(event) {
+    $('#loginForm').submit(function(event) {
         var isEmpty = false;
 
         $(this).find('input[name="login"]').each(function() {
