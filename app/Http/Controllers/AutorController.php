@@ -253,8 +253,13 @@ class AutorController extends Controller
                     $link_text_percent[$i] = public_path('loadPdfFiles\\' . substr($successOriginality['percentsList'][2 * $i - 1], 0, -6)  . '.pdf');
                     $percents[$i] = floatval($successOriginality['percentsList'][2 * $i]);
                 }
+                if ($successLanguage['language'] != "Russian" && $successLanguage['language'] != "Foreign"){
+                    $language = null;
+                } else {
+                    $language = $successLanguage['language'];
+                }
 
-                $successSaveWorkDB = $this->saveResultsToDatabase($workNameInput, $successLanguage['language'], "false", $status, null, null, $original_percent, $destinationExtractPath . $ulpoadFiles1[1], $txtFilePath, $pdfFilePath, $subjectAreaSelect, $typeWorkSelect, $link_text_percent, $percents, $successSearchPublisherAndYear['publisher'], $successSearchPublisherAndYear['publishing_year'], $successConvertPdfToText['pages_number']);
+                $successSaveWorkDB = $this->saveResultsToDatabase($workNameInput, $language, "false", $status, null, null, $original_percent, $destinationExtractPath . $ulpoadFiles1[1], $txtFilePath, $pdfFilePath, $subjectAreaSelect, $typeWorkSelect, $link_text_percent, $percents, $successSearchPublisherAndYear['publisher'], $successSearchPublisherAndYear['publishing_year'], $successConvertPdfToText['pages_number']);
             } else {
                 $this->deleteFiles($destinationExtractPath, $ulpoadFiles1, $destinationPdfPath, $txtFilePath);
                 return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);

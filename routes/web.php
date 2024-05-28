@@ -19,11 +19,12 @@ Route::middleware(['logout_if_authenticated'])->group(function () {
     Route::get('/503', [ErrorController::class, 'show503'])->name('503');
 });
 
+// страница авторизации
+Route::get('/login', [LoginController::class, 'showPageLogin'])->name('login');
+// через Кампус вход
 Route::post('/campusAuth', [CampusLoginController::class, 'campusAuth'])->name('campus.Auth');
 Route::post('/bitrix/auth', [CampusLoginController::class, 'bitrixAuth'])->name('bitrix.Auth');
-
-// по БД вход
-Route::get('/login', [LoginController::class, 'showPageLogin'])->name('login');
+// через БД вход
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -33,7 +34,7 @@ Route::middleware([CheckRole::class . ':Председатель,Секрета�
     Route::get('/show-experts', [SecController::class, 'showExperts'])->name('show.experts');
 });
 
-//только секретарь
+// только секретарь
 Route::middleware([CheckRole::class . ':Секретарь'])->group(function () {
     Route::get('/meeting', [SecController::class, 'meeting'])->name('meeting');
     Route::post('/save-date', [SecController::class, 'saveDate'])->name('save.date');
@@ -43,21 +44,21 @@ Route::middleware([CheckRole::class . ':Секретарь'])->group(function ()
     Route::post('/save-validation', [SecController::class, 'saveVal'])->name('save.validation');
 });
 
-//для председателя, секретаря и эксперта
+// для председателя, секретаря и эксперта
 Route::middleware([CheckRole::class . ':Председатель,Секретарь,Эксперт'])->group(function () {
     Route::get('/e-show-works', [ExpertController::class, 'showWorks'])->name('e.show.works');
     Route::get('/check-work', [ExpertController::class, 'checkWork'])->name('check.work');
     Route::post('/save-check-work', [ExpertController::class, 'saveCheckWork'])->name('save.check.work');
 });
 
-//для всех
+// для всех
 Route::middleware([CheckRole::class . ':Председатель,Секретарь,Эксперт,Автор'])->group(function () {
     Route::get('/load-my-work', [AutorController::class, 'showPageLoadMyWork'])->name('load.my.work');
     Route::post('/upload-process', [AutorController::class, 'uploadProcess'])->name('upload.process');
     Route::get('/my-works', [AutorController::class, 'showPageMyWorks'])->name('my.works');
 });
 
-//только админ
+// только админ
 Route::prefix('admin')->middleware(CheckRole::class . ':Администратор')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/save-date', [AdminController::class, 'saveDate'])->name('admin.save.date');

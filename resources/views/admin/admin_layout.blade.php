@@ -50,25 +50,6 @@
 </header>
 
 <body class="admin">
-    @if (isset($message))
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Сообщение
-                        </h5>
-                    </div>
-                    <div class="modal-body">
-                        {{ $message }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">Закрыть</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
     @if (session()->has('error'))
         <div class="modal fade" id="myModalLoginError1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
             aria-hidden="true">

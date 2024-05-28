@@ -4,6 +4,15 @@ import json
 import os
 from pdfminer.high_level import extract_text
 import tempfile
+import traceback
+
+def is_valid_pdf(file_path):
+    try:
+        with open(file_path, 'rb') as f:
+            header = f.read(4)
+        return header == b'%PDF'
+    except Exception as e:
+        return False
 
 # Формируем базовый URL
 url = "https://library.istu.edu/Jsoner.php?op=search_format2&db=ISTU&expr=W=$*TEK=http$*G="
@@ -54,7 +63,8 @@ if response.status_code == 200:
         json.dump(existing_data, file, indent=4)
 
     # Создаем временный файл с использованием mkstemp
-    _, tmp_file_name = tempfile.mkstemp(suffix=".json")
+    fd, tmp_file_name = tempfile.mkstemp(suffix=".json")
+    os.close(fd)
     # Запись списка new_items в файл в формате JSON
     with open(tmp_file_name, 'w') as tmp_file:
         json.dump(new_items, tmp_file, indent=4)
@@ -66,36 +76,45 @@ if response.status_code == 200:
 
     # Фильтрация данных и определение пути к папке для сохранения текстовых файлов
     public_dir = os.path.abspath(os.path.join(current_dir, '..'))
-    folder_path = os.path.join(public_dir, 'loadTxtFiles') # папка где хранятся txt файлы
+    folder_path_txt = os.path.join(public_dir, 'loadTxtFiles')
+    folder_path_pdf = os.path.join(public_dir, 'loadPdfFiles')
     filtered_data = [item for item in data if '.pdf' in item['url']]
     # Для каждого URL в JSON файле
     for item in filtered_data:
-        # Получение URL из JSON файла
-        url = item['url']
+        try:
+            # Получение URL из JSON файла
+            url = item['url']
 
-        # Генерация уникального имени файла
-        filename = os.path.join(folder_path, url.split("/")[-1])
-        file_path = os.path.join(folder_path, filename)
-        # Загрузка файла
-        response = requests.get(url)
+            # Генерация случайного имени для PDF файла
+            pdf_file_path = os.path.join(folder_path_pdf, url.split("/")[-1])
+            pdf_txt_path = os.path.join(folder_path_txt, url.split("/")[-1])
 
-        with open(file_path, 'wb') as f:
-            f.write(response.content)
+            if url.split("/")[-1].startswith('er-'):
+                # Загрузка файла
+                response = requests.get(url)
+                if response.status_code == 200:
+                    with open(pdf_file_path, 'wb') as f:
+                        f.write(response.content)
 
-        # Конвертация PDF в TXT с использованием pdfminer
-        text = extract_text(file_path)
+                    if is_valid_pdf(pdf_file_path):
+                        with open(pdf_txt_path, 'wb') as f:
+                            f.write(response.content)
 
-        # Сохранение извлеченного текста в.txt файл
-        txt_filename = filename.replace('.pdf', '.txt')
-        txt_file_path = os.path.join(folder_path, txt_filename)
-        with open(txt_file_path, 'w', encoding='utf-8') as f:
-            f.write(text)
+                        # Конвертация PDF в TXT с использованием pdfminer
+                        text = extract_text(pdf_txt_path)
 
-        # Удаление временного PDF файла
-        os.remove(file_path)
+                        # Создание имени для текстового файла на основе имени PDF файла
+                        txt_filename = pdf_txt_path.replace('.pdf', '.txt')
 
+                        # Сохранение текста в файл
+                        with open(txt_filename, 'w', encoding='utf-8') as f:
+                            f.write(text)
+                        os.remove(pdf_txt_path)
+                    else:
+                        os.remove(pdf_file_path)
+        except Exception as e:
+            continue
+
+    os.remove(tmp_file_name)
 else:
     print(f"Ошибка при загрузке данных: {response.status_code}")
-
-print(f"Путь к временному файлу: {tmp_file_name}")
-os.remove(tmp_file_name)

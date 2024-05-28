@@ -198,19 +198,19 @@ class ExpertController extends Controller
                     $k = 40;
                 }
                 else if ($type_work[0]->type === "Учебное пособие"){
-                    if ($language_work[0]->language === "Russian"){
-                        $k = 30;
+                    if ($language_work[0]->language === "Foreign"){
+                        $k = 40;
                     }
                     else {
-                        $k = 40;
+                        $k = 30;
                     }
                 }
                 else if ($type_work[0]->type === "Сборник задач" || $type_work[0]->type === "Практикум / лабораторный практикум"){
-                    if ($language_work[0]->language === "Russian"){
-                        $k = 25;
+                    if ($language_work[0]->language === "Foreign"){
+                        $k = 30;
                     }
                     else {
-                        $k = 30;
+                        $k = 25;
                     }
                 }
                 else{

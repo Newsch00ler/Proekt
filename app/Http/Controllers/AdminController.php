@@ -30,7 +30,6 @@ class AdminController extends Controller
                 $date = new DateTime($protocol[0]->meeting_date);
                 $dateFormatted = $date->format('Y-m-d');
                 $currentDate = new DateTime();
-                // для === проверка в login - если ===, то меняется статус на К утверждению
                 if ($protocol[0]->status === 'Утвержден') {
                     $dateFormatted = '';
                     $textButton = "Подтвердить";
@@ -82,13 +81,20 @@ class AdminController extends Controller
 
     public function addFiles(Request $request) {
         try {
+            ini_set('max_execution_time', 36000);
             $scriptPath = public_path('scripts\AdminAddFiles.py');
             $command = "python $scriptPath";
-            exec($command);
+            $result = exec($command);
+            if($result === ""){
+                return redirect()->back()->with(["error" => "Выгрзука файлов успешно завершена!"]);
+            }
+            else {
+                return redirect()->back()->with(["error" => substr($result)]);
+            }
             return redirect()->back();
         } catch (\Exception $exception) {
             error_log("{$exception->getMessage()}\n");
-            return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
+            return redirect()->back()->with(["error" => substr($exception)]);
         }
     }
 

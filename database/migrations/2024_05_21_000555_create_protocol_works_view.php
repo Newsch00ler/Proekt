@@ -22,6 +22,7 @@ return new class extends Migration
             works.name_work as name_work,
             users.full_name as autor,
             STRING_AGG(distinct subject_areas.name_subject_area, \', \') as name_subject_area,
+            works.final_grade as final_grade,
             works.pages_number as pages_number,
             works.publisher as publisher,
             works.publishing_year as publishing_year
