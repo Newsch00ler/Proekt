@@ -25,7 +25,7 @@
     <div class="login">
         <div class="container" style=" padding-top: 5%; padding-bottom: 5%;">
             <div class="logo">
-                <img src="images/logo-IRNITU.png" alt="logo-IRNITU" />
+                <img src="{{ asset('assets/css/logo-IRNITU.png') }}" alt="logo-IRNITU" />
             </div>
             <h1>
                 ИРКУТСКИЙ НАЦИОНАЛЬНЫЙ<br />

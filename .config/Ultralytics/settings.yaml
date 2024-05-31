@@ -1,0 +1,6 @@
+datasets_dir: /var/www/public/datasets
+weights_dir: weights
+runs_dir: runs
+sync: true
+uuid: 56192602f6ae2840d8f32cd1debeb0da201bc5ae530f815715c0e675caa90ee8
+settings_version: 0.0.2

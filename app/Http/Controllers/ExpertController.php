@@ -85,10 +85,10 @@ class ExpertController extends Controller
             $viewRole = 'Эксперт';
 
             $protocolWorks = DB::select('select * from protocol_works');
-            $scriptPath = public_path('scripts\CreateProtocol.py');
+            $scriptPath = public_path('scripts/CreateProtocol.py');
             $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
             $encodedJsonWorksDB = base64_encode($jsonWorksDB);
-            $command = "python $scriptPath $encodedJsonWorksDB 2>&1";
+            $command = "python3 $scriptPath $encodedJsonWorksDB 2>&1";
             exec($command);
             return view('experts/experts_works_layout', ["title" => "Работы для оценивания", "message1" => $message1, "worksForCheck" => $worksForCheck, 'url' => $url, 'full_name' => $full_name, 'role' => $role, 'viewRole' => $viewRole]);
         } catch (\Exception $exception) {
@@ -225,10 +225,10 @@ class ExpertController extends Controller
                     DB::update('update works set status = \'Внесена в протокол\', final_grade = ?, id_protocol = ? where id_work = ?', [$final_grade, $maxIdProtocol[0]->max, $workId]);
                     try{
                         $protocolWorks = DB::select('select * from protocol_works');
-                        $scriptPath = public_path('scripts\CreateProtocol.py');
+                        $scriptPath = public_path('scripts/CreateProtocol.py');
                         $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
                         $encodedJsonWorksDB = base64_encode($jsonWorksDB);
-                        $command = "python $scriptPath $encodedJsonWorksDB 2>&1";
+                        $command = "python3 $scriptPath $encodedJsonWorksDB 2>&1";
                         exec($command);
                     } catch (\Exception $exception) {
                         error_log("{$exception->getMessage()}\n");

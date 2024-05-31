@@ -53,6 +53,7 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'max_post_size' => env('POST_MAX_SIZE', '1000M'),
             'throw' => false,
         ],
 

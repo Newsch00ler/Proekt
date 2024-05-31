@@ -2,10 +2,11 @@
 /node_modules
 /public/build
 /public/hot
-/public/loadExtractFiles
-/public/loadPdfFiles
-/public/loadTxtFiles
-/public/storage
+/public/loadExtFiles/*
+/public/loadPdfFiles/*
+/public/loadTxtFiles/*
+/public/protocolFile/*
+/tests/Tests
 /storage/*.key
 /vendor
 .env

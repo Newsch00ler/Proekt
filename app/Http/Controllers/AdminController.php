@@ -82,8 +82,8 @@ class AdminController extends Controller
     public function addFiles(Request $request) {
         try {
             ini_set('max_execution_time', 36000);
-            $scriptPath = public_path('scripts\AdminAddFiles.py');
-            $command = "python $scriptPath";
+            $scriptPath = public_path('scripts/AdminAddFiles.py');
+            $command = "python3 $scriptPath";
             $result = exec($command);
             if($result === ""){
                 return redirect()->back()->with(["error" => "Выгрзука файлов успешно завершена!"]);
@@ -233,11 +233,6 @@ class AdminController extends Controller
                 $links_protocol_file = $request->input('links_protocol_file');
                 $statuses = $request->input('statuses');
                 foreach ($protocolIds as $protocolId) {
-                    $date = new DateTime($meeting_dates[$protocolId]);
-                    $formattedDate = $date->format('d.m.Y');
-                    $str = implode(" ", [$formattedDate]);
-                    $filePath = storage_path('date.txt');
-                    file_put_contents($filePath, $str);
                     DB::table('protocols')
                         ->where('id_protocol', $protocolId)
                         ->update([

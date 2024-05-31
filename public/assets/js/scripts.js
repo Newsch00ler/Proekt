@@ -159,22 +159,6 @@ function openModal1(event, message1) {
     event.preventDefault();
 }
 
-// function updateModalContent(message1) {
-//     for (let i = 0; i < message1.length; i++) {
-//         let workNumber = i + 1;
-//         let fileTextPercent = message1[i][0];
-//         let percent = message1[i][1];
-
-//         let link = document.querySelector(`#m${workNumber} a`);
-//         link.href = `/loadPdfFiles/${fileTextPercent}`;
-//         link.innerText = `Работа №${workNumber}`;
-
-//         let percentDiv = document.querySelector(`#m${workNumber}`);
-//         percentDiv.innerText = '';
-//         percentDiv.innerHTML += `<a href="/loadPdfFiles/${fileTextPercent}" download>Работа №${workNumber}</a>: ${percent}%`;
-//     }
-// }
-
 // модальное окно для оценок в таблицах
 function openModal2(event, message) {
     document.getElementById('modalMessage2').innerText = message;

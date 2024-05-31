@@ -23,7 +23,7 @@ doc_font.name = 'Times New Roman'
 doc_font.size = Pt(14)
 
 # Добавляем заголовок документа
-headline = doc.add_paragraph('Заключение заседаddwadния Методического совета ИРНИТУ')
+headline = doc.add_paragraph('Заключение заседания Методического совета ИРНИТУ')
 headline.alignment = 1
 doc.add_paragraph('от ____ _______________ ______ г. Протокол №____')
 doc.add_paragraph('рассмотрение печатных изданий, которые по условиям методики формирования и распределения стимулирующих выплат подлежат включению в Рейтинг')
@@ -102,6 +102,6 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 # Поднимаемся на уровень выше
 public_dir = os.path.abspath(os.path.join(current_dir, '..'))
 # Переход в нужную директорию + название файла
-save_path = os.path.join(public_dir, 'protocols', 'Протокол.docx')
+save_path = os.path.join(public_dir, 'protocolFile', 'Протокол.docx')
 # Сохранение фалйа
 doc.save(save_path)

@@ -4,7 +4,6 @@ import json
 import os
 from pdfminer.high_level import extract_text
 import tempfile
-import traceback
 
 def is_valid_pdf(file_path):
     try:

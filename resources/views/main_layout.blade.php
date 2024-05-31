@@ -27,7 +27,7 @@
         <div class="container-fluid" style="justify-content: space-around">
             <a class="navbar-brand container" href="{{ $url }} ">
                 <div class="logo">
-                    <img src="images/logo-IRNITU.png" alt="logo-IRNITU" />
+                    <img src="{{ asset('assets/css/logo-IRNITU.png') }}" alt="logo-IRNITU" />
                 </div>
                 <div id="errorMessage1" data-error="{{ session('error') }}">
                     <h1>Личный кабинет</h1>
@@ -44,7 +44,7 @@
                                 <option style="padding-left: 32px" disabled selected>Председатель</option>
                                 <option value="show-works">Работы</option>
                                 <option value="show-experts">Эксперты</option>
-                                <option data-download="/protocols/Протокол.docx">Скачать отчетный документ</option>
+                                <option data-download="\protocolFile\Протокол.docx">Скачать отчетный документ</option>
                             </select>
                         </li>
                         <li class="nav-item">
@@ -69,7 +69,7 @@
                                 <option value="show-experts">Эксперты</option>
                                 <option value="validation-works">Подтверждение работ</option>
                                 <option value="meeting">Заседание и протокол</option>
-                                <option data-download="/protocols/Протокол.docx">Скачать отчетный документ</option>
+                                <option data-download="{{ asset('protocolFile/Протокол.docx') }}?v={{ time() }}">Скачать отчетный документ</option>
                             </select>
                         </li>
                         <li class="nav-item">

@@ -13,6 +13,13 @@ class SecController extends Controller
 {
     public function showWorks(){
          try {
+            // $protocolWorks = DB::select('select * from protocol_works');
+            // $scriptPath = public_path('scripts/CreateProtocol.py');
+            // $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
+            // $encodedJsonWorksDB = base64_encode($jsonWorksDB);
+            // $command = "python3 $scriptPath $encodedJsonWorksDB 2>&1";
+            // $r = exec($command);
+            // dd($r);
             $worksDB = DB::select('select all_works.* from all_works
             left join protocols on all_works.id_protocol = protocols.id_protocol
             where (case
@@ -251,10 +258,10 @@ class SecController extends Controller
                 }
             }
             $protocolWorks = DB::select('select * from protocol_works');
-            $scriptPath = public_path('scripts\CreateProtocol.py');
+            $scriptPath = public_path('scripts/CreateProtocol.py');
             $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
             $encodedJsonWorksDB = base64_encode($jsonWorksDB);
-            $command = "python $scriptPath $encodedJsonWorksDB 2>&1";
+            $command = "python3 $scriptPath $encodedJsonWorksDB 2>&1";
             exec($command);
             return redirect()->back();
         } catch (\Exception $exception) {
@@ -267,7 +274,7 @@ class SecController extends Controller
         try {
             $maxIdProtocol = DB::select('select max(id_protocol) from protocols');
             DB::update('update protocols set status = \'Утвержден\' where id_protocol = ?', [$maxIdProtocol[0]->max]);
-            $file_path = public_path('protocols\\Протокол.docx');
+            $file_path = public_path('protocolFile/Протокол.docx');
             $file = fopen($file_path, 'w');
             return redirect()->back();
         } catch (\Exception $exception) {
@@ -285,7 +292,7 @@ class SecController extends Controller
                 DB::update('update works set status = \'Не подтверждена\', final_grade = null, id_protocol = null where id_work = ?', [$work->id_work]);
             }
             DB::delete('delete from protocols where id_protocol = ?', [$maxIdProtocol[0]->max]);
-            $file_path = public_path('protocols\\Протокол.docx');
+            $file_path = public_path('protocolFile/Протокол.docx');
             $file = fopen($file_path, 'w');
             return redirect()->back();
         } catch (\Exception $exception) {
