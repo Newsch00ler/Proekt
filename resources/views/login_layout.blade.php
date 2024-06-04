@@ -45,19 +45,18 @@
                     </h1>
                     <input class="login-input" type="text" placeholder="Логин" name="login" id="login">
                     <input class="login-input" type="password" placeholder="Пароль" name="password" id="password">
-                    <div class="container"
-                        style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; margin-bottom: 5%;">
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; margin-bottom: 5%;">
                         <input type="checkbox" style="margin-right: 10px;" name="remember" id="remember">
                         <label for="remember" style="color: black; margin: 0%; text-align: center;">Запомнить меня на
                             этом компьютере</label>
                     </div>
-                    <button class="login-button" type="submit" id="login_button"
+                    <button type="submit" id="login_button"
                         style="margin-bottom: 5%;">Войти</button>
                 </form>
                 <form id="campusLoginForm" method="post" action="{{ url('/campusAuth') }}"
                     style="display: flex; flex-direction: column; align-items: center; width: 100%;">
                     @csrf
-                    <button class="login-button" type="submit">Войти с помощью Кампуса</button>
+                    <button type="submit">Войти с помощью Кампуса</button>
                 </form>
             </div>
         </div>

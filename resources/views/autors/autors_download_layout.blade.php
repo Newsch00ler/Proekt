@@ -11,7 +11,7 @@
                         placeholder="Наименование" autocomplete="off" name="nameWork" autocomplete="off"></textarea>
 
                     <div class="column-conteiner" style="display: flex; flex-direction: column;">
-                        <select id="typeWork" name="typeWork" placeholder="Выбрать предметную область">
+                        <select id="typeWork" name="typeWork" placeholder="Выбрать вид работы">
                             <option disabled selected>Выбрать вид работы</option>
                             <option>Учебник с грифом</option>
                             <option>Учебное пособие с грифом</option>
@@ -22,7 +22,7 @@
                         </select>
                         <select id="subjectAreaWork" name="subjectAreaWork[]" data-placeholder="Выбрать предметную область"
                             multiple>
-                            <option disabled>Выбрать вид работы</option>
+                            <option disabled>Выбрать предметную область</option>
                             @foreach ($subjectAreas as $subjectArea)
                                 <option>{{ $subjectArea->name_subject_area }}</option>
                             @endforeach

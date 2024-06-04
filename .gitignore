@@ -21,3 +21,9 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/nltk_data/tokenizers/punkt.zip
+/.local
+*.tar
+*.tar0
+/MethodSovet0.sql
+/MethodSovetMy.sql

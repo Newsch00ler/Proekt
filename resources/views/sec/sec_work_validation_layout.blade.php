@@ -25,7 +25,7 @@
                         @foreach ($worksDB as $index => $work)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td><a href="/loadPdfFiles/{{ $work->file_name }}" download>{{ $work->name_work }}</a></td>
+                                <td><a href="{{ asset('loadPdfFiles/' . $work->file_name) }}" download>{{ $work->name_work }}</a></td>
                                 <td>{{ $work->name_subject_area }}</td>
                                 <td>
                                     <a href="" onclick="openModal1(event, {{ json_encode($message1[$index]) }})">

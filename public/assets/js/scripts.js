@@ -150,7 +150,7 @@ function openModal1(event, message1) {
     for (let i = 1; i <= 5; i++) {
         let div = document.getElementById(`m${i}`);
         let link = div.querySelector("a");
-        link.href = `/loadPdfFiles/${message1[i]}`;
+        link.href = `loadPdfFiles/${message1[i]}`;
         let textNode = document.createTextNode(`Работа №${i}: ${message1[i + 5]}%`);
         link.textContent = '';
         link.appendChild(textNode);

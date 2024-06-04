@@ -39,7 +39,7 @@
                             @if ($work->original_percent < 61)
                                 <td class="yelowwTd">{{ $index + 1 }}</td>
                                 <td class="yelowwTd">
-                                    <a href="/loadPdfFiles/{{ $work->file_name }}" download>{{ $work->name_work }}</a>
+                                    <a href="{{ asset('loadPdfFiles/' . $work->file_name) }}" download>{{ $work->name_work }}</a>
                                 </td>
                                 <td class="yelowwTd">{{ $work->name_subject_area }}</td>
                                 <td class="yelowwTd">
@@ -63,7 +63,7 @@
                             @else
                                 <td>{{ $index + 1 }}</td>
                                 <td>
-                                    <a href="/loadPdfFiles/{{ $work->file_name }}" download>{{ $work->name_work }}</a>
+                                    <a href="{{ asset('loadPdfFiles/' . $work->file_name) }}" download>{{ $work->name_work }}</a>
                                 </td>
                                 <td>{{ $work->name_subject_area }}</td>
                                 <td>

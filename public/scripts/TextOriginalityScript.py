@@ -5,8 +5,8 @@ import sys
 import stat
 
 # Разрешение прав на файлы
-os.chmod(sys.argv[1], stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
-os.chmod(sys.argv[2], stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+# os.chmod(sys.argv[1], stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+# os.chmod(sys.argv[2], stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
 download_text = str(sys.argv[1])
 check_directory = str(sys.argv[2])
@@ -16,7 +16,7 @@ def compare_paragraphs(text1, text2):
     text1 = re.sub(r'[\n-]', '', text1)
     text2 = re.sub(r'[\n-]', '', text2)
 
-    nltk.download('punkt')  # загрузка необходимых данных для токенизации текста
+    # nltk.download('punkt')  # загрузка необходимых данных для токенизации текста
 
     # Токенизация текстов на абзацы
     tokenizer = nltk.data.load('tokenizers/punkt/russian.pickle')
@@ -62,7 +62,7 @@ borrowing_pairs = []
 
 # Сравнение er-31155.txt с каждым другим документом
 for i, text2 in enumerate(all_texts):
-    if file_names[i]!= download_text:  # Пропускаем сам файл er-31155.txt
+    if file_names[i] != os.path.basename(download_text):  # Пропускаем сам файл er-31155.txt
         percent_borrowings = compare_paragraphs(text1, text2)
         borrowing_pairs.append((file_names[i], round(percent_borrowings, 2)))
 

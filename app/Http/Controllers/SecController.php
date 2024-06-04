@@ -13,13 +13,6 @@ class SecController extends Controller
 {
     public function showWorks(){
          try {
-            // $protocolWorks = DB::select('select * from protocol_works');
-            // $scriptPath = public_path('scripts/CreateProtocol.py');
-            // $jsonWorksDB = json_encode($protocolWorks, JSON_UNESCAPED_UNICODE);
-            // $encodedJsonWorksDB = base64_encode($jsonWorksDB);
-            // $command = "python3 $scriptPath $encodedJsonWorksDB 2>&1";
-            // $r = exec($command);
-            // dd($r);
             $worksDB = DB::select('select all_works.* from all_works
             left join protocols on all_works.id_protocol = protocols.id_protocol
             where (case

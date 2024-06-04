@@ -31,7 +31,7 @@ body{
     margin: 0;
     min-height: 100%;
     width: 100%;
-    justify-content: center;
+    /* justify-content: center; */
     font-family: 'Arial';
     background-image: linear-gradient(to bottom, #32C2F1, #8DDEF8);
     background-size: cover;
@@ -73,22 +73,6 @@ form{
  .login-input {
     margin-bottom: 5%;
     width: 85%;
- }
-
- .login-button {
-    width: auto;
-    padding: 16px 32px;
-    background: #2FC6F7;
-    border: 3px solid #ffffff;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 23px;
-    color: #FFFFFF;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
  }
 
 @media (max-width: 768px) {

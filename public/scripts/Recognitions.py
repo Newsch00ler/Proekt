@@ -51,7 +51,5 @@ save_path = os.path.join(current_dir, 'resultRec.txt')
 
 with open(save_path, 'w', encoding='utf-8') as file:
     file.write('\n'.join(map(str, all_text)) + '\n')
-# Вывод всей собранной строки с распознанным текстом
-# print(all_text)
 
 

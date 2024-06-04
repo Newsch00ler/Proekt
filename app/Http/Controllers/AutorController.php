@@ -72,12 +72,12 @@ class AutorController extends Controller
                 works.created_at as created_at,
                 works.final_grade as final_grade,
                 works.status as status,
-                SPLIT_PART(link_pdf_file, \'\\\', -1) AS file_name,
-                SPLIT_PART(works.link_text_percent1, \'\\\', -1) as file_text_percent1,
-                SPLIT_PART(works.link_text_percent2, \'\\\', -1) as file_text_percent2,
-                SPLIT_PART(works.link_text_percent3, \'\\\', -1) as file_text_percent3,
-                SPLIT_PART(works.link_text_percent4, \'\\\', -1) as file_text_percent4,
-                SPLIT_PART(works.link_text_percent5, \'\\\', -1) as file_text_percent5,
+                regexp_replace(works.link_pdf_file, \'^.*\\/\', \'\') AS file_name,
+                regexp_replace(works.link_text_percent1, \'^.*\\/\', \'\') AS file_text_percent1,
+                regexp_replace(works.link_text_percent2, \'^.*\\/\', \'\') AS file_text_percent2,
+                regexp_replace(works.link_text_percent3, \'^.*\\/\', \'\') AS file_text_percent3,
+                regexp_replace(works.link_text_percent4, \'^.*\\/\', \'\') AS file_text_percent4,
+                regexp_replace(works.link_text_percent5, \'^.*\\/\', \'\') AS file_text_percent5,
                 works.percent1 as percent1,
                 works.percent2 as percent2,
                 works.percent3 as percent3,
@@ -124,7 +124,6 @@ class AutorController extends Controller
             $role = Auth::user()->role;
             if ($role === 'Председатель' || $role === 'Секретарь'){
                 $url = url('/show-works');
-                // $this->$SecController->createProtocol();
             }
             else if ($role === 'Эксперт'){
                 $url = url('/e-show-works');
@@ -181,16 +180,16 @@ class AutorController extends Controller
                 }
             }
 
-            // if (strlen($workNameInput) > 0) {
-            //     $scriptPath = public_path('scripts/OpacDetect.py');
-            //     // 2. Вызов Python скрипта для проверки наименования в библиотеке
-            //     $successOpacDetect = $this->OpacDetect($scriptPath, escapeshellarg($workNameInput));
-            // }
-            // dd($ulpoadFiles1);
+            if (strlen($workNameInput) > 0) {
+                $scriptPath = public_path('scripts/OpacDetect.py');
+                // 2. Вызов Python скрипта для проверки наименования в библиотеке
+                $successOpacDetect = $this->OpacDetect($scriptPath, escapeshellarg($workNameInput));
+            }
+
             $pdfFilePath = public_path('loadPdfFiles/' . $ulpoadFiles1[0]);
             $pdfFileName = substr(basename($pdfFilePath), 0, -4);
             $txtFilePath = public_path("loadTxtFiles/" . $pdfFileName . ".txt");
-            $successOpacDetect = 1;
+            // $successOpacDetect = 1; // убрать потом
             if ($successOpacDetect === 1 && $request->hasFile('uploadedFile1')) {
                 $scriptPath = public_path('scripts/TranslatePDFtoTXTScript.py');
                 $fileHandle = fopen($txtFilePath, 'w');
@@ -199,7 +198,7 @@ class AutorController extends Controller
                 $successConvertPdfToText = $this->convertPdfToText($scriptPath, $pdfFilePath, $txtFilePath);
             } else {
                 $this->deleteFiles($destinationExtractPath, $ulpoadFiles1, $destinationPdfPath, $txtFilePath);
-                return redirect()->back()->with(["error" => "Проверьте загруженные файлы1"]);
+                return redirect()->back()->with(["error" => "Проверьте загруженные файлы"]);
             }
 
             if ($successConvertPdfToText['success'] === 1) {
@@ -208,7 +207,7 @@ class AutorController extends Controller
                 $successLanguage = $this->detectLanguage($scriptPath, $txtFilePath);
             } else {
                 $this->deleteFiles($destinationExtractPath, $ulpoadFiles1, $destinationPdfPath, $txtFilePath);
-                return redirect()->back()->with(["error" => "Проверьте загруженные файлы2"]);
+                return redirect()->back()->with(["error" => "Проверьте загруженные файлы"]);
             }
 
             if ($successLanguage['success'] === 1) {
@@ -227,15 +226,18 @@ class AutorController extends Controller
                 $extractFilePath = $destinationExtractPath . $ulpoadFiles1[1];
                 $successCheckExtractFile = $this->checkExtractFile($scriptPath, $extractFilePath, $workNameInput);
             } else {
+                file_put_contents(public_path('scripts/resultOrig.txt'), '');
                 $this->deleteFiles($destinationExtractPath, $ulpoadFiles1, $destinationPdfPath, $txtFilePath);
                 return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
             }
 
+            // $successCheckExtractFile['success'] = 1; // убрать потом
             if ($successCheckExtractFile['success'] === 1) {
                 // 7. Получение года и издателя
                 $scriptPath = public_path('scripts/SearchPublisherAndYear.py');
                 $successSearchPublisherAndYear = $this->searchPublisherAndYear($scriptPath, $pdfFilePath);
             } else {
+                file_put_contents(public_path('scripts/resultOrig.txt'), '');
                 $this->deleteFiles($destinationExtractPath, $ulpoadFiles1, $destinationPdfPath, $txtFilePath);
                 return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
             }
@@ -251,7 +253,7 @@ class AutorController extends Controller
                 $link_text_percent = [];
                 $percents = [];
                 for ($i = 1; $i <= 5; $i++) {
-                    $link_text_percent[$i] = public_path('loadPdfFiles/' . substr($successOriginality['percentsList'][2 * $i - 1], 0, -6)  . '.pdf');
+                    $link_text_percent[$i] = public_path('loadPdfFiles/' . substr($successOriginality['percentsList'][2 * $i - 1], 0, -5)  . '.pdf');
                     $percents[$i] = floatval($successOriginality['percentsList'][2 * $i]);
                 }
                 if ($successLanguage['language'] != "Russian" && $successLanguage['language'] != "Foreign"){
@@ -259,16 +261,19 @@ class AutorController extends Controller
                 } else {
                     $language = $successLanguage['language'];
                 }
-
+                // dd($workNameInput . '   ' . $language . '   ' . "false" . '   ' . $status . '   ' . null . '   ' . null . '   ' . $original_percent . '   ' . $destinationExtractPath . $ulpoadFiles1[1] . '   ' . $txtFilePath . '   ' . $pdfFilePath . '   ' . $subjectAreaSelect[0] . '   ' . $typeWorkSelect . '   ' . $link_text_percent[1] . '   ' . $percents[1] . '   ' . $successSearchPublisherAndYear['publisher'] . '   ' . $successSearchPublisherAndYear['publishing_year'] . '   ' . $successConvertPdfToText['pages_number']);
                 $successSaveWorkDB = $this->saveResultsToDatabase($workNameInput, $language, "false", $status, null, null, $original_percent, $destinationExtractPath . $ulpoadFiles1[1], $txtFilePath, $pdfFilePath, $subjectAreaSelect, $typeWorkSelect, $link_text_percent, $percents, $successSearchPublisherAndYear['publisher'], $successSearchPublisherAndYear['publishing_year'], $successConvertPdfToText['pages_number']);
             } else {
+                file_put_contents(public_path('scripts/resultOrig.txt'), '');
                 $this->deleteFiles($destinationExtractPath, $ulpoadFiles1, $destinationPdfPath, $txtFilePath);
                 return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
             }
 
             if ($successSaveWorkDB === 1) {
+                file_put_contents(public_path('scripts/resultOrig.txt'), '');
                 return redirect()->route('my.works');
             } else {
+                file_put_contents(public_path('scripts/resultOrig.txt'), '');
                 $this->deleteFiles($destinationExtractPath, $ulpoadFiles1, $destinationPdfPath, $txtFilePath);
                 return redirect()->back()->with(["error" => "Произошла ошибка, попробуйте позже"]);
             }
@@ -323,8 +328,8 @@ class AutorController extends Controller
         $success = 0;
         try {
             $command = "python3 $scriptPath $txtFilePath $check_directory 2>&1";
-            $percent = exec($command);
-            if ($percent !== null) {
+            exec($command);
+            if (filesize(public_path('scripts/resultOrig.txt')) > 0) {
                 $success = 1;
             }
             $output_list = file(public_path('scripts/resultOrig.txt', FILE_IGNORE_NEW_LINES));
@@ -340,7 +345,7 @@ class AutorController extends Controller
         $success = 0;
         try {
             $command = "python3 $scriptPath $extractFilePath 2>&1";
-            $r = exec($command);
+            exec($command);
             $test = file(public_path('scripts/resultRec.txt', FILE_IGNORE_NEW_LINES));
             $test = array_map(function($item) {
                 return str_replace(["\r", "\n"], "", $item);

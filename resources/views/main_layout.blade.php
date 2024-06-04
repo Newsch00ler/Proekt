@@ -25,7 +25,7 @@
 <header>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid" style="justify-content: space-around">
-            <a class="navbar-brand container" href="{{ $url }} ">
+            <a class="navbar-brand" href="{{ $url }} ">
                 <div class="logo">
                     <img src="{{ asset('assets/css/logo-IRNITU.png') }}" alt="logo-IRNITU" />
                 </div>

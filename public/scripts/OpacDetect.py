@@ -7,12 +7,21 @@ from selenium.webdriver.common.by import By
 from chromedriver_py import binary_path
 import time
 
+
 # Переопределение стандартной кодировки на 'utf-8'
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
+# svc = ChromeService(executable_path='/usr/local/bin/chromedriver')
+# driver = webdriver.Chrome(service=svc)
+
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+
 svc = ChromeService(executable_path=binary_path)
-driver = webdriver.Chrome(service=svc)
+driver = webdriver.Chrome(service=svc, options=options)
 
 try:
     # Открываем веб-страницу
